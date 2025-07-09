@@ -4,6 +4,8 @@
   themes: light --default, dark --prefersdark;
 }
 
+@tailwind utilities;
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -23,8 +25,29 @@
   }
 }
 
+@layer utilities {
+  .animate-bounce-slow {
+    animation: bounce-slow 2s infinite ease-in-out;
+  }
+  .animate-bounce-slower {
+    animation: bounce-slow 3s infinite ease-in-out;
+  }
+
+  @keyframes bounce-slow {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
 body {
-  background: var(--background);
+  background: url("/bean-coffee.png");
+  background-repeat: no-repeat;
+  background-size: cover;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }

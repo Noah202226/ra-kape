@@ -1,8 +1,33 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50); // change threshold as needed
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const item1 = "Frappe";
+  const item2 = "Coffee";
+  const submenu1 = "Iced Coffee";
+  const submenu2 = "Hot Coffee";
+  const item3 = "Snacks";
+
   return (
-    <div className="navbar  shadow-sm">
+    <div
+      className={`navbar shadow-sm fixed top-0 left-0 w-full transition-colors duration-300 z-50 ${
+        scrolled ? "bg-white" : "bg-transparent"
+      }`}
+    >
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -13,65 +38,66 @@ function Navbar() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
-              />{" "}
+              />
             </svg>
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content rounded-box z-1 mt-3 w-52 p-2 shadow text-5xl"
           >
-            <li>
-              <a>Item 1</a>
+            <li className="text-2xl">
+              <a href="/frappe">{item1}</a>
             </li>
             <li>
-              <a>Parent</a>
+              <a>{item2}</a>
               <ul className="p-2">
                 <li>
-                  <a>Submenu 1</a>
+                  <a href="iced-coffee">{submenu1}</a>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a href="/hot-coffee">{submenu2}</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a>Item 3</a>
+              <a href="/snacks">{item3}</a>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">RA KAPE</a>
+        <a href="/" className="btn btn-ghost text-lg">
+          RA KAPE
+        </a>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 bg-white">
+      <div className="navbar-end hidden lg:flex">
+        <ul className="menu menu-horizontal px-1 ">
           <li>
-            <a>Item 1</a>
+            <a href="/frappe">{item1}</a>
           </li>
           <li>
             <details>
-              <summary>Parent</summary>
+              <summary>{item2}</summary>
               <ul className="p-2 bg-white">
                 <li>
-                  <a>Submenu 1</a>
+                  <a href="/iced-coffee">{submenu1}</a>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a href="/hot-coffee">{submenu2}</a>
                 </li>
               </ul>
             </details>
           </li>
           <li>
-            <a>Item 3</a>
+            <a href="/snacks">{item3}</a>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <a className="btn">KAPE NA</a>
       </div>
     </div>
   );
