@@ -21,10 +21,12 @@ function Navbar() {
   const submenu1 = "Iced Coffee";
   const submenu2 = "Hot Coffee";
   const item3 = "Snacks";
+  const item4 = "Contact";
+  const item5 = "About Us";
 
   return (
     <div
-      className={`navbar shadow-sm fixed top-0 left-0 w-full transition-colors duration-300 z-50 ${
+      className={`navbar shadow-sm fixed top-0 left-0 w-npm transition-colors duration-300 z-50 ${
         scrolled ? "bg-white" : "bg-transparent"
       }`}
     >
@@ -48,7 +50,7 @@ function Navbar() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content rounded-box z-1 mt-3 w-52 p-2 shadow text-5xl"
+            className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow text-5xl"
           >
             <li className="text-2xl">
               <a href="/frappe">{item1}</a>
@@ -66,6 +68,12 @@ function Navbar() {
             </li>
             <li>
               <a href="/snacks">{item3}</a>
+            </li>
+            <li>
+              <a href="/snacks">{item4}</a>
+            </li>
+            <li>
+              <a href="/snacks">{item5}</a>
             </li>
           </ul>
         </div>
@@ -93,6 +101,12 @@ function Navbar() {
           </li>
           <li>
             <a href="/snacks">{item3}</a>
+          </li>
+          <li>
+            <a href="/contact">{item4}</a>
+          </li>
+          <li>
+            <a href="/about">{item5}</a>
           </li>
         </ul>
       </div>

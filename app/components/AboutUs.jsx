@@ -2,7 +2,7 @@ import React from "react";
 
 function AboutUs() {
   return (
-    <div className="py-16 px-4 max-w-7xl mx-auto">
+    <div className="py-16 px-4  mx-auto max-w-7xl w-full">
       <div
         className="flex flex-col lg:flex-row items-center gap-12"
         data-aos="fade-right"
@@ -14,7 +14,7 @@ function AboutUs() {
           <img
             src="/downloads/starting-outside.jpg"
             alt="About Us"
-            className="rounded-xl shadow-lg w-full object-cover h-96"
+            className="rounded-xl shadow-lg w-full object-cover h-full lg:h-96"
           />
         </div>
 

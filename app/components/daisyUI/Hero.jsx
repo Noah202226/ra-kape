@@ -2,19 +2,23 @@ import React from "react";
 
 function Hero() {
   return (
-    <div className="hero min-h-screen">
+    <div className="hero h-180">
       <div className="hero-content flex-col lg:flex-row gap-10">
         <div className="relative">
           {/* Steam animation */}
           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-            <div className="w-4 h-4 rounded-full bg-brown-400 opacity-70 animate-bounce-slow"></div>
-            <div className="w-2 h-2 mt-1 rounded-full bg-brown-300 opacity-50 animate-bounce-slower"></div>
+            <div className="w-12 h-8 rounded-full bg-brown-400 opacity-70 animate-bounce-slow">
+              <img src="/downloads/coffee-bean.png" alt="Coffee Bean" />
+            </div>
+            <div className="w-2 h-2 mt-1 rounded-full bg-brown-300 opacity-50 animate-bounce-slower">
+              <img src="/downloads/coffee-bean.png" alt="Coffee Bean" />
+            </div>
           </div>
 
           <img
             src="/rakape-logo.jpg"
             alt="RA KAPE logo"
-            className="max-w-xs rounded-3xl shadow-lg"
+            className="w-100 sm:max-w-xs rounded-4xl shadow-lg"
           />
         </div>
 
@@ -24,7 +28,7 @@ function Hero() {
             Discover the rich taste of our artisan coffee. Brewed from freshly
             roasted beans, served in a cozy atmosphere that feels like home.
           </p>
-          <button className="btn btn-primary btn-lg mt-4">EXPLORE MENU</button>
+          <button className="btn  btn-lg mt-4">EXPLORE MENU</button>
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-6">
             <div className="text-center">
