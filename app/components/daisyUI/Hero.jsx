@@ -1,6 +1,23 @@
-import React from "react";
+import useSettingsStore from "@/app/stores/useSettingsStore";
+import React, { useEffect } from "react";
 
+import client from "@/appwrite";
 function Hero() {
+  const { pageTitle } = useSettingsStore((state) => state);
+
+  useEffect(() => {
+    const channel =
+      "databases.6870ab6f0018df40fa94.collections.6870ab9e0013bcd4d615.documents";
+
+    const unsubscribe = client.subscribe(channel, (responce) => {
+      const eventType = responce.events[0];
+      console.log(responce.events);
+      console.log(eventType);
+      console.log(responce.payload);
+    });
+
+    return () => unsubscribe();
+  }, []);
   return (
     <div className="hero h-180">
       <div className="hero-content flex-col lg:flex-row gap-10">
@@ -23,7 +40,9 @@ function Hero() {
         </div>
 
         <div className="lg:text-left text-center max-w-xl">
-          <h1 className="text-6xl font-extrabold mb-4 text-neutral">RA KAPE</h1>
+          <h1 className="text-6xl font-extrabold mb-4 text-neutral">
+            {pageTitle}
+          </h1>
           <p className="py-4 text-lg text-gray-600">
             Discover the rich taste of our artisan coffee. Brewed from freshly
             roasted beans, served in a cozy atmosphere that feels like home.
