@@ -32,7 +32,11 @@ function Navbar() {
     >
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost lg:hidden border-amber-700"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -50,7 +54,7 @@ function Navbar() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-white rounded-box z-1 mt-3 w-52 p-2 shadow text-5xl"
+            className="menu menu-sm dropdown-content bg-amber-700 text-white rounded-box z-1 mt-3 w-52 p-2 shadow-2xl text-5xl"
           >
             <li className="text-2xl">
               <a href="/frappe">{item1}</a>
@@ -89,7 +93,7 @@ function Navbar() {
           <li>
             <details>
               <summary>{item2}</summary>
-              <ul className="p-2 bg-white">
+              <ul className="p-2">
                 <li>
                   <a href="/iced-coffee">{submenu1}</a>
                 </li>
@@ -111,7 +115,7 @@ function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">KAPE NA</a>
+        <a className="btn bg-amber-700 border-0 hover:bg-amber-600">KAPE NA</a>
       </div>
     </div>
   );

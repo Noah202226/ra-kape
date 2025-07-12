@@ -34,7 +34,9 @@ const bestSellers = [
 function BestSellerCarousel() {
   return (
     <div className="py-12 px-4">
-      <h2 className="text-4xl font-bold text-center mb-8">Best Sellers</h2>
+      <h2 className="text-4xl font-bold text-center mb-8 text-[var(--title)]">
+        Best Sellers
+      </h2>
       <div
         className="
         grid gap-6 

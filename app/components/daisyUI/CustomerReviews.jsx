@@ -41,7 +41,9 @@ const reviews = [
 function CustomerReviews() {
   return (
     <div className="py-12 px-4 max-w-7xl mx-auto">
-      <h2 className="text-4xl font-bold text-center mb-8">Customer Reviews</h2>
+      <h2 className="text-4xl font-bold text-center mb-8 text-[var(--title)]">
+        Customer Reviews
+      </h2>
       <div
         className="
         grid gap-6 
