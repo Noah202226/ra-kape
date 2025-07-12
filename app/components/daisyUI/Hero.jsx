@@ -64,19 +64,19 @@ function Hero() {
             data-aos-easing="ease-in-sine"
           >
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-brown-600">
+              <h3 className="text-xl font-semibold text-[var(--title)]">
                 100% Arabica
               </h3>
               <p className="text-sm text-gray-500">Locally sourced beans</p>
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-brown-600">
+              <h3 className="text-xl font-semibold text-[var(--title)]">
                 Cozy Vibes
               </h3>
               <p className="text-sm text-gray-500">Perfect for meetups</p>
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-brown-600">
+              <h3 className="text-xl font-semibold text-[var(--title)]">
                 Fresh Daily
               </h3>
               <p className="text-sm text-gray-500">Every cup made with love</p>

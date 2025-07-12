@@ -58,14 +58,20 @@ function BestSellerCarousel() {
               />
             </figure>
             <div className="p-4">
-              <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+              <h3 className="text-xl font-semibold mb-2 text-[var(--title)]">
+                {product.name}
+              </h3>
               <div className="badge badge-warning">New</div>
               <p className="text-sm text-gray-600 mb-4">
                 {product.description}
               </p>
               <div className="flex justify-between items-center">
-                <span className="font-bold text-lg">{product.price}</span>
-                <button className="btn btn-sm btn-primary">Order</button>
+                <span className="font-bold text-lg text-black">
+                  {product.price}
+                </span>
+                <button className="btn btn-sm btn-primary text-[var(--title)]">
+                  Order
+                </button>
               </div>
             </div>
           </div>
