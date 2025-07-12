@@ -53,7 +53,7 @@ function Hero() {
             Discover the rich taste of our artisan coffee. Brewed from freshly
             roasted beans, served in a cozy atmosphere that feels like home.
           </p>
-          <button className="btn btn-lg mt-4 bg-amber-700 border-0 hover:bg-amber-600">
+          <button className="btn btn-lg mt-4 bg-amber-700 border-0 hover:bg-amber-600 text-white">
             EXPLORE MENU
           </button>
 

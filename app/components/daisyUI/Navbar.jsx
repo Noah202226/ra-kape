@@ -111,7 +111,9 @@ function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn bg-amber-700 border-0 hover:bg-amber-600">KAPE NA</a>
+        <a className="btn bg-amber-700 border-0 hover:bg-amber-600 text-white">
+          KAPE NA
+        </a>
       </div>
     </div>
   );
