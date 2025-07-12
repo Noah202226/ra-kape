@@ -69,9 +69,7 @@ function BestSellerCarousel() {
                 <span className="font-bold text-lg text-black">
                   {product.price}
                 </span>
-                <button className="btn btn-sm btn-primary text-[var(--title)]">
-                  Order
-                </button>
+                <button className="btn btn-sm btn-primary ">Order</button>
               </div>
             </div>
           </div>
