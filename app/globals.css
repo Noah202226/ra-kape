@@ -59,7 +59,7 @@ body {
   width: 20;
   height: 20;
   position: fixed;
-  background-image: url("../public/bean-cursor.png");
+  background-image: url("/bean-cursor.png"), auto;
   background-position: center;
   background-repeat: no-repeat;
 }
