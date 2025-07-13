@@ -10,11 +10,13 @@ import CustomerReviews from "./components/daisyUI/CustomerReviews";
 import AboutUs from "./components/AboutUs";
 
 import { database } from "@/appwrite";
-import useSettingsStore from "./stores/useSettingsStore";
+
 import { fetchSettings } from "./utils/fetchSettings";
 
+import useAuthStore from "./stores/useAuthStore";
+
 export default function Home() {
-  const { settings, setSettings } = useSettingsStore((state) => state);
+  const { authUser, checkUser } = useAuthStore((state) => state);
   useEffect(() => {
     // Initialize AOS (Animate On Scroll) library
     Aos.init({
@@ -24,6 +26,7 @@ export default function Home() {
     });
 
     fetchSettings();
+    checkUser();
 
     database
       .listDocuments("6870ab6f0018df40fa94", "6870ab9e0013bcd4d615")

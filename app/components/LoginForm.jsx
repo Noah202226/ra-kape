@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
-
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Login from "../admin/Login";
+
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -13,15 +14,10 @@ export default function LoginForm() {
 
   const validate = () => {
     const newErrors = {};
-    if (!email) {
-      newErrors.email = "This field is required";
-    }
-    if (!password) {
-      newErrors.password = "Password is required";
-    } else if (password.length < 6) {
+    if (!email) newErrors.email = "This field is required";
+    if (!password) newErrors.password = "Password is required";
+    else if (password.length < 6)
       newErrors.password = "Password must be at least 6 characters";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -30,39 +26,38 @@ export default function LoginForm() {
     e.preventDefault();
     if (validate()) {
       console.log("Form submitted:", { email, password });
-      // TODO: submit logic
-
       if (email === "admin" && password === "admin@rakape") {
-        alert("login");
+        toast.success("Login successful");
         setIslogin(true);
       } else {
-        alert("failed");
+        toast.error("Login failed");
       }
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center ">
-      {isLogin === true ? (
+    <div className="">
+      {isLogin ? (
         <Login />
       ) : (
-        <div className="card w-full max-w-md shadow-2xl">
-          <div className="card-body">
-            <h2 className="text-3xl font-bold text-center mb-4">Login</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="card w-full max-w-md bg-[var(--title)] backdrop-blur-sm shadow-xl rounded-3xl">
+          <div className="card-body p-8">
+            <h2 className="text-4xl font-bold text-center mb-8 text-black">
+              Login
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <input
                   type="text"
                   placeholder="Username or Email"
-                  className={`input input-bordered w-full ${
+                  className={`input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition ${
                     errors.email ? "input-error" : ""
                   }`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  style={{ background: "grey", text: "black" }}
                 />
                 {errors.email && (
-                  <label className="label text-error text-sm">
+                  <label className="label text-error text-sm pt-1">
                     {errors.email}
                   </label>
                 )}
@@ -72,7 +67,7 @@ export default function LoginForm() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    className={`input input-bordered w-full pr-12 ${
+                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition ${
                       errors.password ? "input-error" : ""
                     }`}
                     value={password}
@@ -80,9 +75,9 @@ export default function LoginForm() {
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-primary transition"
                     onClick={() => setShowPassword(!showPassword)}
-                    tabIndex={-1} // so tab doesn't land on icon
+                    tabIndex={-1}
                   >
                     {showPassword ? (
                       <EyeSlashIcon className="h-5 w-5" />
@@ -92,13 +87,15 @@ export default function LoginForm() {
                   </button>
                 </div>
                 {errors.password && (
-                  <label className="label text-error text-sm">
+                  <label className="label text-error text-sm pt-1">
                     {errors.password}
                   </label>
                 )}
               </div>
-
-              <button type="submit" className="btn btn-primary w-full">
+              <button
+                type="submit"
+                className="btn btn-dash w-full text-lg rounded-xl transition hover:scale-105"
+              >
                 Sign In
               </button>
             </form>
