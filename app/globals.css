@@ -55,3 +55,11 @@ body {
 
   cursor: url("/bean-cursor.png"), auto;
 }
+li {
+  color: var(--title);
+  font-weight: bold;
+}
+li:hover {
+  color: black;
+  font-weight: bold;
+}

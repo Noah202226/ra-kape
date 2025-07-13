@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { client } from "@/appwrite";
 
 function Hero() {
-  const { pageTitle } = useSettingsStore((state) => state);
+  const settings = useSettingsStore((state) => state.settings);
 
   useEffect(() => {
     const channel =
@@ -47,14 +47,13 @@ function Hero() {
 
         <div className="lg:text-left text-center max-w-xl">
           <h1 className="text-6xl font-extrabold mb-4 text-[var(--title)]">
-            {pageTitle}
+            {settings?.webTitle}
           </h1>
           <p className="py-4 text-lg text-gray-600">
-            Discover the rich taste of our artisan coffee. Brewed from freshly
-            roasted beans, served in a cozy atmosphere that feels like home.
+            {settings?.heroDescriptions}
           </p>
           <button className="btn btn-lg mt-4 bg-amber-700 border-0 hover:bg-amber-600 text-white">
-            EXPLORE MENU
+            {settings.heroCTA}
           </button>
 
           <div

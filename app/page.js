@@ -8,9 +8,13 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import CustomerReviews from "./components/daisyUI/CustomerReviews";
 import AboutUs from "./components/AboutUs";
+
 import { database } from "@/appwrite";
+import useSettingsStore from "./stores/useSettingsStore";
+import { fetchSettings } from "./utils/fetchSettings";
 
 export default function Home() {
+  const { settings, setSettings } = useSettingsStore((state) => state);
   useEffect(() => {
     // Initialize AOS (Animate On Scroll) library
     Aos.init({
@@ -19,9 +23,13 @@ export default function Home() {
       mirror: true, // Whether elements should animate out while scrolling up
     });
 
+    fetchSettings();
+
     database
       .listDocuments("6870ab6f0018df40fa94", "6870ab9e0013bcd4d615")
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log("Settings", data);
+      })
       .catch((e) => console.log(e));
   }, []);
 

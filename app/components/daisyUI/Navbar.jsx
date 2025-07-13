@@ -1,5 +1,8 @@
 "use client";
+import { Router } from "next/router";
 import React, { useState, useEffect } from "react";
+
+import { RiShoppingCartFill } from "react-icons/ri";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -111,6 +114,18 @@ function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
+        <a href="/cart" className="hover:cursor-pointer">
+          <RiShoppingCartFill
+            style={{
+              width: 30,
+              height: 30,
+              color: "var(--title)",
+              marginRight: 10,
+            }}
+            onClick={() => {}}
+          />
+        </a>
+
         <a className="btn bg-amber-700 border-0 hover:bg-amber-600 text-white">
           KAPE NA
         </a>

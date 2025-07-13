@@ -5,6 +5,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 
 import Footer from "./components/daisyUI/Footer";
 import Navbar from "./components/daisyUI/Navbar";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
 
           <Navbar />
           {children}
+          <Toaster position="top-center" />
           <Footer />
         </AppRouterCacheProvider>
       </body>
