@@ -42,7 +42,7 @@ export default function LoginForm() {
       ) : (
         <div className="card w-full max-w-md bg-[var(--title)] backdrop-blur-sm shadow-xl rounded-3xl">
           <div className="card-body p-8">
-            <h2 className="text-4xl font-bold text-center mb-8 text-black">
+            <h2 className="text-4xl font-bold text-center mb-8 text-white ">
               Login
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -50,7 +50,7 @@ export default function LoginForm() {
                 <input
                   type="text"
                   placeholder="Username or Email"
-                  className={`input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition ${
+                  className={`input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition bg-white ${
                     errors.email ? "input-error" : ""
                   }`}
                   value={email}
@@ -67,7 +67,7 @@ export default function LoginForm() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition ${
+                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition bg-white ${
                       errors.password ? "input-error" : ""
                     }`}
                     value={password}

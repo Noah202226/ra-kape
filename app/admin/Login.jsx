@@ -7,6 +7,9 @@ import { updateMultipleSettings } from "../utils/updateMultipleSettings";
 import toast from "react-hot-toast";
 
 import { useRouter } from "next/navigation";
+import FileUploader from "../components/FileUploader";
+import ImageDisplay from "../components/ImageDisplay";
+
 
 function Login() {
   const router = useRouter();
@@ -101,6 +104,10 @@ function Login() {
               />
               <p className="label">Last data: {settings.heroCTA}</p>
             </fieldset>
+
+            <FileUploader />
+
+            <ImageDisplay bucketId={'images'} fileId={'6874bf6b001b6804df9d'} />
           </div>
 
           {/* About Section */}
