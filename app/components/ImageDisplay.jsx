@@ -8,11 +8,15 @@ export default function ImageDisplay({ bucketId, fileId }) {
     console.log(bucketId, fileId)
   const [imageUrl, setImageUrl] = useState(null);
 
-  useEffect(() => {
+useEffect(() => {
+  try {
     const url = storage.getFileView(bucketId, fileId);
-    console.log(url, "URL")
-    setImageUrl(url.href); // .href converts URL object to string
-  }, [bucketId, fileId]);
+    console.log(url, "URL");
+    setImageUrl(url); // ✅ Correct usage
+  } catch (err) {
+    console.log(err);
+  }
+}, [bucketId, fileId]);
 
   return (
     <div>

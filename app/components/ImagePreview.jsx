@@ -3,7 +3,7 @@
 import React from 'react';
 
 export default function ImagePreview({ fileUrl, alt = 'Image Preview', width = 300, height = 300 }) {
-    console.log(fileUrl)
+    console.log(fileUrl, "File url")
   if (!fileUrl) return <p>No image to preview.</p>;
 
   return (
