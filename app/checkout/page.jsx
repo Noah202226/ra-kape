@@ -20,7 +20,7 @@ export default function CheckoutPage() {
   const [reference, setReference] = useState("");
 
   const handlePlaceOrder = () => {
-    if (!name || !address || !contact || !reference) {
+    if (!name || !address || !contact) {
       toast.error("Please fill in all fields.");
       return;
     }
@@ -34,12 +34,14 @@ export default function CheckoutPage() {
 
   return (
     <main className="flex flex-col items-center px-6 pt-20">
-      <h2 className="text-3xl font-bold mb-8">Checkout</h2>
+      <h2 className="text-3xl font-bold mb-8 text-gray-900">Checkout</h2>
 
       <div className="w-full max-w-xl space-y-6">
         {/* Shipping Info */}
         <div className="bg-white shadow rounded-xl p-6 space-y-4">
-          <h3 className="text-xl font-semibold">Shipping Information</h3>
+          <h3 className="text-xl font-semibold text-gray-800">
+            Shipping Information
+          </h3>
           <input
             type="text"
             placeholder="Full Name"
@@ -65,7 +67,9 @@ export default function CheckoutPage() {
 
         {/* Payment Info */}
         <div className="bg-white shadow rounded-xl p-6 space-y-4">
-          <h3 className="text-xl font-semibold">Payment Details</h3>
+          <h3 className="text-xl font-semibold text-gray-800">
+            Payment Details
+          </h3>
           <select
             className="input w-full text-white bg-amber-700"
             value={paymentMethod}
@@ -92,22 +96,28 @@ export default function CheckoutPage() {
 
         {/* Order Summary */}
         <div className="bg-amber-100 shadow rounded-xl p-6 space-y-2">
-          <h3 className="text-xl font-semibold mb-2">Order Summary</h3>
+          <h3 className="text-xl font-semibold mb-2 text-gray-900">
+            Order Summary
+          </h3>
           {cart.length === 0 ? (
             <p>Your cart is empty</p>
           ) : (
             cart.map((item) => (
               <div key={item.id} className="flex justify-between">
-                <span>
+                <span className="text-black">
                   {item.name} x {item.quantity}
                 </span>
-                <span>₱{(item.price * item.quantity).toLocaleString()}</span>
+                <span className="text-black">
+                  ₱{(item.price * item.quantity).toLocaleString()}
+                </span>
               </div>
             ))
           )}
           <div className="flex justify-between font-bold border-t pt-2 mt-2">
-            <span>Total:</span>
-            <span>₱{totalPrice().toLocaleString()}</span>
+            <span className="text-black">Total:</span>
+            <span className="text-black font-bold">
+              ₱{totalPrice().toLocaleString()}
+            </span>
           </div>
         </div>
 
