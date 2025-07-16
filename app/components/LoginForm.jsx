@@ -67,7 +67,7 @@ export default function LoginForm() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition bg-white ${
+                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition bg-white text-black ${
                       errors.password ? "input-error" : ""
                     }`}
                     value={password}

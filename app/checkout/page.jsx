@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useCartStore from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -14,24 +14,54 @@ export default function CheckoutPage() {
 
   // form states
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("gcash");
   const [reference, setReference] = useState("");
 
-  const handlePlaceOrder = () => {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null; // or simple static skeleton
+  }
+
+  const handlePlaceOrder = async () => {
     if (!name || !address || !contact) {
       toast.error("Please fill in all fields.");
       return;
     }
 
-    toast.success(
-      "Order placed successfully! (TEST ORDER - NOT YET SENDING ORDER TO EMAIL)"
-    );
-    clearCart();
-    router.push("/");
-  };
+    const res = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        message,
+        orders: cart,
+        totalAmount: totalPrice,
+        reference,
+      }),
+    });
 
+    const data = await res.json();
+    if (data.success) {
+      toast.success("✅ Message sent successfully!");
+
+      clearCart();
+      router.push("/");
+    } else {
+      toast.error("❌ Failed to send message. Please try again.");
+    }
+  };
   return (
     <main className="flex flex-col items-center px-6 pt-20">
       <h2 className="text-3xl font-bold mb-8 text-gray-900">Checkout</h2>
@@ -50,6 +80,13 @@ export default function CheckoutPage() {
             onChange={(e) => setName(e.target.value)}
           />
           <input
+            type="email"
+            placeholder="Email"
+            className="input w-full text-white bg-amber-700"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
             type="text"
             placeholder="Address"
             className="input w-full text-white bg-amber-700"
@@ -63,6 +100,13 @@ export default function CheckoutPage() {
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
+          <textarea
+            className="input w-full text-white bg-amber-700"
+            maxLength={50}
+            placeholder="Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          ></textarea>
         </div>
 
         {/* Payment Info */}
@@ -102,7 +146,7 @@ export default function CheckoutPage() {
           {cart.length === 0 ? (
             <p>Your cart is empty</p>
           ) : (
-            cart.map((item) => (
+            cart?.map((item) => (
               <div key={item.id} className="flex justify-between">
                 <span className="text-black">
                   {item.name} x {item.quantity}
@@ -116,7 +160,7 @@ export default function CheckoutPage() {
           <div className="flex justify-between font-bold border-t pt-2 mt-2">
             <span className="text-black">Total:</span>
             <span className="text-black font-bold">
-              ₱{totalPrice().toLocaleString()}
+              {cart === "₱0" ? "0" : `₱${totalPrice().toLocaleString()}`}
             </span>
           </div>
         </div>

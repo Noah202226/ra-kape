@@ -54,7 +54,7 @@ function Navbar() {
               className="relative after:content-[''] after:absolute after:left-0 after:-bottom-1 
                 after:w-0 after:h-[2px] after:bg-[var(--title)]
                 hover:after:w-full after:transition-all after:duration-300
-                hover:scale-105 transition"
+                hover:scale-105 transition text-amber-700"
             >
               {item.name}
             </a>
@@ -104,7 +104,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-amber-700 text-white text-center space-y-4 py-6 animate-slide-down">
+        <div className="md:hidden bg-amber-700 text-black text-center space-y-4 py-6 animate-slide-down">
           {menuItems.map((item) => (
             <a
               key={item.name}
