@@ -12,11 +12,13 @@ import AboutUs from "./components/AboutUs";
 import { database } from "@/appwrite";
 
 import { fetchSettings } from "./utils/fetchSettings";
+import { fetchProducts } from "./utils/fetchProducts";
 
 import useAuthStore from "./stores/useAuthStore";
-
+import useSettingsStore from "./stores/useSettingsStore";
 export default function Home() {
   const { authUser, checkUser } = useAuthStore((state) => state);
+  const { setProducts } = useSettingsStore((state) => state);
   useEffect(() => {
     // Initialize AOS (Animate On Scroll) library
     Aos.init({
@@ -26,14 +28,8 @@ export default function Home() {
     });
 
     fetchSettings();
+    fetchProducts();
     checkUser();
-
-    database
-      .listDocuments("6870ab6f0018df40fa94", "6870ab9e0013bcd4d615")
-      .then((data) => {
-        console.log("Settings", data);
-      })
-      .catch((e) => console.log(e));
   }, []);
 
   return (

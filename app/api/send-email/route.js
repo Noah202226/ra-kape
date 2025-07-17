@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 
 export async function POST(req) {
-  const { name, email, message, orders, totalAmount, reference } =
+  const { name, email, address, message, orders, totalAmount, reference } =
     await req.json();
 
   try {
@@ -19,28 +19,34 @@ export async function POST(req) {
     // send mail
     await transporter.sendMail({
       from: `"RA Kape" <${process.env.EMAIL_USER}>`,
-      to: ["noaligpitan@gmail.com", "aidellourizguevarra@gmail.com"],
+      to: ["noaligpitan@gmail.com", "chitomiryenda24@gmail.com"],
       subject: "New Order from Website",
       html: `
     <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto; border:1px solid #ddd; border-radius:8px; overflow:hidden;">
       <div style="background:#d97706; color:white; padding:20px; text-align:center;">
-        <img src="https://fra.cloud.appwrite.io/v1/storage/buckets/images/files/rakape-logo/view?project=686e20fe00214a6c2fac&mode=admin" alt="RA Kape" style="height:50px; margin-bottom:10px;" />
+        <img src="https://fra.cloud.appwrite.io/v1/storage/buckets/images/files/6878e343001179ccc468/view?project=686e20fe00214a6c2fac&mode=admin" alt="RA Kape" style="height:50px; margin-bottom:10px;" />
         <h2 style="margin:0;">New Order Notification</h2>
       </div>
+
+      
       <div style="padding:20px; color:#333;">
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Address:</strong> ${address}</p>
         <p><strong>Gcash Refernce:</strong>${reference}</p>
         <p><strong>Message:</strong> ${message}</p>
         <p><strong>Orders:</strong> 
-        ${orders.map((order) => `<p>${order.name} -- P:${order.price}`)}
-
+        ${orders.map(
+          (order) =>
+            `<p>${order.productName} -- (${order.quantity} x P:${order.price})`
+        )}
+        <br />
         --------------------------------------------------------------------------
         <br />
-        TOTAL AMOUNT: ${orders.reduce(
+        <strong> TOTAL AMOUNT: ${orders.reduce(
           (sum, i) => sum + i.price * i.quantity,
           0
-        )}
+        )}</strong>
       
         <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
         <p style="font-size:14px; color:#777;">This is an automated email from your website order system.</p>

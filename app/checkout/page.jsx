@@ -45,6 +45,7 @@ export default function CheckoutPage() {
       body: JSON.stringify({
         name,
         email,
+        address,
         message,
         orders: cart,
         totalAmount: totalPrice,
@@ -147,9 +148,9 @@ export default function CheckoutPage() {
             <p>Your cart is empty</p>
           ) : (
             cart?.map((item) => (
-              <div key={item.id} className="flex justify-between">
+              <div key={item.$id} className="flex justify-between">
                 <span className="text-black">
-                  {item.name} x {item.quantity}
+                  {item.productName} x {item.quantity}
                 </span>
                 <span className="text-black">
                   ₱{(item.price * item.quantity).toLocaleString()}

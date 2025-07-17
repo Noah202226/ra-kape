@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import FileUploader from "../FileUploader";
 import ImageDisplay from "../ImageDisplay";
 import AddImage from "@/app/admin/AddImage";
+import ShowAllProducts from "../ShowAllProducts";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -55,31 +56,43 @@ function TabsWithIcon() {
   return (
     <div className="min-h-screen">
       {/* Tabs Header */}
-      <div className="w-full bg-amber-500 py-4">
+      <div className="w-full">
         <div className="max-w-6xl mx-auto px-4">
           <div className="tabs tabs-lift w-full">
             <button
               onClick={() => setActiveTab("live")}
-              className={`tab ${activeTab === "live" ? "tab-active" : ""}`}
+              className={`tab text-white ${
+                activeTab === "live"
+                  ? "bg-amber-600 tab-active"
+                  : "bg-amber-500"
+              }`}
             >
               <span className="flex items-center gap-1">
-                ▶ <span>Live</span>
+                ▶ <span>SETTINGS</span>
               </span>
             </button>
             <button
               onClick={() => setActiveTab("laugh")}
-              className={`tab ${activeTab === "laugh" ? "tab-active" : ""}`}
+              className={`tab text-white ${
+                activeTab === "laugh"
+                  ? "bg-amber-600 tab-active"
+                  : "bg-amber-500"
+              }`}
             >
               <span className="flex items-center gap-1">
-                😄 <span>Laugh</span>
+                🍨 <span>PRODUCTS</span>
               </span>
             </button>
             <button
               onClick={() => setActiveTab("love")}
-              className={`tab ${activeTab === "love" ? "tab-active" : ""}`}
+              className={`tab text-white ${
+                activeTab === "love"
+                  ? "bg-amber-600 tab-active"
+                  : "bg-amber-500"
+              }`}
             >
               <span className="flex items-center gap-1">
-                ❤️ <span>Love</span>
+                🛴 <span>CONTACT</span>
               </span>
             </button>
           </div>
@@ -88,7 +101,7 @@ function TabsWithIcon() {
 
       {/* Tab Content */}
       {activeTab === "live" && (
-        <div className="w-full bg-base-100 border-t border-base-300 py-6">
+        <div className="w-full border-t border-base-300 py-6">
           <div className="max-w-6xl mx-auto p-6 grid gap-8 grid-cols-1 lg:grid-cols-2">
             {/* Hero Section */}
             <div className="bg-amber-700 shadow rounded-2xl p-6 space-y-4">
@@ -141,13 +154,12 @@ function TabsWithIcon() {
                 </p>
               </fieldset>
               <FileUploader />
-              <ImageDisplay bucketId="images" fileId="6874bf6b001b6804df9d" />
+              <ImageDisplay bucketId="images" fileId="68790c14002b2f604efb" />
             </div>
 
             {/* About Section */}
             <div className="bg-amber-700 shadow rounded-2xl p-6 space-y-4">
-              Add products
-              <AddImage />
+              <h2>About Section</h2>
             </div>
 
             {/* Products Section */}
@@ -186,28 +198,14 @@ function TabsWithIcon() {
       )}
 
       {activeTab === "laugh" && (
-        <div className="w-full bg-base-100 border-t border-base-300 py-6">
-          <div className="max-w-6xl mx-auto p-6 grid gap-8 grid-cols-1 lg:grid-cols-2">
-            <div className="bg-orange-400 p-6 rounded-xl shadow">
-              <h2 className="font-bold text-xl mb-2">Tab 2 Section A</h2>
-              <input
-                className="input input-bordered w-full"
-                placeholder="Input something..."
-              />
-            </div>
-            <div className="bg-orange-400 p-6 rounded-xl shadow">
-              <h2 className="font-bold text-xl mb-2">Tab 2 Section B</h2>
-              <textarea
-                className="textarea textarea-bordered w-full"
-                placeholder="Write here..."
-              ></textarea>
-            </div>
-          </div>
+        <div className="w-full border-t border-base-300 py-6">
+          <AddImage />
+          <ShowAllProducts />
         </div>
       )}
 
       {activeTab === "love" && (
-        <div className="w-full bg-base-100 border-t border-base-300 py-6">
+        <div className="w-full border-t border-base-300 py-6">
           <div className="max-w-6xl mx-auto p-6 grid gap-8 grid-cols-1 lg:grid-cols-2">
             <div className="bg-pink-300 p-6 rounded-xl shadow">
               <h2 className="font-bold text-xl mb-2">Tab 3 Content</h2>
