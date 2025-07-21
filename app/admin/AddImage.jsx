@@ -10,7 +10,7 @@ function AddImage() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(50);
-  const [category, setCategory] = useState("Coffee");
+  const [category, setCategory] = useState("ice-drip-coffee");
   const [description, setDescription] = useState("");
   const [productType, setProductType] = useState("Normal");
 
@@ -130,11 +130,12 @@ function AddImage() {
           <option disabled value="">
             Select a category
           </option>
-          <option value="coffee">Coffee</option>
-          <option value="non-coffee">Non-Coffee</option>
-          <option value="milktea">Milk Tea</option>
-          <option value="pastries">Pastries</option>
-          <option value="snacks">Snacks</option>
+          <option value="ice-drip-coffee">ICE DRIP COFFEE</option>
+          <option value="ice-premium-espresso">ICE PREMIUM ESPRESSO</option>
+          <option value="non-coffee">NON COFFEE</option>
+          <option value="ice-blended">ICE BLENDED</option>
+          <option value="hot-coffee">HOT COFFEE</option>
+          <option value="add-ons">ADD-ONS</option>
         </select>
       </label>
 

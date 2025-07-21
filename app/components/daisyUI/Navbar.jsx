@@ -18,12 +18,12 @@ function Navbar() {
   if (!hasMounted) return null;
 
   const menuItems = [
-    { name: "Frappe", link: "/frappe" },
-    { name: "Iced Coffee", link: "/iced-coffee" },
+    { name: "Ice Drip Coffee", link: "/ice-drip-coffee" },
+    { name: "Ice Premium Espresso", link: "/ice-premium-espresso" },
+    { name: "Non Coffee", link: "/non-coffee" },
     { name: "Hot Coffee", link: "/hot-coffee" },
-    { name: "Snacks", link: "/snacks" },
-    { name: "Contact", link: "/contact" },
-    { name: "About Us", link: "/about" },
+    { name: "Ice Blended", link: "/ice-blended" },
+    { name: "Add-ons", link: "/add-ons" },
   ];
 
   return (

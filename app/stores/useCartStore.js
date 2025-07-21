@@ -8,11 +8,13 @@ const useCartStore = create(
 
       // ✅ Add to cart or increase quantity if item exists
       addToCart: (item) => {
-        const existingItem = get().cart.find((i) => i.id === item.$id);
+        const existingItem = get().cart.find((i) => i.$id === item.$id);
+        console.log("Adding to cart:", item);
+        console.log("Existing item:", existingItem);
         if (existingItem) {
           set({
             cart: get().cart.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+              i.$id === item.$id ? { ...i, quantity: i.quantity + 1 } : i
             ),
           });
         } else {

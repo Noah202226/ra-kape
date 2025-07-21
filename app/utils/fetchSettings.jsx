@@ -14,6 +14,7 @@ export async function fetchSettings() {
       settingsData[doc.settingName] = doc.value;
     });
 
+    console.log("Fetched settings:", settingsData);
     // Set to zustand
     useSettingsStore.getState().setSettings(settingsData);
   } catch (err) {

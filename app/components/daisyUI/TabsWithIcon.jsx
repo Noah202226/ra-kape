@@ -8,9 +8,9 @@ import { updateMultipleSettings } from "@/app/utils/updateMultipleSettings";
 
 import toast from "react-hot-toast";
 import FileUploader from "../FileUploader";
-import ImageDisplay from "../ImageDisplay";
 import AddImage from "@/app/admin/AddImage";
 import ShowAllProducts from "../ShowAllProducts";
+import ImagePreview from "../ImagePreview";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -153,8 +153,14 @@ function TabsWithIcon() {
                   Last data: {settings.heroCTA}
                 </p>
               </fieldset>
-              <FileUploader />
-              <ImageDisplay bucketId="images" fileId="68790c14002b2f604efb" />
+
+              <div className="card shadow-md p-6">
+                <h2 className="text-lg font-bold mb-4 text-neutral">
+                  Hero Image
+                </h2>
+                <ImagePreview fileUrl={settings.heroImage} />
+                <FileUploader />
+              </div>
             </div>
 
             {/* About Section */}
@@ -216,13 +222,13 @@ function TabsWithIcon() {
       )}
 
       {/* Sticky Save Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-amber-500 border-t border-base-100 p-2 flex justify-end shadow z-50">
         <button
-          className="btn btn-primary shadow-lg rounded-full px-6 py-3 text-lg hover:scale-105 transition"
+          className="btn btn-accent px-6"
           onClick={saveUpdate}
           disabled={isSaving}
         >
-          {isSaving ? "Saving..." : "Save All"}
+          {isSaving ? "Saving..." : "💾 Save All"}
         </button>
       </div>
     </div>

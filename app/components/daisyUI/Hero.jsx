@@ -25,7 +25,11 @@ function Hero() {
         {/* IMAGE on left */}
         <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-xs order-1 lg:order-none">
           <img
-            src="/rakape-logo.jpg"
+            // src="/rakape-logo.jpg"
+            src={
+              settings?.heroImage ||
+              "/rakape-logo.jpg" /* Fallback image if not set */
+            }
             alt="RA KAPE logo"
             className="w-full rounded-4xl shadow-lg border-amber-700 border-2 
                        transition-transform duration-300 hover:scale-105"
