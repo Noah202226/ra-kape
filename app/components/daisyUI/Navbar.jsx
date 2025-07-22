@@ -76,7 +76,11 @@ function Navbar() {
               </span>
             )}
           </div>
-          <a className="btn bg-amber-700 border-0 hover:bg-amber-600 text-white">
+          <a
+            href="https://www.facebook.com/RaKapeBulacan"
+            target="_blank"
+            className="btn bg-amber-700 border-0 hover:bg-amber-600 text-white"
+          >
             KAPE NA
           </a>
           <button

@@ -95,6 +95,32 @@ function TabsWithIcon() {
                 🛴 <span>CONTACT</span>
               </span>
             </button>
+
+            <button
+              onClick={() => setActiveTab("live")}
+              className={`tab text-white ${
+                activeTab === "live"
+                  ? "bg-amber-600 tab-active"
+                  : "bg-amber-500"
+              }`}
+            >
+              <span className="flex items-center gap-1">
+                ▶ <span>BLOGS</span>
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("customers")}
+              className={`tab text-white ${
+                activeTab === "customers"
+                  ? "bg-amber-600 tab-active"
+                  : "bg-amber-500"
+              }`}
+            >
+              <span className="flex items-center gap-1">
+                ▶ <span>Customers Review</span>
+              </span>
+            </button>
           </div>
         </div>
       </div>

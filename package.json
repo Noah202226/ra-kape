@@ -16,6 +16,7 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@mui/material-nextjs": "^7.2.0",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "aos": "^2.3.4",
     "appwrite": "^18.1.1",
     "next": "15.3.5",
