@@ -19,12 +19,14 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("gcash");
-  const [reference, setReference] = useState("");
+  const [gcashUrl, setGcashUrl] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
 
-   const handleImageChange = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
@@ -41,35 +43,96 @@ export default function CheckoutPage() {
   }
 
   const handlePlaceOrder = async () => {
+    console.log("Placing order with data:", {
+      name,
+      imageFile,
+    });
     if (!name || !address || !contact) {
       toast.error("Please fill in all fields.");
       return;
     }
 
-    const res = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        address,
-        message,
-        orders: cart,
-        totalAmount: totalPrice,
-        imageFile,
-      }),
-    });
+    try {
+      // upload image
+      const formData = new FormData();
+      formData.append("file", imageFile);
 
-    const data = await res.json();
-    if (data.success) {
-      toast.success("✅ Message sent successfully!");
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const uploadData = await uploadRes.json();
 
-      clearCart();
-      router.push("/");
-    } else {
-      toast.error("❌ Failed to send message. Please try again.");
+      if (uploadData.error) {
+        throw new Error(uploadData.error);
+      } else {
+        setGcashUrl(uploadData.fileUrl);
+      }
+      if (!uploadData.success) {
+        throw new Error(uploadData.error);
+      } else {
+        setGcashUrl(uploadData.fileUrl);
+        toast.success("Uploaded", uploadData.fileUrl);
+        console.log("Gcash url::", gcashUrl);
+
+        const res = await fetch("/api/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            address,
+            message,
+            orders: cart,
+            totalAmount: totalPrice,
+            reference: uploadData.fileUrl, // Use the uploaded image URL as reference
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast.success("✅ Message sent successfully!");
+          clearCart();
+          router.push("/");
+        } else {
+          toast.error("❌ Failed to send message. Please try again.");
+        }
+      }
+
+      // save product with uploaded image URL
+      // const res = await fetch("/api/products", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     name,
+      //     price,
+      //     category,
+      //     description,
+      //     image: uploadData.fileUrl,
+      //     productType,
+      //   }),
+      // });
+
+      // const data = await res.json();
+      // if (data.success) {
+      //   toast.success("Product added successfully!");
+      //   setName("");
+      //   setPrice("");
+      //   setCategory("");
+      //   setDescription("");
+      //   setImageFile(null);
+      //   setImagePreview("");
+
+      //   fetchProducts();
+      // } else {
+      //   toast.error(data.error, "ERROR SAVING PROD" || "Something went wrong");
+      // }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Upload failed");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -134,26 +197,28 @@ export default function CheckoutPage() {
           </select>
           {paymentMethod === "gcash" && (
             <>
-            {/* Image Upload */}
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text font-semibold">Product Image</span>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="file-input file-input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
-              />
-            </label>
+              {/* Image Upload */}
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text font-semibold">
+                    Product Image
+                  </span>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="file-input file-input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+                />
+              </label>
 
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-full h-180 object-center rounded-xl border"
-              />
-            )}
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-180 object-center rounded-xl border"
+                />
+              )}
             </>
           )}
           {paymentMethod === "cod" && (
@@ -193,6 +258,7 @@ export default function CheckoutPage() {
         {/* Place Order */}
         <button
           onClick={handlePlaceOrder}
+          disabled={loading || cart.length === 0}
           className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition"
         >
           Place Order

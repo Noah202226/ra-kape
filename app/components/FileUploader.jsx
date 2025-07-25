@@ -92,7 +92,7 @@ export default function FileUploader() {
       <button
         onClick={handleUpload}
         disabled={uploading || !file}
-        className="btn btn-primary"
+        className="btn btn-outline bg-amber-700"
       >
         {uploading ? "Uploading..." : "Upload"}
       </button>

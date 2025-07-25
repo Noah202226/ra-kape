@@ -58,10 +58,10 @@ function TabsWithIcon() {
       {/* Tabs Header */}
       <div className="w-full">
         <div className="mx-auto px-0 md:px-4">
-          <div className="tabs tabs-lift w-full">
+          <div className="tabs tabs-lift w-full ">
             <button
               onClick={() => setActiveTab("live")}
-              className={`tab text-black ${
+              className={`tab text-black  ${
                 activeTab === "live"
                   ? "bg-black text-white tab-active"
                   : "bg-white text-black"
@@ -75,7 +75,7 @@ function TabsWithIcon() {
               onClick={() => setActiveTab("laugh")}
               className={`tab ${
                 activeTab === "laugh"
-                   ? "bg-black text-white tab-active"
+                  ? "bg-black text-white tab-active"
                   : "bg-white"
               }`}
             >
@@ -87,7 +87,7 @@ function TabsWithIcon() {
               onClick={() => setActiveTab("love")}
               className={`tab  ${
                 activeTab === "love"
-                   ? "bg-black text-white tab-active"
+                  ? "bg-black text-white tab-active"
                   : "bg-white"
               }`}
             >
@@ -100,7 +100,7 @@ function TabsWithIcon() {
               onClick={() => setActiveTab("live")}
               className={`tab  ${
                 activeTab === "live"
-                   ? "bg-black text-white tab-active"
+                  ? "bg-black text-white tab-active"
                   : "bg-white"
               }`}
             >
@@ -113,7 +113,7 @@ function TabsWithIcon() {
               onClick={() => setActiveTab("customers")}
               className={`tab ${
                 activeTab === "customers"
-                   ? "bg-black text-white tab-active"
+                  ? "bg-black text-white tab-active"
                   : "bg-white text-black"
               }`}
             >
@@ -130,7 +130,7 @@ function TabsWithIcon() {
         <div className="w-full border-t border-base-300 py-0 md:py-6">
           <div className="mx-auto p-0 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-1">
             {/* Hero Section */}
-            <div className="bg-[white] shadow rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
               <h2 className="text-2xl font-bold text-black">
                 Hero Section Settings
               </h2>
@@ -190,12 +190,12 @@ function TabsWithIcon() {
             </div>
 
             {/* About Section */}
-            <div className="bg-amber-700 shadow rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
               <h2>About Section</h2>
             </div>
 
             {/* Products Section */}
-            <div className="bg-amber-700 shadow rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
               <h2 className="text-2xl font-bold text-black">
                 Products Section Settings
               </h2>
@@ -211,7 +211,7 @@ function TabsWithIcon() {
             </div>
 
             {/* Testimonials Section */}
-            <div className="bg-amber-700 shadow rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
               <h2 className="text-2xl font-bold text-black">
                 Testimonials Section Settings
               </h2>
