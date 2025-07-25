@@ -18,7 +18,7 @@ function AboutUs() {
               rounded-xl shadow-lg w-full object-cover 
               h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[32rem]
               transition-all duration-300
-              hover:ring-4 hover:ring-amber-700 hover:ring-offset-2 hover:ring-offset-transparent
+              hover:ring-4 hover:ring-[var(--title)] hover:ring-offset-2 hover:ring-offset-transparent
             "
           />
 

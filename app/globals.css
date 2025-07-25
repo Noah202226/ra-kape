@@ -10,7 +10,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --title: oklch(0.555 0.163 48.998);
+  --title: oklch(17.044% 0.00393 48.292);
 }
 
 @theme inline {

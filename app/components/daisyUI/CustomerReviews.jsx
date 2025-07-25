@@ -59,7 +59,7 @@ function CustomerReviews() {
               bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center
               transition-transform duration-300 
               hover:-translate-y-2 hover:scale-105 
-              hover:shadow-[0_0_25px_rgba(219,152,52,0.4)]
+              hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
               relative overflow-hidden
             "
           >
@@ -77,7 +77,7 @@ function CustomerReviews() {
               alt="Customer"
               className="
                 w-20 h-20 rounded-full object-cover mb-4
-                border-4 border-amber-700
+                border-4 border-[var(--title)]
                 transition-transform duration-300 hover:scale-110
               "
             />

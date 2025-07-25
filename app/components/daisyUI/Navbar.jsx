@@ -54,7 +54,7 @@ function Navbar() {
               className="relative after:content-[''] after:absolute after:left-0 after:-bottom-1 
                 after:w-0 after:h-[2px] after:bg-[var(--title)]
                 hover:after:w-full after:transition-all after:duration-300
-                hover:scale-105 transition text-amber-700"
+                hover:scale-105 transition text-[var(--title)]"
             >
               {item.name}
             </a>
@@ -66,7 +66,7 @@ function Navbar() {
           <div className="relative group">
             <a href="/cart" className="block group-hover:animate-bounce">
               <RiShoppingCartFill
-                className="text-[var(--title)]"
+                className="text-[var(--title)] hover:text-amber-700"
                 style={{ width: 28, height: 28 }}
               />
             </a>
@@ -79,7 +79,7 @@ function Navbar() {
           <a
             href="https://www.facebook.com/RaKapeBulacan"
             target="_blank"
-            className="btn bg-amber-700 border-0 hover:bg-amber-600 text-white"
+            className="btn bg-[var(--title)] border-0 hover:bg-amber-600 text-white"
           >
             KAPE NA
           </a>

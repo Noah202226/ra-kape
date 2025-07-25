@@ -71,7 +71,7 @@ function BestSellerCarousel() {
               className="
               bg-white rounded-xl shadow-lg overflow-hidden 
               transition-all duration-300 
-              hover:shadow-[0_0_25px_rgba(219,152,52,0.6)]
+              hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
               hover:scale-105 hover:-translate-y-1
             "
             >
@@ -97,7 +97,7 @@ function BestSellerCarousel() {
                 <h3 className="text-xl font-semibold mb-2 text-[var(--title)]">
                   {product.productName}
                 </h3>
-                <div className="badge badge-warning mb-2">New</div>
+                <div className="badge badge-outline mb-2">{product.category}</div>
                 <p className="text-sm text-gray-600 mb-4">
                   {product.productDescription}
                 </p>
@@ -106,7 +106,7 @@ function BestSellerCarousel() {
                     ₱{product.price}
                   </span>
                   <button
-                    className="btn btn-sm btn-primary"
+                    className="btn btn-sm btn-neutral"
                     onClick={() => handleAdd(product)}
                   >
                     Order

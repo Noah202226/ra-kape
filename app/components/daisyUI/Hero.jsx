@@ -16,7 +16,7 @@ function Hero() {
 
   return (
     <div
-      className="hero min-h-[80vh] px-4 py-8 md:py-16"
+      className="hero px-4 py-8 md:py-16"
       data-aos="fade-down"
       data-aos-offset="1"
       data-aos-easing="ease-in-sine"
@@ -31,7 +31,7 @@ function Hero() {
               "/rakape-logo.jpg" /* Fallback image if not set */
             }
             alt="RA KAPE logo"
-            className="w-full rounded-4xl shadow-lg border-amber-700 border-2 
+            className="w-full rounded-4xl shadow-lg border-[var(--title)] border-2 
                        transition-transform duration-300 hover:scale-105"
           />
 
@@ -60,7 +60,7 @@ function Hero() {
           <p className="py-4 text-base sm:text-lg text-gray-600">
             {settings?.heroDescriptions}
           </p>
-          <button className="btn btn-lg mt-4 bg-amber-700 border-0 hover:bg-amber-600 text-white">
+          <button className="btn btn-lg mt-4 bg-[var(--title)] border-0 hover:bg-amber-600 text-white">
             {settings?.heroCTA}
           </button>
 
