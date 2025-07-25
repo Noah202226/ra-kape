@@ -8,7 +8,7 @@ import { database } from "@/appwrite";
 import toast from "react-hot-toast";
 import Image from "next/image";
 
-export default function FileUploader() {
+export default function FileUploader({ imageId }) {
   const settings = useSettingsStore((state) => state.settings);
 
   const [file, setFile] = useState(null);
@@ -19,6 +19,7 @@ export default function FileUploader() {
     const formData = new FormData();
     formData.append("file", file);
     console.log("Uploading file:", file);
+    setUploading(true);
 
     const res = await fetch("/api/upload", {
       method: "POST",
@@ -33,7 +34,7 @@ export default function FileUploader() {
       const updated = await database.updateDocument(
         "6870ab6f0018df40fa94", // RakapeDB
         "6870ab9e0013bcd4d615", // settings collection
-        "687e3bc3003e319903fa", // document ID of heroImage
+        imageId, // document ID of heroImage
         { value: data.fileUrl } // Use `value` field (based on your Appwrite structure)
       );
 
@@ -41,6 +42,7 @@ export default function FileUploader() {
       fetchSettings(); // Refresh local state
       setFile(null); // Clear file after upload
       toast.success("File uploaded and settings updated successfully!");
+      setUploading(false);
     } catch (err) {
       console.error("Failed to update settings:", err);
     }

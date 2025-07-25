@@ -1,6 +1,9 @@
 import React from "react";
+import useSettingsStore from "../stores/useSettingsStore";
 
 function AboutUs() {
+  const settings = useSettingsStore((state) => state.settings);
+
   return (
     <div className="py-16 px-4 mx-auto max-w-7xl w-full">
       <div
@@ -12,7 +15,7 @@ function AboutUs() {
         {/* Image */}
         <div className="flex-1 relative w-full max-w-md lg:max-w-none">
           <img
-            src="/downloads/starting-outside.jpg"
+            src={settings?.aboutImage || "/rakape-logo.jpg"} // Fallback image if not set
             alt="About Us"
             className="
               rounded-xl shadow-lg w-full object-cover 
@@ -42,18 +45,15 @@ function AboutUs() {
         {/* Text */}
         <div className="flex-1 text-center lg:text-left max-w-2xl">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-[var(--title)]">
-            About RA KAPE
+            {settings?.aboutTitle || "About Us"}
           </h2>
           <p className="text-gray-600 text-base sm:text-lg mb-4">
-            At RA KAPE, we believe that coffee is more than just a drink — it's
-            an experience. From our carefully sourced beans to our cozy
-            ambiance, we aim to bring people together over a shared love of
-            great coffee and good company.
+            {settings?.aboutDescription ||
+              "At RA KAPE, we believe in the magic of coffee. Our journey began with a simple passion for crafting the perfect cup, and it has grown into a community of coffee lovers who share our vision."}
           </p>
           <p className="text-gray-600 text-base sm:text-lg">
-            Whether you're here to work, catch up with friends, or simply enjoy
-            a peaceful moment, we promise a cup that will warm your heart and
-            fuel your day.
+            {settings?.aboutDescription2 ||
+              "Join us as we explore the world of coffee, from the rich flavors of our blends to the stories behind each bean. Whether you're a seasoned coffee connoisseur or just starting your journey, RA KAPE is here to inspire and delight."}
           </p>
         </div>
       </div>

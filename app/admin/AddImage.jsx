@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { fetchProducts } from "../utils/fetchProducts";
 
-function AddImage() {
+function AddImage({ onSave }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
 
@@ -46,6 +46,8 @@ function AddImage() {
         throw new Error(uploadData.error);
       } else {
         toast.success("Uploaded");
+
+        onSave();
       }
 
       // save product with uploaded image URL

@@ -18,13 +18,20 @@ export default function ShowAllProducts() {
     if (!confirmed) return;
 
     try {
+      const deletedProduct = products.find((p) => p.$id === id); // Get the product before removing
+
       await fetch(`/api/products?id=${id}`, {
         method: "DELETE",
       });
+
       setProducts(products.filter((p) => p.$id !== id));
-      toast.success(`${products.filter(p => p.$id === id)} deleted.`)
+
+      toast.success(
+        `🗑️ Deleted: ${deletedProduct?.productName || deletedProduct?.$id}`
+      );
     } catch (err) {
       console.error("Failed to delete product", err);
+      toast.error("Failed to delete product.");
     }
   };
 

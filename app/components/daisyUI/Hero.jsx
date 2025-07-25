@@ -72,21 +72,27 @@ function Hero() {
           >
             <div className="text-center">
               <h3 className="text-lg sm:text-xl font-semibold text-[var(--title)]">
-                100% Arabica
+                {settings?.heroCard1Title}
               </h3>
-              <p className="text-sm text-gray-500">Locally sourced beans</p>
+              <p className="text-sm text-gray-500">
+                {settings?.heroCard1Subtitle}
+              </p>
             </div>
             <div className="text-center">
               <h3 className="text-lg sm:text-xl font-semibold text-[var(--title)]">
-                Cozy Vibes
+                {settings?.heroCard2Title}
               </h3>
-              <p className="text-sm text-gray-500">Perfect for meetups</p>
+              <p className="text-sm text-gray-500">
+                {settings?.heroCard2Subtitle}
+              </p>
             </div>
             <div className="text-center">
               <h3 className="text-lg sm:text-xl font-semibold text-[var(--title)]">
-                Fresh Daily
+                {settings?.heroCard3Title}
               </h3>
-              <p className="text-sm text-gray-500">Every cup made with love</p>
+              <p className="text-sm text-gray-500">
+                {settings?.heroCard3Subtitle}
+              </p>
             </div>
           </div>
         </div>
