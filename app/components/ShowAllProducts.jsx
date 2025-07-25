@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import useSettingsStore from "../stores/useSettingsStore";
+import toast from "react-hot-toast";
 
 export default function ShowAllProducts() {
   const { products, setProducts } = useSettingsStore((state) => state);
@@ -21,6 +22,7 @@ export default function ShowAllProducts() {
         method: "DELETE",
       });
       setProducts(products.filter((p) => p.$id !== id));
+      toast.success(`${products.filter(p => p.$id === id)} deleted.`)
     } catch (err) {
       console.error("Failed to delete product", err);
     }

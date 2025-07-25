@@ -60,8 +60,8 @@ export default function ProductGridFiltered({ type }) {
     );
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-6 capitalize">
+    <div className="p-0 md:p-4">
+      <h2 className="text-3xl md:text-2xl font-bold mb-6 capitalize">
         {type.replace(/-/g, " ")}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
@@ -69,7 +69,7 @@ export default function ProductGridFiltered({ type }) {
           <div
             key={product.$id}
             data-aos="zoom-in"
-            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(219,152,52,0.6)] hover:scale-105 hover:-translate-y-1 w-full max-w-[250px] mx-auto"
+            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:scale-105 hover:-translate-y-1 w-full max-w-[250px] mx-auto"
           >
             <figure className="relative group overflow-hidden h-[180px]">
               <img

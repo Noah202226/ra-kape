@@ -21,6 +21,15 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("gcash");
   const [reference, setReference] = useState("");
 
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+
+   const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -49,7 +58,7 @@ export default function CheckoutPage() {
         message,
         orders: cart,
         totalAmount: totalPrice,
-        reference,
+        imageFile,
       }),
     });
 
@@ -124,13 +133,28 @@ export default function CheckoutPage() {
             <option value="cod">Cash on Delivery</option>
           </select>
           {paymentMethod === "gcash" && (
-            <input
-              type="text"
-              placeholder="GCash Reference Number"
-              className="input w-full text-white bg-amber-700"
-              value={reference}
-              onChange={(e) => setReference(e.target.value)}
-            />
+            <>
+            {/* Image Upload */}
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text font-semibold">Product Image</span>
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="file-input file-input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+              />
+            </label>
+
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-full h-180 object-center rounded-xl border"
+              />
+            )}
+            </>
           )}
           {paymentMethod === "cod" && (
             <p className="text-gray-500 text-sm">

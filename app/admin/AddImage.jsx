@@ -97,7 +97,7 @@ function AddImage() {
         <input
           type="text"
           placeholder="Type here"
-          className="input input-bordered w-full bg-amber-500"
+          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -111,7 +111,7 @@ function AddImage() {
         <input
           type="text"
           placeholder="Type here"
-          className="input input-bordered w-full bg-amber-500"
+          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -123,7 +123,7 @@ function AddImage() {
           <span className="label-text font-semibold">Category</span>
         </div>
         <select
-          className="select select-bordered w-full bg-amber-500"
+          className="select select-bordered bg-white w-full bg-[var(--title) text-white] border-2 border-black"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
@@ -145,7 +145,7 @@ function AddImage() {
           <span className="label-text font-semibold">Product Type</span>
         </div>
         <select
-          className="select w-full bg-amber-500"
+          className="select w-full bg-white bg-[var(--title) text-white] border-2 border-black"
           value={productType}
           onChange={(e) => setProductType(e.target.value)}
         >
@@ -165,7 +165,7 @@ function AddImage() {
         </div>
         <input
           type="number"
-          className="input input-bordered w-full bg-amber-500"
+          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
           placeholder="₱ 0.00"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
@@ -181,7 +181,7 @@ function AddImage() {
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="file-input file-input-bordered w-full bg-amber-500"
+          className="file-input file-input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
         />
       </label>
 
@@ -194,7 +194,7 @@ function AddImage() {
       )}
 
       <button
-        className="btn bg-amber-500 hover:bg-amber-600 text-white w-full my-2"
+        className="btn bg-white bg-[var(--title) text-white] border-2 border-black hover:bg-amber-600 text-black w-full my-2"
         disabled={loading}
         onClick={(e) => handleSubmit(e)}
       >
