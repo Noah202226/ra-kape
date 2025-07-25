@@ -57,7 +57,7 @@ function TabsWithIcon() {
     <div className="min-h-screen">
       {/* Tabs Header */}
       <div className="w-full">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-0 md:px-4">
           <div className="tabs tabs-lift w-full">
             <button
               onClick={() => setActiveTab("live")}
@@ -127,10 +127,10 @@ function TabsWithIcon() {
 
       {/* Tab Content */}
       {activeTab === "live" && (
-        <div className="w-full border-t border-base-300 py-6">
-          <div className="max-w-6xl mx-auto p-6 grid gap-8 grid-cols-1 lg:grid-cols-2">
+        <div className="w-full border-t border-base-300 py-0 md:py-6">
+          <div className="max-w-6xl mx-auto p-0 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-2">
             {/* Hero Section */}
-            <div className="bg-amber-700 shadow rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow rounded-2xl p-6 space-y-4">
               <h2 className="text-2xl font-bold text-black">
                 Hero Section Settings
               </h2>
@@ -140,7 +140,7 @@ function TabsWithIcon() {
                 </legend>
                 <input
                   type="text"
-                  className="input bg-white w-full"
+                  className="input bg-black w-full text-white"
                   placeholder="Type here"
                   value={appTitle}
                   onChange={(e) => setApptitle(e.target.value)}
@@ -155,7 +155,7 @@ function TabsWithIcon() {
                 </legend>
                 <input
                   type="text"
-                  className="input bg-white w-full"
+                  className="input bg-black w-full text-white"
                   placeholder="Type here"
                   value={heroDescription}
                   onChange={(e) => setHeroDescription(e.target.value)}
@@ -170,7 +170,7 @@ function TabsWithIcon() {
                 </legend>
                 <input
                   type="text"
-                  className="input bg-white w-full"
+                  className="input bg-black w-full text-white"
                   placeholder="Type here"
                   value={CTAButton}
                   onChange={(e) => setCTAButton(e.target.value)}
@@ -180,7 +180,7 @@ function TabsWithIcon() {
                 </p>
               </fieldset>
 
-              <div className="card shadow-md p-6">
+              <div className="card shadow-md p-0 md:p-6">
                 <h2 className="text-lg font-bold mb-4 text-neutral">
                   Hero Image
                 </h2>

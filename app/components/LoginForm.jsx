@@ -40,9 +40,9 @@ export default function LoginForm() {
       {isLogin ? (
         <Login />
       ) : (
-        <div className="card w-full max-w-md bg-[var(--title)] backdrop-blur-sm shadow-xl rounded-3xl">
+        <div className="card w-full md:w-120 bg-[white] backdrop-blur-sm shadow-xl rounded-3xl">
           <div className="card-body p-8">
-            <h2 className="text-4xl font-bold text-center mb-8 text-white ">
+            <h2 className="text-4xl font-bold text-center mb-8 text-black ">
               Login
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
