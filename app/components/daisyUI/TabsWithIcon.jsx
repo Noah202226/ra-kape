@@ -378,7 +378,7 @@ function TabsWithIcon() {
         <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
           {/* Section Header */}
           <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold text-base-content">
+            <h2 className="text-xl text-black font-semibold ">
               📦 Product Manager
             </h2>
             <button
