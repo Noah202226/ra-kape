@@ -11,6 +11,8 @@ import FileUploader from "../FileUploader";
 import AddImage from "@/app/admin/AddImage";
 import ShowAllProducts from "../ShowAllProducts";
 import ImagePreview from "../ImagePreview";
+import ShowAllReviews from "../ShowAllReviews";
+import AddReview from "@/app/admin/AddReview";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -35,9 +37,13 @@ function TabsWithIcon() {
   const [activeTab, setActiveTab] = useState("settings");
 
   const modalRef = useRef(null);
+  const modalCustomerRef = useRef(null);
 
   const handleSave = async () => {
     modalRef.current?.close(); // Close the modal
+  };
+  const handleSave2 = async () => {
+    modalCustomerRef.current?.close(); // Close the modal
   };
 
   useEffect(() => {
@@ -398,6 +404,38 @@ function TabsWithIcon() {
           <dialog id="my_modal_2" ref={modalRef} className="modal">
             <div className="modal-box">
               <AddImage onSave={handleSave} />
+            </div>
+            <form method="dialog" className="modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
+        </div>
+      )}
+
+      {activeTab === "customers" && (
+        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl text-black font-semibold ">
+              📦 CUSTOMERS REVIEWS
+            </h2>
+            <button
+              className="btn btn-accent"
+              onClick={() => modalCustomerRef.current?.showModal()}
+            >
+              ➕ Add New Product
+            </button>
+          </div>
+
+          {/* Product List */}
+          <div>
+            <ShowAllReviews />
+          </div>
+
+          {/* Modal */}
+          <dialog id="my_modal_3" ref={modalCustomerRef} className="modal">
+            <div className="modal-box">
+              <AddReview onSave={handleSave2} />
             </div>
             <form method="dialog" className="modal-backdrop">
               <button>close</button>

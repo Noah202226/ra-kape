@@ -40,7 +40,16 @@ function BestSellerCarousel() {
 
   const { products } = useSettingsStore((state) => state);
 
-  console.log(products);
+  if (products.length === 0) {
+    return (
+      <div className="py-12 px-4 max-w-7xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-12 text-[var(--title)]">
+          Best Sellers
+        </h2>
+        <p className="text-center text-gray-500">No products available yet.</p>
+      </div>
+    );
+  }
 
   const handleAdd = (product) => {
     addToCart(product);
@@ -97,7 +106,9 @@ function BestSellerCarousel() {
                 <h3 className="text-xl font-semibold mb-2 text-[var(--title)]">
                   {product.productName}
                 </h3>
-                <div className="badge badge-outline mb-2">{product.category}</div>
+                <div className="badge badge-outline mb-2">
+                  {product.category}
+                </div>
                 <p className="text-sm text-gray-600 mb-4">
                   {product.productDescription}
                 </p>

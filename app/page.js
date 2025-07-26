@@ -9,10 +9,9 @@ import "aos/dist/aos.css";
 import CustomerReviews from "./components/daisyUI/CustomerReviews";
 import AboutUs from "./components/AboutUs";
 
-import { database } from "@/appwrite";
-
 import { fetchSettings } from "./utils/fetchSettings";
 import { fetchProducts } from "./utils/fetchProducts";
+import { fetchReviews } from "./utils/fetchReviews";
 
 import useAuthStore from "./stores/useAuthStore";
 import useSettingsStore from "./stores/useSettingsStore";
@@ -29,6 +28,7 @@ export default function Home() {
 
     fetchSettings();
     fetchProducts();
+    fetchReviews();
     checkUser();
   }, []);
 

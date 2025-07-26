@@ -20,6 +20,22 @@ const useSettingsStore = create((set) => ({
         product.$id === updatedProduct.$id ? updatedProduct : product
       ),
     })),
+
+  // Add customer reviews state
+  reviews: [],
+  setReviews: (reviews) => set(() => ({ reviews })),
+  addReview: (newReview) =>
+    set((state) => ({ reviews: [...state.reviews, newReview] })),
+  removeReview: (id) =>
+    set((state) => ({
+      reviews: state.reviews.filter((review) => review.$id !== id),
+    })),
+  updateReview: (updatedReview) =>
+    set((state) => ({
+      reviews: state.reviews.map((review) =>
+        review.$id === updatedReview.$id ? updatedReview : review
+      ),
+    })),
 }));
 
 export default useSettingsStore;
