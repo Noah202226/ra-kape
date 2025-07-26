@@ -66,7 +66,7 @@ export default function FileUploader({ imageId }) {
 
   return (
     <div className="flex flex-col gap-4 items-start">
-      <h2 className="text-lg font-semibold">Upload Hero Image</h2>
+      <h2 className="text-lg font-semibold text-black">Upload Image</h2>
 
       {file && (
         <div className="w-full max-w-xs overflow-hidden rounded-xl shadow border">
@@ -94,7 +94,7 @@ export default function FileUploader({ imageId }) {
       <button
         onClick={handleUpload}
         disabled={uploading || !file}
-        className="btn btn-outline bg-amber-700"
+        className="btn btn-outline bg-black text-white justify-center w-full max-w-xs"
       >
         {uploading ? "Uploading..." : "Upload"}
       </button>

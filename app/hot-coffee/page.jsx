@@ -5,8 +5,6 @@ import ProductGridFiltered from "../components/ProductGridFiltered";
 function page() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-24 pt-20">
-      <Typography variant="h3">HOT COFFEE</Typography>
-
       <ProductGridFiltered type={"hot-coffee"} />
     </main>
   );
