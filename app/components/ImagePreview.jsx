@@ -2,12 +2,7 @@
 
 import React from "react";
 
-export default function ImagePreview({
-  fileUrl,
-  alt = "Image Preview",
-  width = 300,
-  height = 300,
-}) {
+export default function ImagePreview({ fileUrl, alt = "Image Preview" }) {
   console.log(fileUrl, "File url");
   if (!fileUrl) return <p>No image to preview.</p>;
 
@@ -17,15 +12,14 @@ export default function ImagePreview({
         border: "1px solid #ccc",
         padding: "1rem",
         borderRadius: "8px",
-        width: width + 20,
+        // width: width,
       }}
+      className="w-full overflow-hidden rounded-lg border border-gray-200"
     >
       <img
         src={fileUrl}
         alt={alt}
-        width={width}
-        height={height}
-        style={{ objectFit: "cover", borderRadius: "4px" }}
+        style={{ objectFit: "contain", borderRadius: "4px" }}
       />
     </div>
   );

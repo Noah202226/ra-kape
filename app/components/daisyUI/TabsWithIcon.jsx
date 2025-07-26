@@ -103,9 +103,9 @@ function TabsWithIcon() {
     <div className="w-full">
       {/* Tabs Header */}
       <div className="w-full">
-        <div className="mx-auto px-0 md:px-4">
-          <div className="tabs tabs-lift w-full ">
-            <div className="tabs tabs-lift w-full flex flex-wrap">
+        <div className="mx-auto px-2 md:px-4">
+          <div className="w-full">
+            <div className="flex flex-wrap w-full border-b border-black">
               {[
                 { id: "settings", label: "SETTINGS", icon: "▶" },
                 { id: "products", label: "PRODUCTS", icon: "🍨" },
@@ -114,12 +114,12 @@ function TabsWithIcon() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`tab flex-1 text-sm md:text-base text-black transition-all duration-200 
-            ${
-              activeTab === tab.id
-                ? "tab-active bg-white text-white"
-                : "bg-gray-800 hover:bg-white hover:text-black"
-            }`}
+                  className={`flex-1 text-sm md:text-base font-medium py-3 px-4 transition-all duration-200 
+          ${
+            activeTab === tab.id
+              ? "text-black border-b-2 border-black"
+              : "text-gray-500 border-b-2 border-transparent hover:text-black hover:border-black"
+          }`}
                   style={{ minWidth: "120px", maxWidth: "200px" }}
                 >
                   <span className="flex items-center justify-center gap-1">
@@ -135,9 +135,9 @@ function TabsWithIcon() {
       {/* Tab Content */}
       {activeTab === "settings" && (
         <div className="w-full border-t border-base-300 py-0 md:py-6">
-          <div className="mx-auto p-0 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-1">
+          <div className="mx-auto p-2 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-1">
             {/* Hero Section */}
-            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-2 md:p-10 space-y-4">
               <h2 className="text-2xl font-bold text-black">
                 Hero Section Settings
               </h2>
@@ -305,8 +305,8 @@ function TabsWithIcon() {
             </div>
 
             {/* About Section */}
-            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
-              <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
+            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-2 space-y-4">
+              <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-2 space-y-4">
                 <h2 className="text-2xl font-bold text-black">
                   About Section Settings
                 </h2>
