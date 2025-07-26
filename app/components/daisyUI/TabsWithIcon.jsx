@@ -406,7 +406,7 @@ function TabsWithIcon() {
             <div className="modal-box">
               <AddImage onSave={handleSave} />
             </div>
-            <form method="dialog" className="modal-backdrop">
+            <form method="dialog" className="modal-backdrop bg-black">
               <button>close</button>
             </form>
           </dialog>
@@ -435,10 +435,10 @@ function TabsWithIcon() {
 
           {/* Modal */}
           <dialog id="my_modal_3" ref={modalCustomerRef} className="modal">
-            <div className="modal-box">
+            <div className="modal-box ">
               <AddReview onSave={handleSave2} />
             </div>
-            <form method="dialog" className="modal-backdrop">
+            <form method="dialog" className="modal-backdrop ">
               <button>close</button>
             </form>
           </dialog>

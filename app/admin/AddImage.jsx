@@ -94,7 +94,9 @@ function AddImage({ onSave }) {
       {/* Product Name */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Product Name</span>
+          <span className="label-text font-semibold text-black">
+            Product Name
+          </span>
         </div>
         <input
           type="text"
@@ -108,12 +110,14 @@ function AddImage({ onSave }) {
       {/* Description */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Description</span>
+          <span className="label-text font-semibold text-black">
+            Description
+          </span>
         </div>
         <input
           type="text"
           placeholder="Type here"
-          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+          className="input input-bordered w-full bg-white text-black bg-[var(--title) text-white] border-2 border-black"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -122,10 +126,10 @@ function AddImage({ onSave }) {
       {/* Category */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Category</span>
+          <span className="label-text text-black font-semibold">Category</span>
         </div>
         <select
-          className="select select-bordered bg-white w-full bg-[var(--title) text-white] border-2 border-black"
+          className="select select-bordered text-black bg-white w-full bg-[var(--title) text-white] border-2 border-black"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
@@ -144,7 +148,9 @@ function AddImage({ onSave }) {
       {/* Type */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Product Type</span>
+          <span className="label-text font-semibold text-black">
+            Product Type
+          </span>
         </div>
         <select
           className="select w-full bg-white bg-[var(--title) text-white] border-2 border-black"
@@ -163,7 +169,7 @@ function AddImage({ onSave }) {
       {/* Price */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Price</span>
+          <span className="label-text font-semibold text-black">Price</span>
         </div>
         <input
           type="number"
@@ -177,13 +183,15 @@ function AddImage({ onSave }) {
       {/* Image Upload */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Product Image</span>
+          <span className="label-text font-semibold text-black">
+            Product Image
+          </span>
         </div>
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="file-input file-input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+          className="file-input file-input-bordered w-full text-black bg-white bg-[var(--title) text-white] border-2 border-black"
         />
       </label>
 
@@ -196,7 +204,7 @@ function AddImage({ onSave }) {
       )}
 
       <button
-        className="btn bg-white bg-[var(--title) text-white] border-2 border-black hover:bg-amber-600 text-black w-full my-2"
+        className="btn bg-black text-white border-2  border-black hover:bg-amber-600 w-full my-2"
         disabled={loading}
         onClick={(e) => handleSubmit(e)}
       >

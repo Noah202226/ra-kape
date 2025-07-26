@@ -84,13 +84,15 @@ export default function AddReview({ onSave }) {
       {/* Image Upload */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Product Image</span>
+          <span className="label-text font-semibold text-black">
+            Product Image
+          </span>
         </div>
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="file-input file-input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+          className="file-input file-input-bordered w-full text-black bg-white bg-[var(--title) text-white] border-2 border-black"
         />
       </label>
 
@@ -105,19 +107,19 @@ export default function AddReview({ onSave }) {
       {/* Description */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold">Comment</span>
+          <span className="label-text font-semibold text-black">Comment</span>
         </div>
         <input
           type="text"
           placeholder="Type here"
-          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+          className="input input-bordered w-full text-black bg-white bg-[var(--title) text-white] border-2 border-black"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
       </label>
 
       <button
-        className="btn bg-white bg-[var(--title) text-white] border-2 border-black hover:bg-amber-600 text-black w-full my-2"
+        className="btn bg-black text-white border-2 border-black hover:bg-amber-600  w-full my-2"
         disabled={loading}
         onClick={(e) => handleSubmit(e)}
       >
