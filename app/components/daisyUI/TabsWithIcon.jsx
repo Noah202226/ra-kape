@@ -134,7 +134,7 @@ function TabsWithIcon() {
 
       {/* Tab Content */}
       {activeTab === "settings" && (
-        <div className="w-2xl border-t border-base-300 py-0 md:py-6">
+        <div className="w-full border-t border-base-300 py-0 md:py-6">
           <div className="mx-auto p-0 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-1">
             {/* Hero Section */}
             <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
@@ -368,7 +368,7 @@ function TabsWithIcon() {
             </div>
 
             {/* Sticky Save Button */}
-            <div className="fixed bottom-0 left-0 right-0 bg-amber-500 border-t border-base-100 p-2 flex justify-center shadow z-50">
+            <div className="fixed bottom-0 left-0 right-0 border-t border-base-100 p-2 flex justify-center shadow z-50">
               <button
                 className="btn btn-accent px-6"
                 onClick={saveUpdate}

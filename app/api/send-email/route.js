@@ -23,8 +23,8 @@ export async function POST(req) {
     // send mail
     await transporter.sendMail({
       from: `"RA Kape" <${process.env.EMAIL_USER}>`,
-      // to: ["noaligpitan@gmail.com", "chitomiryenda24@gmail.com"],
-      to: ["noaligpitan@gmail.com"],
+      to: ["noaligpitan@gmail.com", "chitomiryenda24@gmail.com"],
+      // to: ["noaligpitan@gmail.com"],
       subject: "New Order from RaKape Website",
       html: `
     <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto; border:1px solid #000; border-radius:8px; overflow:hidden;">
