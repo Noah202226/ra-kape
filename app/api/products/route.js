@@ -1,4 +1,4 @@
-import { client, database } from "@/appwrite";
+import { database } from "@/appwrite";
 
 const DB_ID = "6870ab6f0018df40fa94";
 const COLLECTION_ID = "products";

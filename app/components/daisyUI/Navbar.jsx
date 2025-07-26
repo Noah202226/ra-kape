@@ -88,9 +88,9 @@ function Navbar() {
             className="md:hidden focus:outline-none"
           >
             <svg
-              className="w-6 h-6"
+              className="w-6 h-6 text-black"
               fill="none"
-              stroke="currentColor"
+              stroke="black"
               viewBox="0 0 24 24"
             >
               <path
@@ -108,7 +108,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-amber-700 text-black text-center space-y-4 py-6 animate-slide-down">
+        <div className="md:hidden bg-black text-white text-center space-y-4 py-6 animate-slide-down">
           {menuItems.map((item) => (
             <a
               key={item.name}

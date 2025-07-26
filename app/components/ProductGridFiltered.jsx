@@ -69,7 +69,7 @@ export default function ProductGridFiltered({ type }) {
           <div
             key={product.$id}
             data-aos="zoom-in"
-            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:scale-105 hover:-translate-y-1 w-full max-w-[250px] mx-auto"
+            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:scale-105 hover:-translate-y-1 w-[260px]"
           >
             <figure className="relative group overflow-hidden h-[180px]">
               <img

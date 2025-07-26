@@ -1,9 +1,24 @@
-import React from "react";
+import { useState } from "react";
+import { fetchReviews } from "../utils/fetchReviews";
+import toast from "react-hot-toast";
 
 export default function AddReview({ onSave }) {
+  const [comment, setComment] = useState("");
+
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!imageFile || !name || !price || !category || !description) {
+    if (!imageFile || !comment) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -26,36 +41,32 @@ export default function AddReview({ onSave }) {
       } else {
         toast.success("Uploaded");
 
-        onSave();
-      }
+        // save product with uploaded image URL
+        const res = await fetch("/api/reviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            comments: comment,
+            reviewImage: uploadData.fileUrl,
+          }),
+        });
 
-      // save product with uploaded image URL
-      const res = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          price,
-          category,
-          description,
-          image: uploadData.fileUrl,
-          productType,
-        }),
-      });
+        const data = await res.json();
+        if (data.success) {
+          toast.success("Product added successfully!");
+          setComment("");
+          setImageFile(null);
+          setImagePreview("");
 
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Product added successfully!");
-        setName("");
-        setPrice("");
-        setCategory("");
-        setDescription("");
-        setImageFile(null);
-        setImagePreview("");
+          fetchReviews();
 
-        fetchProducts();
-      } else {
-        toast.error(data.error, "ERROR SAVING PROD" || "Something went wrong");
+          onSave();
+        } else {
+          toast.error(
+            data.error,
+            "ERROR SAVING PROD" || "Something went wrong"
+          );
+        }
       }
     } catch (err) {
       console.error(err);
@@ -69,20 +80,6 @@ export default function AddReview({ onSave }) {
       <h2 className="text-xl font-bold text-center text-amber-700">
         ➕ Add New Review
       </h2>
-
-      {/* Description */}
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text font-semibold">Description</span>
-        </div>
-        <input
-          type="text"
-          placeholder="Type here"
-          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </label>
 
       {/* Image Upload */}
       <label className="form-control w-full">
@@ -104,6 +101,20 @@ export default function AddReview({ onSave }) {
           className="w-full h-40 object-cover rounded-xl border"
         />
       )}
+
+      {/* Description */}
+      <label className="form-control w-full">
+        <div className="label">
+          <span className="label-text font-semibold">Comment</span>
+        </div>
+        <input
+          type="text"
+          placeholder="Type here"
+          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      </label>
 
       <button
         className="btn bg-white bg-[var(--title) text-white] border-2 border-black hover:bg-amber-600 text-black w-full my-2"

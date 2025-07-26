@@ -13,6 +13,7 @@ import ShowAllProducts from "../ShowAllProducts";
 import ImagePreview from "../ImagePreview";
 import ShowAllReviews from "../ShowAllReviews";
 import AddReview from "@/app/admin/AddReview";
+import { fetchReviews } from "@/app/utils/fetchReviews";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -48,6 +49,7 @@ function TabsWithIcon() {
 
   useEffect(() => {
     fetchSettings();
+    fetchReviews();
   }, []);
 
   useEffect(() => {
@@ -107,7 +109,6 @@ function TabsWithIcon() {
               {[
                 { id: "settings", label: "SETTINGS", icon: "▶" },
                 { id: "products", label: "PRODUCTS", icon: "🍨" },
-                { id: "blogs", label: "BLOGS", icon: "▶" },
                 { id: "customers", label: "TESTIMONIALS", icon: "▶" },
               ].map((tab) => (
                 <button
@@ -133,7 +134,7 @@ function TabsWithIcon() {
 
       {/* Tab Content */}
       {activeTab === "settings" && (
-        <div className="w-full border-t border-base-300 py-0 md:py-6">
+        <div className="w-2xl border-t border-base-300 py-0 md:py-6">
           <div className="mx-auto p-0 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-1">
             {/* Hero Section */}
             <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-6 space-y-4">
@@ -423,7 +424,7 @@ function TabsWithIcon() {
               className="btn btn-accent"
               onClick={() => modalCustomerRef.current?.showModal()}
             >
-              ➕ Add New Product
+              ➕ Add New Review
             </button>
           </div>
 
