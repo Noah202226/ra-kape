@@ -19,6 +19,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "aos": "^2.3.4",
     "appwrite": "^18.1.1",
+    "html2canvas": "^1.4.1",
     "next": "15.3.5",
     "nodemailer": "^7.0.5",
     "react": "^19.0.0",

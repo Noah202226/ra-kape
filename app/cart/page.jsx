@@ -72,7 +72,7 @@ export default function Page() {
             </div>
           ))}
 
-          <div className="mt-6 p-4 bg-amber-600 rounded-xl text-center shadow text-amber-950">
+          <div className="mt-6 p-4 bg-gray-500 rounded-xl text-center shadow text-white">
             <h3 className="text-xl font-bold">
               Total: ₱{totalPrice().toLocaleString()}
             </h3>
@@ -80,7 +80,7 @@ export default function Page() {
 
           <button
             onClick={handleCheckout}
-            className="w-full mt-4 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition"
+            className="w-full mt-4 py-3 bg-gray-800 text-white hover:bg-black hover:text-white  font-semibold rounded-xl transition cursor-pointer shadow-lg"
           >
             Proceed to Checkout
           </button>

@@ -42,7 +42,7 @@ function Navbar() {
           href="/"
           className="text-xl font-bold text-[var(--title)] hover:scale-105 transition"
         >
-          RA KAPE
+          ❛ RA KAPE
         </a>
 
         {/* Desktop Menu */}
@@ -79,9 +79,9 @@ function Navbar() {
           <a
             href="https://www.facebook.com/RaKapeBulacan"
             target="_blank"
-            className="btn bg-[var(--title)] border-0 hover:bg-amber-600 text-white"
+            className="btn bg-[var(--title)] border-0 hover:shadow-2xl hover:bg-gray-800 text-white"
           >
-            KAPE NA
+            Facebook
           </a>
           <button
             onClick={() => setMenuOpen(!menuOpen)}

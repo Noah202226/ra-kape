@@ -61,7 +61,7 @@ export default function ProductGridFiltered({ type }) {
 
   return (
     <div className="p-0 md:p-4">
-      <h2 className="text-4xl md:text-8xl font-bold mb-6 capitalize text-right">
+      <h2 className="text-4xl md:text-8xl font-bold mb-6 capitalize text-right text-black">
         {type.replace(/-/g, " ")}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">

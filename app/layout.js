@@ -29,8 +29,6 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppRouterCacheProvider>
-          {/* <DrawerAppBar /> */}
-
           <Navbar />
           {children}
           <Toaster position="top-center" />

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import useCartStore from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import ReceiptGenerator from "../utils/ReceiptGenerator";
 
 export default function CheckoutPage() {
   const cart = useCartStore((state) => state.cart);
@@ -94,7 +95,21 @@ export default function CheckoutPage() {
         if (data.success) {
           toast.success("✅ Message sent successfully!");
           clearCart();
-          router.push("/");
+          // router.push("/");
+
+          <ReceiptGenerator
+            order={{
+              orderId: "RAKAPE-20250806",
+              customerName: "Noa Ligpitan",
+              date: Date.now(),
+              paymentMethod: "GCash",
+              items: [
+                { name: "Iced Latte", qty: 2, price: 120 },
+                { name: "Espresso", qty: 1, price: 100 },
+              ],
+              total: 340,
+            }}
+          />;
         } else {
           toast.error("❌ Failed to send message. Please try again.");
         }
@@ -138,7 +153,20 @@ export default function CheckoutPage() {
   return (
     <main className="flex flex-col items-center px-6 pt-20">
       <h2 className="text-3xl font-bold mb-8 text-gray-900">Checkout</h2>
-
+      {/* <ReceiptGenerator
+        order={{
+          orderId: "RAKAPE-20250806",
+          customerName: "Noa Ligpitan",
+          date: Date.now(),
+          paymentMethod: "GCash",
+          items: [
+            { name: "Iced Latte", qty: 2, price: 120 },
+            { name: "Espresso", qty: 1, price: 100 },
+          ],
+          total: 340,
+        }}
+      /> */}
+      ;
       <div className="w-full max-w-xl space-y-6">
         {/* Shipping Info */}
         <div className="bg-white shadow rounded-xl p-6 space-y-4">
@@ -148,33 +176,33 @@ export default function CheckoutPage() {
           <input
             type="text"
             placeholder="Full Name"
-            className="input w-full text-white bg-amber-700"
+            className="input w-full text-white bg-gray-900"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
             type="email"
             placeholder="Email"
-            className="input w-full text-white bg-amber-700"
+            className="input w-full text-white bg-gray-900"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="text"
             placeholder="Address"
-            className="input w-full text-white bg-amber-700"
+            className="input w-full text-white bg-gray-900"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
           <input
             type="text"
             placeholder="Contact Number"
-            className="input w-full text-white bg-amber-700"
+            className="input w-full text-white bg-gray-900"
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
           <textarea
-            className="input w-full text-white bg-amber-700"
+            className="input w-full text-white bg-gray-900"
             maxLength={50}
             placeholder="Message"
             value={message}
@@ -188,12 +216,14 @@ export default function CheckoutPage() {
             Payment Details
           </h3>
           <select
-            className="input w-full text-white bg-amber-700"
+            className="input w-full text-white bg-gray-900"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
             <option value="gcash">GCash</option>
-            <option value="cod">Cash on Delivery</option>
+            <option value="cod" disabled>
+              Cash on Delivery (Coming Soon)
+            </option>
           </select>
           {paymentMethod === "gcash" && (
             <>
@@ -229,8 +259,8 @@ export default function CheckoutPage() {
         </div>
 
         {/* Order Summary */}
-        <div className="bg-amber-100 shadow rounded-xl p-6 space-y-2">
-          <h3 className="text-xl font-semibold mb-2 text-gray-900">
+        <div className="bg-gray-900 shadow rounded-xl p-6 space-y-2">
+          <h3 className="text-xl font-semibold mb-2 text-white">
             Order Summary
           </h3>
           {cart.length === 0 ? (
@@ -238,18 +268,18 @@ export default function CheckoutPage() {
           ) : (
             cart?.map((item) => (
               <div key={item.$id} className="flex justify-between">
-                <span className="text-black">
+                <span className="text-white">
                   {item.productName} x {item.quantity}
                 </span>
-                <span className="text-black">
+                <span className="text-white">
                   ₱{(item.price * item.quantity).toLocaleString()}
                 </span>
               </div>
             ))
           )}
           <div className="flex justify-between font-bold border-t pt-2 mt-2">
-            <span className="text-black">Total:</span>
-            <span className="text-black font-bold">
+            <span className="text-white">Total:</span>
+            <span className="text-white font-bold">
               {cart === "₱0" ? "0" : `₱${totalPrice().toLocaleString()}`}
             </span>
           </div>
@@ -259,7 +289,7 @@ export default function CheckoutPage() {
         <button
           onClick={handlePlaceOrder}
           disabled={loading || cart.length === 0}
-          className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition"
+          className="w-full py-3 bg-gray-800 hover:bg-black text-white font-semibold rounded-xl transition cursor-pointer"
         >
           Place Order
         </button>

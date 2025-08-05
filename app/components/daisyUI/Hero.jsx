@@ -55,7 +55,7 @@ function Hero() {
         {/* TEXT on right */}
         <div className="text-center lg:text-left max-w-xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-[var(--title)]">
-            {settings?.webTitle}
+            ❛ {settings?.webTitle}
           </h1>
           <p className="py-4 text-base sm:text-lg text-gray-600">
             {settings?.heroDescriptions}
