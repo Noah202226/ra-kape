@@ -15,6 +15,7 @@ import { fetchReviews } from "./utils/fetchReviews";
 
 import useAuthStore from "./stores/useAuthStore";
 import useSettingsStore from "./stores/useSettingsStore";
+import Carousel from "./components/daisyUI/Carousel";
 export default function Home() {
   const { authUser, checkUser } = useAuthStore((state) => state);
   const { setProducts } = useSettingsStore((state) => state);
@@ -35,6 +36,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between px:5 sm:px-24 pt-20">
       <Hero />
+      <Carousel />
       <AboutUs />
       <BestSellerCarousel />
       <CustomerReviews />

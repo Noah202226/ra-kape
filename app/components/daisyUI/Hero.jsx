@@ -27,8 +27,7 @@ function Hero() {
           <img
             // src="/rakape-logo.jpg"
             src={
-              settings?.heroImage ||
-              "/rakape-logo.jpg" /* Fallback image if not set */
+              settings?.heroImage || "/r.jpg" /* Fallback image if not set */
             }
             alt="RA KAPE logo"
             className="w-full rounded-4xl shadow-lg border-[var(--title)] border-2 
@@ -60,7 +59,7 @@ function Hero() {
           <p className="py-4 text-base sm:text-lg text-gray-600">
             {settings?.heroDescriptions}
           </p>
-          <button className="btn btn-lg mt-4 bg-[var(--title)] border-0 hover:bg-amber-600 text-white">
+          <button className="btn btn-lg mt-4 bg-[var(--title)] border-0 hover:bg-gray-600 hover:text-black text-white">
             {settings?.heroCTA}
           </button>
 

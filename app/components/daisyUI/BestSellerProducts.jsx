@@ -103,7 +103,7 @@ function BestSellerCarousel() {
                 />
               </figure>
               <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2 text-[var(--title)]">
+                <h3 className="text-xl font-semibold mb-2 text-black">
                   {product.productName}
                 </h3>
                 <div className="badge badge-outline mb-2">

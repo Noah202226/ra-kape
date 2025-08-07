@@ -82,7 +82,7 @@ export default function ProductGridFiltered({ type }) {
 
             <div className="p-4 h-[200px] flex flex-col justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[var(--title)] line-clamp-1">
+                <h3 className="text-lg font-semibold text-black line-clamp-1">
                   {product.productName}
                 </h3>
                 <div className="badge badge-warning my-2">New</div>
