@@ -2,10 +2,12 @@
 import React, { useEffect } from "react";
 import LoginForm from "../components/LoginForm";
 import { fetchProducts } from "../utils/fetchProducts";
+import { fetchEvents } from "../utils/fetchEvents";
 
 function page() {
   useEffect(() => {
     fetchProducts();
+    fetchEvents();
   }, []);
 
   return (

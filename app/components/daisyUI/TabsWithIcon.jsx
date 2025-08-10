@@ -14,6 +14,8 @@ import ImagePreview from "../ImagePreview";
 import ShowAllReviews from "../ShowAllReviews";
 import AddReview from "@/app/admin/AddReview";
 import { fetchReviews } from "@/app/utils/fetchReviews";
+import ShowAllEvents from "../ShowAllEvents";
+import AddEvent from "@/app/admin/AddEvent";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -110,6 +112,7 @@ function TabsWithIcon() {
                 { id: "settings", label: "SETTINGS", icon: "▶" },
                 { id: "products", label: "PRODUCTS", icon: "🍨" },
                 { id: "customers", label: "TESTIMONIALS", icon: "▶" },
+                { id: "events", label: "EVENTS", icon: "▶" },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -445,14 +448,33 @@ function TabsWithIcon() {
         </div>
       )}
 
-      {activeTab === "blogs" && (
-        <div className="w-full border-t border-base-300 py-6">
-          <div className="mx-auto p-6 grid gap-8 grid-cols-1 lg:grid-cols-2">
-            <div className="bg-pink-300 p-6 rounded-xl shadow">
-              <h2 className="font-bold text-xl mb-2">Tab 3 Content</h2>
-              <p>Placeholder for future section content.</p>
-            </div>
+      {activeTab === "events" && (
+        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl text-black font-semibold ">📦 EVENTS</h2>
+            <button
+              className="btn btn-accent"
+              onClick={() => modalCustomerRef.current?.showModal()}
+            >
+              ➕ Add Event
+            </button>
           </div>
+
+          {/* Product List */}
+          <div>
+            <ShowAllEvents />
+          </div>
+
+          {/* Modal */}
+          <dialog id="my_modal_3" ref={modalCustomerRef} className="modal">
+            <div className="modal-box ">
+              <AddEvent onSave={handleSave2} />
+            </div>
+            <form method="dialog" className="modal-backdrop ">
+              <button>close</button>
+            </form>
+          </dialog>
         </div>
       )}
     </div>

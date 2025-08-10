@@ -16,6 +16,7 @@ import { fetchReviews } from "./utils/fetchReviews";
 import useAuthStore from "./stores/useAuthStore";
 import useSettingsStore from "./stores/useSettingsStore";
 import Carousel from "./components/daisyUI/Carousel";
+import { fetchEvents } from "./utils/fetchEvents";
 export default function Home() {
   const { authUser, checkUser } = useAuthStore((state) => state);
   const { setProducts } = useSettingsStore((state) => state);
@@ -30,6 +31,8 @@ export default function Home() {
     fetchSettings();
     fetchProducts();
     fetchReviews();
+    fetchEvents();
+
     checkUser();
   }, []);
 

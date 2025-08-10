@@ -36,6 +36,16 @@ const useSettingsStore = create((set) => ({
         review.$id === updatedReview.$id ? updatedReview : review
       ),
     })),
+
+  // Add events state
+  events: [],
+  setEvents: (events) => set(() => ({ events })),
+  addEvent: (newEvent) =>
+    set((state) => ({ events: [...state.events, newEvent] })),
+  removeEvent: (id) =>
+    set((state) => ({
+      events: state.events.filter((event) => event.$id !== id),
+    })),
 }));
 
 export default useSettingsStore;
