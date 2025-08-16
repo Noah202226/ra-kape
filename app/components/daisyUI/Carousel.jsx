@@ -151,9 +151,9 @@ function PromoCarousel() {
                   📅 {modalData.date} <br /> 📍 {modalData.location}
                 </p>
                 <div className="mt-4 flex gap-3">
-                  <a href={modalData.link} className="btn btn-primary">
+                  {/* <a href={modalData.link} className="btn btn-primary">
                     Visit Promo Page
-                  </a>
+                  </a> */}
                   <a
                     href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
                       modalData.title

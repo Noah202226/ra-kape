@@ -42,7 +42,7 @@ function Navbar() {
           href="/"
           className="text-xl font-bold text-[var(--title)] hover:scale-105 transition"
         >
-          ❛ RA KAPE
+          ❛RA KAPE
         </a>
 
         {/* Desktop Menu */}
@@ -66,7 +66,7 @@ function Navbar() {
           <div className="relative group">
             <a href="/cart" className="block group-hover:animate-bounce">
               <RiShoppingCartFill
-                className="text-[var(--title)] hover:text-amber-700"
+                className="text-[var(--title)]"
                 style={{ width: 28, height: 28 }}
               />
             </a>

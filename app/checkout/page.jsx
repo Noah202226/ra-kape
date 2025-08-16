@@ -116,33 +116,33 @@ export default function CheckoutPage() {
       }
 
       // save product with uploaded image URL
-      // const res = await fetch("/api/products", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     name,
-      //     price,
-      //     category,
-      //     description,
-      //     image: uploadData.fileUrl,
-      //     productType,
-      //   }),
-      // });
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          price,
+          category,
+          description,
+          image: uploadData.fileUrl,
+          productType,
+        }),
+      });
 
-      // const data = await res.json();
-      // if (data.success) {
-      //   toast.success("Product added successfully!");
-      //   setName("");
-      //   setPrice("");
-      //   setCategory("");
-      //   setDescription("");
-      //   setImageFile(null);
-      //   setImagePreview("");
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Product added successfully!");
+        setName("");
+        setPrice("");
+        setCategory("");
+        setDescription("");
+        setImageFile(null);
+        setImagePreview("");
 
-      //   fetchProducts();
-      // } else {
-      //   toast.error(data.error, "ERROR SAVING PROD" || "Something went wrong");
-      // }
+        fetchProducts();
+      } else {
+        toast.error(data.error, "ERROR SAVING PROD" || "Something went wrong");
+      }
     } catch (err) {
       console.error(err);
       toast.error(err.message || "Upload failed");

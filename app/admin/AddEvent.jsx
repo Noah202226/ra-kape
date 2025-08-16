@@ -62,12 +62,16 @@ export default function AddEvent({ onSave }) {
         if (data.success) {
           toast.success("Event added successfully!");
 
-          setImageFile(null);
-          setImagePreview("");
-
           fetchEvents();
 
           onSave();
+
+          setImageFile(null);
+          setImagePreview("");
+          setTitle("");
+          setDesc("");
+          setDate("");
+          setLocation("");
         } else {
           toast.error(
             data.error,
