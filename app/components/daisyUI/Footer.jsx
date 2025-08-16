@@ -65,20 +65,6 @@ function Footer() {
             <path d="M19.615 3.184c-3.604-.246-11.631..."></path>
           </svg>
         </a>
-        <a
-          className="transition-transform duration-300 hover:scale-110 hover:text-amber-700"
-          data-aos="fade-up"
-          data-aos-delay="500"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            className="fill-current hover:animate-bounce-slow"
-          >
-            <path d="M9 8h-3v4h3v12h5v-12h3.642l..."></path>
-          </svg>
-        </a>
       </nav>
 
       <aside
