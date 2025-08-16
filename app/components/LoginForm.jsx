@@ -50,7 +50,7 @@ export default function LoginForm() {
                 <input
                   type="text"
                   placeholder="Username or Email"
-                  className={`input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition bg-white ${
+                  className={`input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition bg-black text-white ${
                     errors.email ? "input-error" : ""
                   }`}
                   value={email}
@@ -67,7 +67,7 @@ export default function LoginForm() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition bg-white text-black ${
+                    className={`input input-bordered w-full pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition bg-black text-white ${
                       errors.password ? "input-error" : ""
                     }`}
                     value={password}
