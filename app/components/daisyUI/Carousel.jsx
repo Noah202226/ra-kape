@@ -64,7 +64,7 @@ function PromoCarousel() {
     <>
       {/* Carousel */}
       <div
-        className="relative w-full h-[400px] overflow-hidden rounded-xl shadow-lg m-20"
+        className="relative w-full h-[400px] overflow-hidden rounded-none md:rounded-xl shadow-lg m-20"
         data-aos="fade-right"
         data-aos-offset="100"
         data-aos-easing="ease-in-sine"

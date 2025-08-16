@@ -1,6 +1,7 @@
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import React, { useEffect } from "react";
 import { client } from "@/appwrite";
+import { Router } from "next/router";
 
 function Hero() {
   const settings = useSettingsStore((state) => state.settings);
@@ -59,9 +60,11 @@ function Hero() {
           <p className="py-4 text-base sm:text-lg text-gray-600">
             {settings?.heroDescriptions}
           </p>
-          <button className="btn btn-lg mt-4 bg-[var(--title)] border-0 hover:bg-gray-600 hover:text-black text-white">
-            {settings?.heroCTA}
-          </button>
+          <a href="/ice-drip-coffee" className="w-full">
+            <button className="btn btn-lg mt-4 bg-[var(--title)] border-0 hover:bg-gray-600 hover:text-black text-white">
+              {settings?.heroCTA}
+            </button>
+          </a>
 
           <div
             className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-6"
