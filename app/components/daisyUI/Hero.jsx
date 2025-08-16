@@ -57,7 +57,7 @@ function Hero() {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-[var(--title)]">
             ❛{settings?.webTitle}
           </h1>
-          <p className="py-4 text-base sm:text-lg text-gray-600">
+          <p className="py-4 text-base sm:text-lg text-gray-900">
             {settings?.heroDescriptions}
           </p>
           <a href="/ice-drip-coffee" className="w-full">
@@ -76,7 +76,7 @@ function Hero() {
               <h3 className="text-lg sm:text-xl font-semibold text-[var(--title)]">
                 {settings?.heroCard1Title}
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-900">
                 {settings?.heroCard1Subtitle}
               </p>
             </div>
@@ -84,7 +84,7 @@ function Hero() {
               <h3 className="text-lg sm:text-xl font-semibold text-[var(--title)]">
                 {settings?.heroCard2Title}
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-900">
                 {settings?.heroCard2Subtitle}
               </p>
             </div>
@@ -92,7 +92,7 @@ function Hero() {
               <h3 className="text-lg sm:text-xl font-semibold text-[var(--title)]">
                 {settings?.heroCard3Title}
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-900">
                 {settings?.heroCard3Subtitle}
               </p>
             </div>

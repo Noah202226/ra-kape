@@ -95,53 +95,24 @@ export default function CheckoutPage() {
         if (data.success) {
           toast.success("✅ Message sent successfully!");
           clearCart();
-          // router.push("/");
+          router.push("/");
 
-          <ReceiptGenerator
-            order={{
-              orderId: "RAKAPE-20250806",
-              customerName: "Noa Ligpitan",
-              date: Date.now(),
-              paymentMethod: "GCash",
-              items: [
-                { name: "Iced Latte", qty: 2, price: 120 },
-                { name: "Espresso", qty: 1, price: 100 },
-              ],
-              total: 340,
-            }}
-          />;
+          // <ReceiptGenerator
+          //   order={{
+          //     orderId: "RAKAPE-20250806",
+          //     customerName: "Noa Ligpitan",
+          //     date: Date.now(),
+          //     paymentMethod: "GCash",
+          //     items: [
+          //       { name: "Iced Latte", qty: 2, price: 120 },
+          //       { name: "Espresso", qty: 1, price: 100 },
+          //     ],
+          //     total: 340,
+          //   }}
+          // />;
         } else {
           toast.error("❌ Failed to send message. Please try again.");
         }
-      }
-
-      // save product with uploaded image URL
-      const res = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          price,
-          category,
-          description,
-          image: uploadData.fileUrl,
-          productType,
-        }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Product added successfully!");
-        setName("");
-        setPrice("");
-        setCategory("");
-        setDescription("");
-        setImageFile(null);
-        setImagePreview("");
-
-        fetchProducts();
-      } else {
-        toast.error(data.error, "ERROR SAVING PROD" || "Something went wrong");
       }
     } catch (err) {
       console.error(err);
