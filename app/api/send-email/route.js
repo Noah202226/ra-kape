@@ -1,8 +1,15 @@
 import nodemailer from "nodemailer";
 
 export async function POST(req) {
-  const { name, email, address, message, orders, totalAmount, reference } =
-    await req.json();
+  const {
+    name,
+    email,
+    address,
+    message,
+    orders,
+    totalAmount,
+    reference = "",
+  } = await req.json();
 
   console.log("Received order data:", {
     name,
@@ -38,13 +45,12 @@ export async function POST(req) {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Address:</strong> ${address}</p>
-        <p><strong>Gcash Refernce:</strong></p>
-         <img src=${reference} alt="Gcash receipt" style="height:800px; height:500px; margin-bottom:10px; text-align:center; align-self:center;" />
+        <p><strong>Reference:</strong> ${reference}</p>
         <p><strong>Message:</strong> ${message}</p>
         <p><strong>Orders:</strong> 
         ${orders.map(
           (order) =>
-            `<p>${order.productName} -- (${order.quantity} x P:${order.price})`
+            `<p>${order.productName} (${order.size}) - (${order.quantity} x P:${order.price})`
         )}
         <br />
         --------------------------------------------------------------------------

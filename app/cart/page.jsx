@@ -56,7 +56,8 @@ export default function Page() {
                   {item.productName} - {item.size}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  ₱{item.price} x {item.size}
+                  ₱{item.price} x {item.quantity} = ₱
+                  {(item.price * item.quantity).toLocaleString()}
                 </p>
               </div>
               <div className="flex items-center gap-2">

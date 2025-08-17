@@ -10,7 +10,7 @@ function BestSellerCarousel() {
   const { products } = useSettingsStore((state) => state);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState("Small"); // default size
+  const [selectedSize, setSelectedSize] = useState("22oz"); // default size
 
   if (products.length === 0) {
     return (
@@ -145,11 +145,11 @@ function BestSellerCarousel() {
       </div>
 
       {/* Modal for size selection */}
-      <dialog id="order-modal" className="modal">
-        <div className="modal-box">
+      <dialog id="order-modal" className="modal ">
+        <div className="modal-box bg-gray-900 max-w-lg">
           {selectedProduct && (
             <>
-              <h3 className="text-lg font-bold mb-4">
+              <h3 className="text-lg font-bold mb-4 text-white">
                 Choose size for {selectedProduct.productName}
               </h3>
 
@@ -164,7 +164,7 @@ function BestSellerCarousel() {
                     onClick={() => setSelectedSize(opt.label)}
                     className={`flex justify-between px-4 py-2 rounded-lg border ${
                       selectedSize === opt.label
-                        ? "bg-amber-500 text-white border-amber-500"
+                        ? "bg-gray-600 text-white border-gray-600"
                         : "bg-white text-black border-gray-300"
                     }`}
                   >
@@ -179,7 +179,7 @@ function BestSellerCarousel() {
                   <button
                     type="button"
                     onClick={handleAdd}
-                    className="btn btn-primary"
+                    className="btn bg-white text-black border-1 border-black hover:bg-gray-600 hover:text-white "
                   >
                     Add to Cart
                   </button>

@@ -57,8 +57,8 @@ function AddImage({ onSave }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
-          price,
-          price2,
+          priceSmall: price,
+          priceLarge: price2,
           category,
           description,
           image: uploadData.fileUrl,
@@ -71,6 +71,7 @@ function AddImage({ onSave }) {
         toast.success("Product added successfully!");
         setName("");
         setPrice("");
+        setPrice2("");
         setCategory("");
         setDescription("");
         setImageFile(null);

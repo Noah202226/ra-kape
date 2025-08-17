@@ -58,24 +58,67 @@ export default function CheckoutPage() {
       const formData = new FormData();
       formData.append("file", imageFile);
 
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const uploadData = await uploadRes.json();
+      if (paymentMethod === "gcash" && !imageFile) {
+        toast.error("Please upload your GCash payment receipt.");
+        return;
+      } else if (paymentMethod === "gcash") {
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
 
-      if (uploadData.error) {
-        throw new Error(uploadData.error);
-      } else {
-        setGcashUrl(uploadData.fileUrl);
-      }
-      if (!uploadData.success) {
-        throw new Error(uploadData.error);
-      } else {
-        setGcashUrl(uploadData.fileUrl);
-        toast.success("Uploaded", uploadData.fileUrl);
-        console.log("Gcash url::", gcashUrl);
+        if (uploadData.error) {
+          throw new Error(uploadData.error);
+        } else {
+          setGcashUrl(uploadData.fileUrl);
+        }
+        if (!uploadData.success) {
+          throw new Error(uploadData.error);
+        } else {
+          setGcashUrl(uploadData.fileUrl);
+          toast.success("Uploaded", uploadData.fileUrl);
+          console.log("Gcash url::", gcashUrl);
 
+          const res = await fetch("/api/send-email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name,
+              email,
+              address,
+              message,
+              orders: cart,
+              totalAmount: totalPrice,
+              reference: uploadData.fileUrl, // Use the uploaded image URL as reference
+            }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast.success("✅ Message sent successfully!");
+            clearCart();
+            router.push("/");
+
+            // <ReceiptGenerator
+            //   order={{
+            //     orderId: "RAKAPE-20250806",
+            //     customerName: "Noa Ligpitan",
+            //     date: Date.now(),
+            //     paymentMethod: "GCash",
+            //     items: [
+            //       { name: "Iced Latte", qty: 2, price: 120 },
+            //       { name: "Espresso", qty: 1, price: 100 },
+            //     ],
+            //     total: 340,
+            //   }}
+            // />;
+          } else {
+            toast.error("❌ Failed to send message. Please try again.");
+          }
+        }
+      } else if (paymentMethod === "cash" || paymentMethod === "cod") {
         const res = await fetch("/api/send-email", {
           method: "POST",
           headers: {
@@ -88,7 +131,6 @@ export default function CheckoutPage() {
             message,
             orders: cart,
             totalAmount: totalPrice,
-            reference: uploadData.fileUrl, // Use the uploaded image URL as reference
           }),
         });
         const data = await res.json();
@@ -96,20 +138,6 @@ export default function CheckoutPage() {
           toast.success("✅ Message sent successfully!");
           clearCart();
           router.push("/");
-
-          // <ReceiptGenerator
-          //   order={{
-          //     orderId: "RAKAPE-20250806",
-          //     customerName: "Noa Ligpitan",
-          //     date: Date.now(),
-          //     paymentMethod: "GCash",
-          //     items: [
-          //       { name: "Iced Latte", qty: 2, price: 120 },
-          //       { name: "Espresso", qty: 1, price: 100 },
-          //     ],
-          //     total: 340,
-          //   }}
-          // />;
         } else {
           toast.error("❌ Failed to send message. Please try again.");
         }
@@ -192,9 +220,8 @@ export default function CheckoutPage() {
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
             <option value="gcash">GCash</option>
-            <option value="cod" disabled>
-              Cash on Delivery (Coming Soon)
-            </option>
+            <option value="cash">Cash (Pick up)</option>
+            <option value="cod">COD</option>
           </select>
           {paymentMethod === "gcash" && (
             <>
@@ -227,6 +254,11 @@ export default function CheckoutPage() {
               Payment will be collected upon delivery.
             </p>
           )}
+          {paymentMethod === "cash" && (
+            <p className="text-gray-500 text-sm">
+              Payment will be collected in our store.
+            </p>
+          )}
         </div>
 
         {/* Order Summary */}
@@ -237,10 +269,13 @@ export default function CheckoutPage() {
           {cart.length === 0 ? (
             <p>Your cart is empty</p>
           ) : (
-            cart?.map((item) => (
-              <div key={item.$id} className="flex justify-between">
+            cart?.map((item, index) => (
+              <div
+                key={`${item.$id} - ${index}`}
+                className="flex justify-between"
+              >
                 <span className="text-white">
-                  {item.productName} x {item.quantity}
+                  {item.productName} ({item.size}) x {item.quantity}
                 </span>
                 <span className="text-white">
                   ₱{(item.price * item.quantity).toLocaleString()}

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import useSettingsStore from "../stores/useSettingsStore";
 import toast from "react-hot-toast";
+import { CiCoffeeCup } from "react-icons/ci";
 
 export default function ShowAllProducts() {
   const { products, setProducts } = useSettingsStore((state) => state);
@@ -56,7 +57,28 @@ export default function ShowAllProducts() {
             <p className="text-amber-600 italic">
               {product.category} - {product.productType}
             </p>
-            <p className="text-amber-700 font-bold mt-2">₱{product.price}</p>
+            {/* Price Section */}
+            <div className="flex justify-between items-center">
+              <div className="flex gap-4">
+                {/* Small Cup */}
+                <div className="flex items-center gap-1">
+                  <CiCoffeeCup className="text-lg" />
+                  <span className="font-bold text-black">
+                    ₱{product.priceSmall}
+                  </span>
+                  <span className="text-xs text-gray-500">(Small)</span>
+                </div>
+
+                {/* Large Cup */}
+                <div className="flex items-center gap-1">
+                  <CiCoffeeCup className="text-2xl" />
+                  <span className="font-bold text-black">
+                    ₱{product.priceLarge}
+                  </span>
+                  <span className="text-xs text-gray-500">(Large)</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex justify-between mt-4 gap-2">
             <button

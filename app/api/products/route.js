@@ -14,7 +14,8 @@ export async function POST(req) {
       "unique()",
       {
         productName: body.name,
-        price: parseInt(body.price),
+        priceSmall: parseInt(body.priceSmall),
+        priceLarge: parseInt(body.priceLarge),
         productDescription: body.description,
         category: body.category,
         image: body.image, // usually image URL from Appwrite Storage

@@ -5,6 +5,7 @@ import useSettingsStore from "@/app/stores/useSettingsStore";
 import { fetchProducts } from "@/app/utils/fetchProducts";
 import useCartStore from "@/app/stores/useCartStore";
 import toast from "react-hot-toast";
+import { CiCoffeeCup } from "react-icons/ci";
 
 export default function ProductGridFiltered({ type }) {
   const [hasMounted, setHasMounted] = useState(false);
@@ -12,6 +13,9 @@ export default function ProductGridFiltered({ type }) {
   const products = useSettingsStore((state) => state.products);
   const setProducts = useSettingsStore((state) => state.setProducts);
   const addToCart = useCartStore((state) => state.addToCart);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("22oz"); // default size
 
   useEffect(() => {
     setHasMounted(true);
@@ -35,7 +39,7 @@ export default function ProductGridFiltered({ type }) {
 
   const handleAdd = (product) => {
     addToCart(product);
-    toast.success(`${product.productName} added to cart!`);
+    toast.success(`${product.productName} (${product.size}) added to cart!`);
   };
 
   if (loading)
@@ -69,43 +73,130 @@ export default function ProductGridFiltered({ type }) {
           <div
             key={product.$id}
             data-aos="zoom-in"
-            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:scale-105 hover:-translate-y-1 w-[260px]"
+            className="
+                        bg-white rounded-xl shadow-lg overflow-hidden 
+                        transition-all duration-300 
+                        hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
+                        hover:scale-105 hover:-translate-y-1
+                      "
           >
-            <figure className="relative group overflow-hidden h-[180px]">
+            <figure className="relative group overflow-hidden">
               <img
                 src={product.image}
                 alt={product.productName}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                className="
+                            w-full h-48 object-cover 
+                            transition-transform duration-300 group-hover:scale-110
+                          "
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div
+                className="
+                              absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
+                              opacity-0 group-hover:opacity-100 
+                              transition-opacity duration-300
+                            "
+              />
             </figure>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold mb-2 text-black">
+                {product.productName}
+              </h3>
+              <div className="badge badge-outline mb-2">{product.category}</div>
+              <p className="text-sm text-gray-600 mb-4">
+                {product.productDescription}
+              </p>
+              {/* Price Section */}
+              <div className="flex justify-between items-center">
+                <div className="flex gap-4">
+                  {/* Small Cup */}
+                  <div className="flex items-center gap-1">
+                    <CiCoffeeCup className="text-lg" />
+                    <span className="font-bold text-black">
+                      ₱{product.priceSmall}
+                    </span>
+                    <span className="text-xs text-gray-500">(Small)</span>
+                  </div>
 
-            <div className="p-4 h-[200px] flex flex-col justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-black line-clamp-1">
-                  {product.productName}
-                </h3>
-                <div className="badge badge-warning my-2">New</div>
-                <p className="text-sm text-gray-600 line-clamp-2">
-                  {product.productDescription}
-                </p>
+                  {/* Large Cup */}
+                  <div className="flex items-center gap-1">
+                    <CiCoffeeCup className="text-2xl" />
+                    <span className="font-bold text-black">
+                      ₱{product.priceLarge}
+                    </span>
+                    <span className="text-xs text-gray-500">(Large)</span>
+                  </div>
+                </div>
               </div>
-
-              <div className="flex justify-between items-center mt-3">
-                <span className="font-bold text-lg text-black">
-                  ₱{product.price}
-                </span>
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => handleAdd(product)}
-                >
-                  Order
-                </button>
-              </div>
+              {/* Order Button */}
+              <button
+                className="btn btn-sm btn-neutral w-full mt-2"
+                onClick={() => {
+                  setSelectedProduct(product);
+                  document.getElementById("order-modal").showModal();
+                }}
+              >
+                Order
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Modal for size selection */}
+      <dialog id="order-modal" className="modal ">
+        <div className="modal-box bg-gray-900 max-w-lg">
+          {selectedProduct && (
+            <>
+              <h3 className="text-lg font-bold mb-4 text-white">
+                Choose size for {selectedProduct.productName}
+              </h3>
+
+              <div className="flex flex-col gap-3 mb-4">
+                {[
+                  { label: "16oz", price: selectedProduct.priceSmall },
+
+                  { label: "22oz", price: selectedProduct.priceLarge },
+                ].map((opt) => (
+                  <button
+                    key={opt.label}
+                    onClick={() => setSelectedSize(opt.label)}
+                    className={`flex justify-between px-4 py-2 rounded-lg border ${
+                      selectedSize === opt.label
+                        ? "bg-gray-600 text-white border-gray-600"
+                        : "bg-white text-black border-gray-300"
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    <span>₱{opt.price}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="modal-action">
+                <form method="dialog" className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleAdd({
+                        ...selectedProduct,
+                        size: selectedSize,
+                        price:
+                          selectedSize === "16oz"
+                            ? selectedProduct.priceSmall
+                            : selectedProduct.priceLarge,
+                      })
+                    }
+                    className="btn bg-white text-black border-1 border-black hover:bg-gray-600 hover:text-white "
+                  >
+                    Add to Cart
+                  </button>
+                  <button className="btn">Cancel</button>
+                </form>
+              </div>
+            </>
+          )}
+        </div>
+      </dialog>
     </div>
   );
 }
