@@ -36,11 +36,10 @@ export async function POST(req) {
       html: `
     <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto; border:1px solid #000; border-radius:8px; overflow:hidden;">
       <div style="background:#000; color:white; padding:20px; text-align:center;">
-        <img src="https://fra.cloud.appwrite.io/v1/storage/buckets/images/files/6878e343001179ccc468/view?project=686e20fe00214a6c2fac&mode=admin" alt="RA Kape" style="height:50px; margin-bottom:10px;" />
-        <h2 style="margin:0;">New Order Notification</h2>
+        <img src="https://fra.cloud.appwrite.io/v1/storage/buckets/images/files/68a1b5720033113c66bf/view?project=686e20fe00214a6c2fac&mode=admin" alt="RA Kape" style="height:50px; margin-bottom:10px;" />
+        <h2 style="margin:0;">New Order from RAKAPE WEBSITE</h2>
       </div>
 
-      
       <div style="padding:20px; color:#333;">
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
