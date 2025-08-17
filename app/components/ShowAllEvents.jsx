@@ -52,7 +52,7 @@ export default function ShowAllEvents() {
           {/* Content */}
           <div className="h-[200px] flex flex-col justify-between">
             <div>
-              <h3 className="text-lg font-semibold line-clamp-1">
+              <h3 className="text-lg font-semibold line-clamp-1 text-black">
                 {event.title}
               </h3>
               <p className="text-gray-600 text-sm line-clamp-2">
@@ -62,12 +62,12 @@ export default function ShowAllEvents() {
               <p className="text-gray-500 text-xs">{event.location}</p>
             </div>
             <div className="flex justify-between mt-4 gap-2">
-              <button
+              {/* <button
                 onClick={() => handleEdit(event)}
                 className="btn btn-sm bg-blue-600 hover:bg-blue-500 text-white"
               >
                 Edit
-              </button>
+              </button> */}
               <button
                 onClick={() => handleDelete(event.$id)}
                 className="btn btn-sm bg-red-600 hover:bg-red-500 text-white"
