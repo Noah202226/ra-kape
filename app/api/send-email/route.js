@@ -7,7 +7,7 @@ export async function POST(req) {
     address,
     message,
     orders,
-    totalAmount,
+    modeOfPayment,
     reference = "",
   } = await req.json();
 
@@ -44,6 +44,7 @@ export async function POST(req) {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Address:</strong> ${address}</p>
+        <p><strong>Mode of Payment:</strong> ${modeOfPayment}</p>
         <p><strong>Reference:</strong> ${reference}</p>
         <p><strong>Message:</strong> ${message}</p>
         <p><strong>Orders:</strong> 

@@ -91,6 +91,7 @@ export default function CheckoutPage() {
               address,
               message,
               orders: cart,
+              modeOfPayment: paymentMethod,
               totalAmount: totalPrice,
               reference: uploadData.fileUrl, // Use the uploaded image URL as reference
             }),
@@ -130,6 +131,7 @@ export default function CheckoutPage() {
             address,
             message,
             orders: cart,
+            modeOfPayment: paymentMethod,
             totalAmount: totalPrice,
           }),
         });
