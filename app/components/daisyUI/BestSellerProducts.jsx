@@ -53,8 +53,8 @@ function BestSellerCarousel() {
   };
 
   return (
-    <div className="py-12 px-4">
-      <h2 className="text-4xl font-bold text-center mb-8 text-[var(--title)]">
+    <div className="py-12 px-0 md:px-4">
+      <h2 className="text-5xl md:text-7xl font-bold text-center mb-8 text-[var(--title)]">
         Best Sellers
       </h2>
       <div
@@ -64,7 +64,7 @@ function BestSellerCarousel() {
           sm:grid-cols-2 
           md:grid-cols-3 
           lg:grid-cols-4
-          max-w-7xl mx-auto
+          max-w-9xl 
         "
       >
         {products

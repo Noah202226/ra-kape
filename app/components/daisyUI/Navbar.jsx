@@ -42,7 +42,11 @@ function Navbar() {
           href="/"
           className="text-xl font-bold text-[var(--title)] hover:scale-105 transition"
         >
-          ❛RA KAPE
+          <img
+            src="/r.jpg"
+            alt="Ra Kape Logo"
+            className="h-10 w-auto rounded-3xl"
+          />
         </a>
 
         {/* Desktop Menu */}

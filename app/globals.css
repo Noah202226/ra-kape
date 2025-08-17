@@ -46,9 +46,11 @@
 }
 
 body {
-  background: url("/bean-coffee.png");
+  /* background: url("/bean-coffee.png");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
+
+  background-color: #ededed;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 
