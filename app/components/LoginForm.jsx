@@ -94,7 +94,7 @@ export default function LoginForm() {
               </div>
               <button
                 type="submit"
-                className="btn btn-dash w-full text-lg rounded-xl transition hover:scale-105"
+                className="btn btn-dash w-full text-lg rounded-xl transition hover:scale-105 bg-black text-white hover:bg-gray-800"
               >
                 Sign In
               </button>
