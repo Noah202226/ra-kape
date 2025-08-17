@@ -30,7 +30,7 @@ export async function POST(req) {
     // send mail
     await transporter.sendMail({
       from: `"RA Kape" <chitomiryenda24@gmail.com>`,
-      to: ["noaligpitan@gmail.com", "chitomiryenda24@gmail.com", email],
+      to: ["noaligpitan@gmail.com", "rakape31@gmail.com", email],
       // to: ["noaligpitan@gmail.com"],
       subject: "New Order from RaKape Website",
       html: `
