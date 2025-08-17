@@ -101,10 +101,10 @@ function BestSellerCarousel() {
                 <h3 className="text-xl font-semibold mb-2 text-black">
                   {product.productName}
                 </h3>
-                <div className="badge badge-outline mb-2">
+                <div className="badge badge-outline mb-2 text-black">
                   {product.category}
                 </div>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-gray-800 mb-4 ">
                   {product.productDescription}
                 </p>
                 {/* Price Section */}
@@ -112,7 +112,7 @@ function BestSellerCarousel() {
                   <div className="flex gap-4">
                     {/* Small Cup */}
                     <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-lg" />
+                      <CiCoffeeCup className="text-lg text-black" />
                       <span className="font-bold text-black">
                         ₱{product.priceSmall}
                       </span>
@@ -121,7 +121,7 @@ function BestSellerCarousel() {
 
                     {/* Large Cup */}
                     <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-2xl" />
+                      <CiCoffeeCup className="text-2xl text-black" />
                       <span className="font-bold text-black">
                         ₱{product.priceLarge}
                       </span>
