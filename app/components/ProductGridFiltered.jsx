@@ -66,8 +66,8 @@ export default function ProductGridFiltered({ type }) {
   console.log("Products", products);
 
   return (
-    <div className="p-0 md:p-4 py-0 md:py-8">
-      <h2 className="text-4xl md:text-6xl lg:text-6xl font-bold mb-2 md:mb-6 capitalize text-center text-black">
+    <div className="mx-w-7xl mx-auto px-4 py-8 md:px-8 lg:px-12">
+      <h2 className="text-2xl md:text-6xl lg:text-6xl font-bold mb-2 md:mb-6 capitalize text-center text-black">
         {type.replace(/-/g, " ")}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
