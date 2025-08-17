@@ -1,44 +1,16 @@
+"use client";
 import useCartStore from "@/app/stores/useCartStore";
-import React from "react";
-import toast from "react-hot-toast";
-
-// const bestSellers = [
-//   {
-//     id: 1,
-//     name: "Tiramisu",
-//     description: "Sweet, creamy caramel blended to perfection.",
-//     image: "/downloads/tiramisu2.jpg",
-//     price: 200,
-//   },
-//   {
-//     id: 2,
-//     name: "Hot Latte",
-//     description: "Smooth espresso with steamed milk.",
-//     image: "/products/product2.jpg",
-//     price: 100,
-//   },
-//   {
-//     id: 3,
-//     name: "Iced Americano",
-//     description: "Bold espresso over ice for a refreshing kick.",
-//     image: "/products/iced-americano.jpg",
-//     price: 90,
-//   },
-//   {
-//     id: 4,
-//     name: "Chocolate Muffin",
-//     description: "Rich, moist chocolate muffin to pair with your brew.",
-//     image: "/products/product2.jpg",
-//     price: 60,
-//   },
-// ];
-
 import useSettingsStore from "@/app/stores/useSettingsStore";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { CiCoffeeCup } from "react-icons/ci";
 
 function BestSellerCarousel() {
   const addToCart = useCartStore((state) => state.addToCart);
-
   const { products } = useSettingsStore((state) => state);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("Small"); // default size
 
   if (products.length === 0) {
     return (
@@ -51,9 +23,33 @@ function BestSellerCarousel() {
     );
   }
 
-  const handleAdd = (product) => {
-    addToCart(product);
-    toast.success(`${product.productName} added to cart!`);
+  const handleAdd = () => {
+    if (!selectedProduct) return;
+
+    // map size to price fields from Appwrite
+    const sizePrices = {
+      "16oz": selectedProduct.priceSmall,
+
+      "22oz": selectedProduct.priceLarge,
+    };
+
+    const finalPrice = sizePrices[selectedSize] || selectedProduct.priceSmall;
+
+    const productWithSize = {
+      ...selectedProduct,
+      size: selectedSize,
+      price: finalPrice,
+    };
+
+    addToCart(productWithSize);
+    toast.success(
+      `${selectedProduct.productName} (${selectedSize}) added to cart!`
+    );
+
+    // Reset state and close modal
+    setSelectedProduct(null);
+    setSelectedSize("Small");
+    document.getElementById("order-modal").close();
   };
 
   return (
@@ -93,13 +89,12 @@ function BestSellerCarousel() {
                   transition-transform duration-300 group-hover:scale-110
                 "
                 />
-                {/* Gradient overlay */}
                 <div
                   className="
-                absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
-                opacity-0 group-hover:opacity-100 
-                transition-opacity duration-300
-              "
+                    absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
+                    opacity-0 group-hover:opacity-100 
+                    transition-opacity duration-300
+                  "
                 />
               </figure>
               <div className="p-4">
@@ -112,21 +107,89 @@ function BestSellerCarousel() {
                 <p className="text-sm text-gray-600 mb-4">
                   {product.productDescription}
                 </p>
+                {/* Price Section */}
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-lg text-black">
-                    ₱{product.price}
-                  </span>
-                  <button
-                    className="btn btn-sm btn-neutral"
-                    onClick={() => handleAdd(product)}
-                  >
-                    Order
-                  </button>
+                  <div className="flex gap-4">
+                    {/* Small Cup */}
+                    <div className="flex items-center gap-1">
+                      <CiCoffeeCup className="text-lg" />
+                      <span className="font-bold text-black">
+                        ₱{product.priceSmall}
+                      </span>
+                      <span className="text-xs text-gray-500">(Small)</span>
+                    </div>
+
+                    {/* Large Cup */}
+                    <div className="flex items-center gap-1">
+                      <CiCoffeeCup className="text-2xl" />
+                      <span className="font-bold text-black">
+                        ₱{product.priceLarge}
+                      </span>
+                      <span className="text-xs text-gray-500">(Large)</span>
+                    </div>
+                  </div>
                 </div>
+                {/* Order Button */}
+                <button
+                  className="btn btn-sm btn-neutral w-full mt-2"
+                  onClick={() => {
+                    setSelectedProduct(product);
+                    document.getElementById("order-modal").showModal();
+                  }}
+                >
+                  Order
+                </button>
               </div>
             </div>
           ))}
       </div>
+
+      {/* Modal for size selection */}
+      <dialog id="order-modal" className="modal">
+        <div className="modal-box">
+          {selectedProduct && (
+            <>
+              <h3 className="text-lg font-bold mb-4">
+                Choose size for {selectedProduct.productName}
+              </h3>
+
+              <div className="flex flex-col gap-3 mb-4">
+                {[
+                  { label: "16oz", price: selectedProduct.priceSmall },
+
+                  { label: "22oz", price: selectedProduct.priceLarge },
+                ].map((opt) => (
+                  <button
+                    key={opt.label}
+                    onClick={() => setSelectedSize(opt.label)}
+                    className={`flex justify-between px-4 py-2 rounded-lg border ${
+                      selectedSize === opt.label
+                        ? "bg-amber-500 text-white border-amber-500"
+                        : "bg-white text-black border-gray-300"
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    <span>₱{opt.price}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="modal-action">
+                <form method="dialog" className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleAdd}
+                    className="btn btn-primary"
+                  >
+                    Add to Cart
+                  </button>
+                  <button className="btn">Cancel</button>
+                </form>
+              </div>
+            </>
+          )}
+        </div>
+      </dialog>
     </div>
   );
 }

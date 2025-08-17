@@ -24,45 +24,61 @@ export default function Page() {
     router.push("/checkout");
   };
 
+  console.log("Cart items:", cart);
+
   return (
     <main className="flex min-h-screen flex-col items-center px-6 pt-20">
-      <h2 className="text-3xl font-bold mb-8 text-gray-800">My Cart</h2>
+      {/* flex of my cart and clear cart button */}
+      <div className="flex justify-between items-center w-full max-w-4xl mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">My Cart</h1>
+        <button
+          onClick={() => {
+            useCartStore.getState().clearCart();
+            toast.success("Cart cleared!");
+          }}
+          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+        >
+          Clear Cart
+        </button>
+      </div>
 
       {cart.length === 0 ? (
         <p className="text-gray-500">Your cart is empty</p>
       ) : (
         <div className="w-full max-w-xl space-y-4">
-          {cart.map((item) => (
+          {cart.map((item, index) => (
             <div
-              key={item.$id}
+              key={`${item.$id}-${item.size}`}
               className="flex justify-between items-center bg-white rounded-2xl shadow p-4"
             >
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {item.productName}
+                  {item.productName} - {item.size}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  ₱{item.price} x {item.quantity}
+                  ₱{item.price} x {item.size}
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => decreaseQty(item.$id)}
+                  onClick={() => decreaseQty(item.$id, item.size)}
                   className="bg-gray-400 hover:bg-gray-300 text-amber-700 text-lg w-8 h-8 rounded-full transition"
                 >
                   -
                 </button>
                 <span className="w-6 text-center">{item.quantity}</span>
                 <button
-                  onClick={() => increaseQty(item.$id)}
+                  onClick={() => increaseQty(item.$id, item.size)}
                   className="bg-gray-400 hover:bg-gray-300 text-amber-700 text-lg w-8 h-8 rounded-full transition"
                 >
                   +
                 </button>
                 <button
                   onClick={() => {
-                    removeFromCart(item.$id);
-                    toast.success(`${item.name} removed from cart`);
+                    removeFromCart(item.$id, item.size);
+                    toast.success(
+                      `${item.name} - ${item.size} removed from cart`
+                    );
                   }}
                   className="ml-2 text-red-500 hover:text-red-700 transition"
                 >

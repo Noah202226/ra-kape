@@ -10,6 +10,7 @@ function AddImage({ onSave }) {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(50);
+  const [price2, setPrice2] = useState(50);
   const [category, setCategory] = useState("ice-drip-coffee");
   const [description, setDescription] = useState("");
   const [productType, setProductType] = useState("Normal");
@@ -57,6 +58,7 @@ function AddImage({ onSave }) {
         body: JSON.stringify({
           name,
           price,
+          price2,
           category,
           description,
           image: uploadData.fileUrl,
@@ -169,7 +171,9 @@ function AddImage({ onSave }) {
       {/* Price */}
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text font-semibold text-black">Price</span>
+          <span className="label-text font-semibold text-black">
+            Small Price
+          </span>
         </div>
         <input
           type="number"
@@ -177,6 +181,22 @@ function AddImage({ onSave }) {
           placeholder="₱ 0.00"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
+        />
+      </label>
+
+      {/* Price 2 */}
+      <label className="form-control w-full">
+        <div className="label">
+          <span className="label-text font-semibold text-black">
+            Large Price
+          </span>
+        </div>
+        <input
+          type="number"
+          className="input input-bordered w-full bg-white bg-[var(--title) text-white] border-2 border-black"
+          placeholder="₱ 0.00"
+          value={price2}
+          onChange={(e) => setPrice2(e.target.value)}
         />
       </label>
 
