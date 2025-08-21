@@ -10,6 +10,46 @@ export default function CheckoutPage() {
   const cart = useCartStore((state) => state.cart);
   const totalPrice = useCartStore((state) => state.totalPrice);
   const clearCart = useCartStore((state) => state.clearCart);
+  const [barangay, setBarangay] = useState(); // Default barangay, can be changed based on user selection
+
+  const priceRange = [
+    { barangay: "Akle", price: 215 },
+    { barangay: "Alagao", price: 185 },
+    { barangay: "Anyatam", price: 78 },
+    { barangay: "Bagong Barrio", price: 175 },
+    { barangay: "Basuit", price: 140 },
+    { barangay: "Bubulong Malaki", price: 135 },
+    { barangay: "Bubulong Munti", price: 179 },
+    { barangay: "Buhol na Mangga", price: 211 },
+    { barangay: "Bulusukan", price: 150 },
+    { barangay: "Calasag", price: 75 },
+    { barangay: "Calawitan", price: 85 },
+    { barangay: "Casalat", price: 249 },
+    { barangay: "Gabihan", price: 132 },
+    { barangay: "Garlang", price: 80 },
+    { barangay: "Lapnit", price: 53 },
+    { barangay: "Maasim", price: 100 },
+    { barangay: "Makapilapil", price: 59 },
+    { barangay: "Malipampang", price: 95 },
+    { barangay: "Mataas na Parang", price: 73 },
+    { barangay: "Matimbubong", price: 61 },
+    { barangay: "Nabaong Garlang", price: 92 },
+    { barangay: "Palapala", price: 103 },
+    { barangay: "Pasong Bangkal", price: 209 },
+    { barangay: "Pinaod", price: 79 },
+    { barangay: "Poblacion", price: 60 },
+    { barangay: "Pulong Tamo", price: 96 },
+    { barangay: "San Juan", price: 48 },
+    { barangay: "Santa Catalina Bata", price: 96 },
+    { barangay: "Santa Catalina Matanda", price: 110 },
+    { barangay: "Sapang Dayap", price: 175 },
+    { barangay: "Sapang Putik", price: 155 },
+    { barangay: "Sapang Putol", price: 65 },
+    { barangay: "Sumandig", price: 105 },
+    { barangay: "Telapatio", price: 109 },
+    { barangay: "Umpucan", price: 137 },
+    { barangay: "Upig", price: 179 },
+  ];
 
   const router = useRouter();
 
@@ -32,6 +72,15 @@ export default function CheckoutPage() {
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
+
+  // Function to get shipping fee based on selected barangay
+  // This function can be used in the form to calculate shipping fee dynamically
+  const getShippingFee = (selectedBarangay) => {
+    const barangay = priceRange.find((b) => b.barangay === selectedBarangay);
+    return barangay ? barangay.price : 0;
+  };
+  const shippingFee = getShippingFee(barangay);
+  const grandTotal = totalPrice() + shippingFee;
 
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -92,7 +141,10 @@ export default function CheckoutPage() {
               message,
               orders: cart,
               modeOfPayment: paymentMethod,
+              barangay,
+              shippingFee,
               totalAmount: totalPrice,
+              grandTotal,
               reference: uploadData.fileUrl, // Use the uploaded image URL as reference
             }),
           });
@@ -131,8 +183,11 @@ export default function CheckoutPage() {
             address,
             message,
             orders: cart,
+            barangay,
+            shippingFee,
             modeOfPayment: paymentMethod,
             totalAmount: totalPrice,
+            grandTotal,
           }),
         });
         const data = await res.json();
@@ -242,6 +297,23 @@ export default function CheckoutPage() {
                 />
               </label>
 
+              <div className="mb-4">
+                <label className="block mb-2 font-semibold">Barangay</label>
+                <select
+                  className="border rounded p-2 w-full"
+                  value={barangay}
+                  onChange={(e) => setBarangay(e.target.value)}
+                  required
+                >
+                  <option value="">Select Barangay</option>
+                  {priceRange.map((item, index) => (
+                    <option key={index} value={item.barangay}>
+                      {item.barangay}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {imagePreview && (
                 <img
                   src={imagePreview}
@@ -252,10 +324,29 @@ export default function CheckoutPage() {
             </>
           )}
           {paymentMethod === "cod" && (
-            <p className="text-gray-500 text-sm">
-              Payment will be collected upon delivery.
-            </p>
+            <div className="mb-4">
+              <div className="mb-4">
+                <label className="block mb-2 font-semibold">Barangay</label>
+                <select
+                  className="border rounded p-2 w-full"
+                  value={barangay}
+                  onChange={(e) => setBarangay(e.target.value)}
+                  required
+                >
+                  <option value="">Select Barangay</option>
+                  {priceRange.map((item, index) => (
+                    <option key={index} value={item.barangay}>
+                      {item.barangay}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <p className="text-gray-500 text-sm">
+                Payment will be collected upon delivery.
+              </p>
+            </div>
           )}
+
           {paymentMethod === "cash" && (
             <p className="text-gray-500 text-sm">
               Payment will be collected in our store.
@@ -285,11 +376,17 @@ export default function CheckoutPage() {
               </div>
             ))
           )}
-          <div className="flex justify-between font-bold border-t pt-2 mt-2">
-            <span className="text-white">Total:</span>
-            <span className="text-white font-bold">
-              {cart === "₱0" ? "0" : `₱${totalPrice().toLocaleString()}`}
-            </span>
+          <div className="flex justify-between text-white">
+            <span>Subtotal:</span>
+            <span>₱{totalPrice().toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between text-white">
+            <span>Shipping Fee:</span>
+            <span>₱{shippingFee.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between font-bold text-white">
+            <span>Total:</span>
+            <span>₱{grandTotal.toLocaleString()}</span>
           </div>
         </div>
 

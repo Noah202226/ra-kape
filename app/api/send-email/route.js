@@ -8,6 +8,9 @@ export async function POST(req) {
     message,
     orders,
     modeOfPayment,
+    shippingFee = 0,
+    grandTotal = 0,
+
     reference = "",
   } = await req.json();
 
@@ -59,6 +62,12 @@ export async function POST(req) {
           (sum, i) => sum + i.price * i.quantity,
           0
         )}</strong>
+        <p>Shipping Fee: ${shippingFee} </p>
+        <strong><p>Grand Total: ${grandTotal} </p> </strong>
+        <br />
+        --------------------------------------------------------------------------
+        <br />
+
       
         <hr style="border:none; border-top:1px solid #eee; margin:20px 0;">
         <p style="font-size:14px; color:#777;">Thanks for ordering in RAKAPE</p>
