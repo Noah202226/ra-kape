@@ -118,7 +118,7 @@ export default function ProductGridFiltered({ type }) {
                     <span className="font-bold text-black">
                       ₱{product.priceSmall}
                     </span>
-                    <span className="text-xs text-gray-500">(Small)</span>
+                    <span className="text-xs text-gray-500">(Regular)</span>
                   </div>
 
                   {/* Large Cup */}
@@ -127,7 +127,7 @@ export default function ProductGridFiltered({ type }) {
                     <span className="font-bold text-black">
                       ₱{product.priceLarge}
                     </span>
-                    <span className="text-xs text-gray-500">(Large)</span>
+                    <span className="text-xs text-gray-500">(Upsize)</span>
                   </div>
                 </div>
               </div>

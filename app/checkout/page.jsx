@@ -257,6 +257,7 @@ export default function CheckoutPage() {
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
+          <p className="text-xs text-orange-400 italic">Note: "For big orders, expect a quick call from us to verification"</p>
           <textarea
             className="input w-full text-white bg-gray-900"
             maxLength={50}
