@@ -15,11 +15,7 @@ export default function ProductGridFiltered({ type }) {
   const addToCart = useCartStore((state) => state.addToCart);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState("22oz"); // default size
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const [selectedSize, setSelectedSize] = useState("22oz");
 
   useEffect(() => {
     setHasMounted(true);
@@ -31,7 +27,7 @@ export default function ProductGridFiltered({ type }) {
     loadProducts();
   }, [setProducts]);
 
-  if (!hasMounted) return null; // ✅ Hydration-safe guard
+  if (!hasMounted) return null;
 
   const filtered = products.filter(
     (product) => product.category?.toLowerCase() === type.toLowerCase()
@@ -63,56 +59,43 @@ export default function ProductGridFiltered({ type }) {
       </div>
     );
 
-  console.log("Products", products);
-
   return (
-    <div className="mx-w-7xl mx-auto px-4 py-8 md:px-8 lg:px-12">
-      <h2 className="text-2xl md:text-6xl lg:text-6xl font-bold mb-2 md:mb-6 capitalize text-center text-black">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8">
+      {/* Title */}
+      <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-6 capitalize text-center text-black">
         {type.replace(/-/g, " ")}
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filtered.map((product) => (
           <div
             key={product.$id}
             data-aos="zoom-in"
-            className="
-                        bg-white rounded-xl shadow-lg overflow-hidden 
-                        transition-all duration-300 
-                        hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
-                        hover:scale-105 hover:-translate-y-1
-                      "
+            className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.6)] hover:scale-105 hover:-translate-y-1 w-full"
           >
             <figure className="relative group overflow-hidden">
               <img
                 src={product.image}
                 alt={product.productName}
-                className="
-                            w-full h-48 object-cover 
-                            transition-transform duration-300 group-hover:scale-110
-                          "
+                className="w-full aspect-[4/3] object-cover transition-transform duration-300 group-hover:scale-110"
               />
-              <div
-                className="
-                              absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
-                              opacity-0 group-hover:opacity-100 
-                              transition-opacity duration-300
-                            "
-              />
+              <div className="absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </figure>
             <div className="p-4">
-              <h3 className="text-xl font-semibold mb-2 text-black">
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-black">
                 {product.productName}
               </h3>
               <div className="badge badge-outline mb-2 text-black">
                 {product.category}
               </div>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                 {product.productDescription}
               </p>
+
               {/* Price Section */}
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
                 <div className="flex gap-4">
-                  {/* Small Cup */}
                   <div className="flex items-center gap-1">
                     <CiCoffeeCup className="text-lg text-black" />
                     <span className="font-bold text-black">
@@ -120,8 +103,6 @@ export default function ProductGridFiltered({ type }) {
                     </span>
                     <span className="text-xs text-gray-500">(Regular)</span>
                   </div>
-
-                  {/* Large Cup */}
                   <div className="flex items-center gap-1">
                     <CiCoffeeCup className="text-2xl text-black" />
                     <span className="font-bold text-black">
@@ -131,9 +112,10 @@ export default function ProductGridFiltered({ type }) {
                   </div>
                 </div>
               </div>
+
               {/* Order Button */}
               <button
-                className="btn btn-sm btn-neutral w-full mt-2"
+                className="btn btn-sm btn-neutral w-full mt-3"
                 onClick={() => {
                   setSelectedProduct(product);
                   document.getElementById("order-modal").showModal();
@@ -146,9 +128,9 @@ export default function ProductGridFiltered({ type }) {
         ))}
       </div>
 
-      {/* Modal for size selection */}
-      <dialog id="order-modal" className="modal ">
-        <div className="modal-box bg-gray-900 max-w-lg">
+      {/* Modal */}
+      <dialog id="order-modal" className="modal">
+        <div className="modal-box bg-gray-900 max-w-sm sm:max-w-md md:max-w-lg w-full">
           {selectedProduct && (
             <>
               <h3 className="text-lg font-bold mb-4 text-white">
@@ -158,7 +140,6 @@ export default function ProductGridFiltered({ type }) {
               <div className="flex flex-col gap-3 mb-4">
                 {[
                   { label: "16oz", price: selectedProduct.priceSmall },
-
                   { label: "22oz", price: selectedProduct.priceLarge },
                 ].map((opt) => (
                   <button
@@ -176,25 +157,25 @@ export default function ProductGridFiltered({ type }) {
                 ))}
               </div>
 
-              <div className="modal-action">
-                <form method="dialog" className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleAdd({
-                        ...selectedProduct,
-                        size: selectedSize,
-                        price:
-                          selectedSize === "16oz"
-                            ? selectedProduct.priceSmall
-                            : selectedProduct.priceLarge,
-                      })
-                    }
-                    className="btn bg-white text-black border-1 border-black hover:bg-gray-600 hover:text-white "
-                  >
-                    Add to Cart
-                  </button>
-                  <button className="btn">Cancel</button>
+              <div className="modal-action flex flex-col sm:flex-row gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleAdd({
+                      ...selectedProduct,
+                      size: selectedSize,
+                      price:
+                        selectedSize === "16oz"
+                          ? selectedProduct.priceSmall
+                          : selectedProduct.priceLarge,
+                    })
+                  }
+                  className="btn bg-white text-black border border-black hover:bg-gray-600 hover:text-white w-full sm:w-auto"
+                >
+                  Add to Cart
+                </button>
+                <form method="dialog" className="w-full sm:w-auto">
+                  <button className="btn w-full sm:w-auto">Cancel</button>
                 </form>
               </div>
             </>

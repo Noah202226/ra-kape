@@ -79,3 +79,17 @@ li:hover {
 .animate-slide-down {
   animation: slide-down 0.3s ease-out forwards;
 }
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(0.8);
+    opacity: 0;
+  }
+}
+.animate-float-up {
+  animation: float-up 3s ease-in-out infinite;
+}

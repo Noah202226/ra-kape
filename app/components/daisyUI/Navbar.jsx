@@ -8,6 +8,7 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+
   useEffect(() => {
     setHasMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -36,26 +37,24 @@ function Navbar() {
         }
       `}
     >
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         {/* Logo */}
-        <a
-          href="/"
-          className="text-xl font-bold text-[var(--title)] hover:scale-105 transition"
-        >
+        <a href="/" className="flex items-center space-x-2">
           <img
             src="/r.jpg"
             alt="Ra Kape Logo"
-            className="h-10 w-auto rounded-3xl"
+            className="h-8 sm:h-10 lg:h-12 w-auto rounded-3xl transition hover:scale-105"
           />
         </a>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8">
+        <div className="hidden md:flex space-x-4 sm:space-x-6 lg:space-x-10">
           {menuItems.map((item) => (
             <a
               key={item.name}
               href={item.link}
-              className="relative after:content-[''] after:absolute after:left-0 after:-bottom-1 
+              className="relative text-sm sm:text-base lg:text-lg 
+                after:content-[''] after:absolute after:left-0 after:-bottom-1 
                 after:w-0 after:h-[2px] after:bg-[var(--title)]
                 hover:after:w-full after:transition-all after:duration-300
                 hover:scale-105 transition text-[var(--title)]"
@@ -66,7 +65,7 @@ function Navbar() {
         </div>
 
         {/* Cart & CTA */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
           <div className="relative group">
             <a href="/cart" className="block group-hover:animate-bounce">
               <RiShoppingCartFill
@@ -83,7 +82,8 @@ function Navbar() {
           <a
             href="https://www.facebook.com/RaKapeBulacan"
             target="_blank"
-            className="btn bg-[var(--title)] border-0 hover:shadow-2xl hover:bg-gray-800 text-white"
+            className="px-3 sm:px-4 lg:px-6 py-1 sm:py-2 text-sm sm:text-base lg:text-lg rounded-xl
+              bg-[var(--title)] border-0 hover:shadow-2xl hover:bg-gray-800 text-white transition"
           >
             Facebook
           </a>
@@ -110,14 +110,14 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-black text-white text-center space-y-4 py-6 animate-slide-down">
+        <div className="md:hidden bg-black text-white text-center space-y-4 py-6 transition-all duration-300 ease-in-out">
           {menuItems.map((item) => (
             <a
               key={item.name}
               href={item.link}
-              className="block hover:underline hover:scale-105 transition"
+              className="block text-lg hover:underline hover:scale-105 transition"
             >
               {item.name}
             </a>

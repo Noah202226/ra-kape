@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import useCartStore from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import ReceiptGenerator from "../utils/ReceiptGenerator";
 
 export default function CheckoutPage() {
   const cart = useCartStore((state) => state.cart);
@@ -153,20 +152,6 @@ export default function CheckoutPage() {
             toast.success("✅ Message sent successfully!");
             clearCart();
             router.push("/");
-
-            // <ReceiptGenerator
-            //   order={{
-            //     orderId: "RAKAPE-20250806",
-            //     customerName: "Noa Ligpitan",
-            //     date: Date.now(),
-            //     paymentMethod: "GCash",
-            //     items: [
-            //       { name: "Iced Latte", qty: 2, price: 120 },
-            //       { name: "Espresso", qty: 1, price: 100 },
-            //     ],
-            //     total: 340,
-            //   }}
-            // />;
           } else {
             toast.error("❌ Failed to send message. Please try again.");
           }
@@ -257,7 +242,9 @@ export default function CheckoutPage() {
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
-          <p className="text-xs text-orange-400 italic">Note: "For big orders, expect a quick call from us to verification"</p>
+          <p className="text-xs text-orange-400 italic">
+            Note: "For big orders, expect a quick call from us to verification"
+          </p>
           <textarea
             className="input w-full text-white bg-gray-900"
             maxLength={50}

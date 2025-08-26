@@ -15,10 +15,12 @@ function BestSellerCarousel() {
   if (products.length === 0) {
     return (
       <div className="py-12 px-4 max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-12 text-[var(--title)]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-[var(--title)]">
           Best Sellers
         </h2>
-        <p className="text-center text-gray-500">No products available yet.</p>
+        <p className="text-center text-gray-500 text-sm sm:text-base">
+          No products available yet.
+        </p>
       </div>
     );
   }
@@ -26,10 +28,8 @@ function BestSellerCarousel() {
   const handleAdd = () => {
     if (!selectedProduct) return;
 
-    // map size to price fields from Appwrite
     const sizePrices = {
       "16oz": selectedProduct.priceSmall,
-
       "22oz": selectedProduct.priceLarge,
     };
 
@@ -46,25 +46,25 @@ function BestSellerCarousel() {
       `${selectedProduct.productName} (${selectedSize}) added to cart!`
     );
 
-    // Reset state and close modal
     setSelectedProduct(null);
-    setSelectedSize("Small");
-    document.getElementById("order-modal").close();
+    setSelectedSize("22oz");
+    document.getElementById("order-modal")?.close();
   };
 
   return (
-    <div className="py-12 px-0 md:px-4">
-      <h2 className="text-5xl md:text-7xl font-bold text-center mb-8 text-[var(--title)]">
+    <div className="py-12 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto">
+      <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center mb-10 text-[var(--title)]">
         Best Sellers
       </h2>
+
+      {/* Responsive Grid */}
       <div
         className="
-          grid gap-6 
+          grid gap-6 sm:gap-8
           grid-cols-1 
           sm:grid-cols-2 
           md:grid-cols-3 
           lg:grid-cols-4
-          max-w-9xl 
         "
       >
         {products
@@ -74,20 +74,23 @@ function BestSellerCarousel() {
               key={product.$id}
               data-aos="zoom-in"
               className="
-              bg-white rounded-xl shadow-lg overflow-hidden 
-              transition-all duration-300 
-              hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
-              hover:scale-105 hover:-translate-y-1
-            "
+                bg-white rounded-xl shadow-lg overflow-hidden 
+                transition-all duration-300 
+                hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
+                hover:scale-105 hover:-translate-y-1
+                flex flex-col
+              "
             >
+              {/* Image */}
               <figure className="relative group overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.productName}
                   className="
-                  w-full h-48 object-cover 
-                  transition-transform duration-300 group-hover:scale-110
-                "
+                    w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 
+                    object-cover 
+                    transition-transform duration-300 group-hover:scale-110
+                  "
                 />
                 <div
                   className="
@@ -97,44 +100,46 @@ function BestSellerCarousel() {
                   "
                 />
               </figure>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2 text-black">
+
+              {/* Card Content */}
+              <div className="p-4 flex-1 flex flex-col">
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-black line-clamp-1">
                   {product.productName}
                 </h3>
                 <div className="badge badge-outline mb-2 text-black">
                   {product.category}
                 </div>
-                <p className="text-sm text-gray-800 mb-4 ">
+                <p className="text-sm sm:text-base text-gray-800 mb-4 line-clamp-3">
                   {product.productDescription}
                 </p>
+
                 {/* Price Section */}
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-4">
-                    {/* Small Cup */}
+                <div className="flex justify-between items-center mt-auto">
+                  <div className="flex flex-col sm:flex-row sm:gap-4 gap-2">
                     <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-lg text-black" />
-                      <span className="font-bold text-black">
+                      <CiCoffeeCup className="text-base sm:text-lg text-black" />
+                      <span className="font-bold text-black text-sm sm:text-base">
                         ₱{product.priceSmall}
                       </span>
-                      <span className="text-xs text-gray-500">(Regular)</span>
+                      <span className="text-xs text-gray-500">(16oz)</span>
                     </div>
 
-                    {/* Large Cup */}
                     <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-2xl text-black" />
-                      <span className="font-bold text-black">
+                      <CiCoffeeCup className="text-lg sm:text-2xl text-black" />
+                      <span className="font-bold text-black text-sm sm:text-base">
                         ₱{product.priceLarge}
                       </span>
-                      <span className="text-xs text-gray-500">(Upsize)</span>
+                      <span className="text-xs text-gray-500">(22oz)</span>
                     </div>
                   </div>
                 </div>
+
                 {/* Order Button */}
                 <button
-                  className="btn btn-sm btn-neutral w-full mt-2"
+                  className="btn btn-sm sm:btn-md btn-neutral w-full mt-3"
                   onClick={() => {
                     setSelectedProduct(product);
-                    document.getElementById("order-modal").showModal();
+                    document.getElementById("order-modal")?.showModal();
                   }}
                 >
                   Order
@@ -144,25 +149,24 @@ function BestSellerCarousel() {
           ))}
       </div>
 
-      {/* Modal for size selection */}
-      <dialog id="order-modal" className="modal ">
-        <div className="modal-box bg-gray-900 max-w-lg">
+      {/* Modal */}
+      <dialog id="order-modal" className="modal">
+        <div className="modal-box bg-gray-900 max-w-md sm:max-w-lg">
           {selectedProduct && (
             <>
-              <h3 className="text-lg font-bold mb-4 text-white">
+              <h3 className="text-base sm:text-lg font-bold mb-4 text-white">
                 Choose size for {selectedProduct.productName}
               </h3>
 
               <div className="flex flex-col gap-3 mb-4">
                 {[
                   { label: "16oz", price: selectedProduct.priceSmall },
-
                   { label: "22oz", price: selectedProduct.priceLarge },
                 ].map((opt) => (
                   <button
                     key={opt.label}
                     onClick={() => setSelectedSize(opt.label)}
-                    className={`flex justify-between px-4 py-2 rounded-lg border ${
+                    className={`flex justify-between px-4 py-2 rounded-lg border text-sm sm:text-base ${
                       selectedSize === opt.label
                         ? "bg-gray-600 text-white border-gray-600"
                         : "bg-white text-black border-gray-300"
@@ -174,16 +178,16 @@ function BestSellerCarousel() {
                 ))}
               </div>
 
-              <div className="modal-action">
-                <form method="dialog" className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleAdd}
-                    className="btn bg-white text-black border-1 border-black hover:bg-gray-600 hover:text-white "
-                  >
-                    Add to Cart
-                  </button>
-                  <button className="btn">Cancel</button>
+              <div className="modal-action flex flex-col sm:flex-row gap-2">
+                <button
+                  type="button"
+                  onClick={handleAdd}
+                  className="btn bg-white text-black border border-black hover:bg-gray-600 hover:text-white w-full sm:w-auto"
+                >
+                  Add to Cart
+                </button>
+                <form method="dialog" className="w-full sm:w-auto">
+                  <button className="btn w-full">Cancel</button>
                 </form>
               </div>
             </>
