@@ -6,17 +6,17 @@ import { fetchProducts } from "../utils/fetchProducts";
 
 function AddImage({ onSave }) {
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState("");
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(50);
-  const [price2, setPrice2] = useState(50);
+  const [price2, setPrice2] = useState(70);
   const [category, setCategory] = useState("ice-drip-coffee");
   const [description, setDescription] = useState("");
   const [productType, setProductType] = useState("Normal");
 
   const [loading, setLoading] = useState(false);
 
+  const [imagePreview, setImagePreview] = useState("");
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImageFile(file);
