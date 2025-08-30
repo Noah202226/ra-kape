@@ -149,7 +149,7 @@ export default function ShowAllProducts() {
           <option value="priceLarge">Sort by Price (Large)</option>
         </select>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
         {sortedProducts.map((product) => (
           <div
             key={product.$id}
@@ -208,8 +208,8 @@ export default function ShowAllProducts() {
 
         {/* Edit Modal */}
         {editingProduct && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg w-96">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg w-96 max-h-[75vh] overflow-y-auto">
               <h2 className="text-lg font-bold mb-4">
                 Edit -- {editingProduct.productName}
               </h2>

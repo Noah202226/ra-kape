@@ -23,7 +23,7 @@ function Hero() {
     >
       <div className="hero-content flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
         {/* IMAGE on left */}
-        <div className="relative w-full max-w-[14rem] sm:max-w-[18rem] md:max-w-md lg:max-w-lg order-1 lg:order-none">
+        <div className="relative w-full max-w-[14rem] sm:max-w-[18rem]  order-1 lg:order-none">
           <img
             src={settings?.heroImage || "/r.jpg"}
             alt="RA KAPE logo"
