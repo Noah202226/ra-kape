@@ -88,7 +88,7 @@ function BestSellerCarousel() {
                   alt={product.productName}
                   className="
         w-full 
-        h-40 sm:h-48 md:h-56 lg:h-64 xl:h-72 
+        h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
         object-cover 
         transition-transform duration-300 group-hover:scale-110
       "
@@ -117,25 +117,22 @@ function BestSellerCarousel() {
                 </p>
 
                 {/* Price Section */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2 mt-auto">
-                  <div className="flex items-center gap-1">
-                    <CiCoffeeCup className="text-sm sm:text-base md:text-lg text-black" />
-                    <span className="font-bold text-black text-xs sm:text-sm md:text-base">
-                      ₱{product.priceSmall}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-gray-500">
-                      (16oz)
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    <CiCoffeeCup className="text-base sm:text-lg md:text-xl text-black" />
-                    <span className="font-bold text-black text-xs sm:text-sm md:text-base">
-                      ₱{product.priceLarge}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-gray-500">
-                      (22oz)
-                    </span>
+                <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
+                  <div className="flex gap-4">
+                    <div className="flex items-center gap-1">
+                      <CiCoffeeCup className="text-lg text-black" />
+                      <span className="font-bold text-black">
+                        ₱{product.priceSmall}
+                      </span>
+                      <span className="text-xs text-gray-500">(Regular)</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <CiCoffeeCup className="text-2xl text-black" />
+                      <span className="font-bold text-black">
+                        ₱{product.priceLarge}
+                      </span>
+                      <span className="text-xs text-gray-500">(Upsize)</span>
+                    </div>
                   </div>
                 </div>
 
@@ -156,10 +153,10 @@ function BestSellerCarousel() {
 
       {/* Modal */}
       <dialog id="order-modal" className="modal">
-        <div className="modal-box bg-gray-900 max-w-md sm:max-w-lg">
+        <div className="modal-box bg-gray-300 max-w-md sm:max-w-lg">
           {selectedProduct && (
             <>
-              <h3 className="text-base sm:text-lg font-bold mb-4 text-white">
+              <h3 className="text-base sm:text-lg font-bold mb-4 text-black">
                 Choose size for {selectedProduct.productName}
               </h3>
 
