@@ -3,11 +3,7 @@ import React from "react";
 import ProductGridFiltered from "../components/ProductGridFiltered";
 
 function Snacks() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-24 pt-20">
-      <ProductGridFiltered type={"non-coffee"} />
-    </main>
-  );
+  return <ProductGridFiltered type={"non-coffee"} />;
 }
 
 export default Snacks;

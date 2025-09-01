@@ -52,7 +52,7 @@ function BestSellerCarousel() {
   };
 
   return (
-    <div className="py-12 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto">
+    <div className="py-12 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto w-full">
       <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center mb-10 text-[var(--title)]">
         Best Sellers
       </h2>
@@ -74,12 +74,12 @@ function BestSellerCarousel() {
               key={product.$id}
               data-aos="zoom-in"
               className="
-                bg-white rounded-xl shadow-lg overflow-hidden 
-                transition-all duration-300 
-                hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
-                hover:scale-105 hover:-translate-y-1
-                flex flex-col
-              "
+    bg-white rounded-xl shadow-lg overflow-hidden 
+    transition-all duration-300 
+    hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
+    hover:scale-105 hover:-translate-y-1
+    flex flex-col
+  "
             >
               {/* Image */}
               <figure className="relative group overflow-hidden">
@@ -87,56 +87,61 @@ function BestSellerCarousel() {
                   src={product.image}
                   alt={product.productName}
                   className="
-                    w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 
-                    object-cover 
-                    transition-transform duration-300 group-hover:scale-110
-                  "
+        w-full 
+        h-40 sm:h-48 md:h-56 lg:h-64 xl:h-72 
+        object-cover 
+        transition-transform duration-300 group-hover:scale-110
+      "
                 />
                 <div
                   className="
-                    absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
-                    opacity-0 group-hover:opacity-100 
-                    transition-opacity duration-300
-                  "
+        absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
+        opacity-0 group-hover:opacity-100 
+        transition-opacity duration-300
+      "
                 />
               </figure>
 
               {/* Card Content */}
-              <div className="p-4 flex-1 flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-black line-clamp-1">
+              <div className="p-3 sm:p-4 flex-1 flex flex-col">
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1">
                   {product.productName}
                 </h3>
-                <div className="badge badge-outline mb-2 text-black">
+
+                <div className="badge badge-outline mb-2 text-xs sm:text-sm text-black">
                   {product.category}
                 </div>
-                <p className="text-sm sm:text-base text-gray-800 mb-4 line-clamp-3">
+
+                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3">
                   {product.productDescription}
                 </p>
 
                 {/* Price Section */}
-                <div className="flex justify-between items-center mt-auto">
-                  <div className="flex flex-col sm:flex-row sm:gap-4 gap-2">
-                    <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-base sm:text-lg text-black" />
-                      <span className="font-bold text-black text-sm sm:text-base">
-                        ₱{product.priceSmall}
-                      </span>
-                      <span className="text-xs text-gray-500">(16oz)</span>
-                    </div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2 mt-auto">
+                  <div className="flex items-center gap-1">
+                    <CiCoffeeCup className="text-sm sm:text-base md:text-lg text-black" />
+                    <span className="font-bold text-black text-xs sm:text-sm md:text-base">
+                      ₱{product.priceSmall}
+                    </span>
+                    <span className="text-[10px] sm:text-xs text-gray-500">
+                      (16oz)
+                    </span>
+                  </div>
 
-                    <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-lg sm:text-2xl text-black" />
-                      <span className="font-bold text-black text-sm sm:text-base">
-                        ₱{product.priceLarge}
-                      </span>
-                      <span className="text-xs text-gray-500">(22oz)</span>
-                    </div>
+                  <div className="flex items-center gap-1">
+                    <CiCoffeeCup className="text-base sm:text-lg md:text-xl text-black" />
+                    <span className="font-bold text-black text-xs sm:text-sm md:text-base">
+                      ₱{product.priceLarge}
+                    </span>
+                    <span className="text-[10px] sm:text-xs text-gray-500">
+                      (22oz)
+                    </span>
                   </div>
                 </div>
 
                 {/* Order Button */}
                 <button
-                  className="btn btn-sm sm:btn-md btn-neutral w-full mt-3"
+                  className="btn btn-xs sm:btn-sm md:btn-md btn-neutral w-full mt-3"
                   onClick={() => {
                     setSelectedProduct(product);
                     document.getElementById("order-modal")?.showModal();
