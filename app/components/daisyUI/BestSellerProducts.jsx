@@ -104,15 +104,15 @@ function BestSellerCarousel() {
 
               {/* Card Content */}
               <div className="p-3 sm:p-4 flex-1 flex flex-col">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1">
+                <h3 className="text-4xl sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1 text-center sm:text-left">
                   {product.productName}
                 </h3>
 
-                <div className="badge badge-outline mb-2 text-xs sm:text-sm text-black">
+                <div className="badge badge-outline mb-2 text-lg sm:text-sm text-black text-center sm:text-left">
                   {product.category}
                 </div>
 
-                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3">
+                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3 text-center sm:text-left">
                   {product.productDescription}
                 </p>
 
@@ -121,24 +121,28 @@ function BestSellerCarousel() {
                   <div className="flex gap-4">
                     <div className="flex items-center gap-1">
                       <CiCoffeeCup className="text-lg text-black" />
-                      <span className="font-bold text-black">
+                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
                         ₱{product.priceSmall}
                       </span>
-                      <span className="text-xs text-gray-500">(Regular)</span>
+                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                        (Regular)
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <CiCoffeeCup className="text-2xl text-black" />
-                      <span className="font-bold text-black">
+                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
                         ₱{product.priceLarge}
                       </span>
-                      <span className="text-xs text-gray-500">(Upsize)</span>
+                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                        (Upsize)
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Order Button */}
                 <button
-                  className="btn btn-xs sm:btn-sm md:btn-md btn-neutral w-full mt-3"
+                  className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
                   onClick={() => {
                     setSelectedProduct(product);
                     document.getElementById("order-modal")?.showModal();

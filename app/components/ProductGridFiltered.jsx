@@ -98,13 +98,13 @@ export default function ProductGridFiltered({ type }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </figure>
               <div className="p-4">
-                <h3 className="text-xl font-bold mb-3 text-black">
+                <h3 className="text-4xl sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1 text-center sm:text-left">
                   {product.productName}
                 </h3>
-                <div className="badge badge-outline mb-2 text-black">
+                <div className="badge badge-outline mb-2 text-lg sm:text-sm text-black text-center sm:text-left">
                   {product.category}
                 </div>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3 text-center sm:text-left">
                   {product.productDescription}
                 </p>
 
@@ -113,17 +113,21 @@ export default function ProductGridFiltered({ type }) {
                   <div className="flex gap-4">
                     <div className="flex items-center gap-1">
                       <CiCoffeeCup className="text-lg text-black" />
-                      <span className="font-bold text-black">
+                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
                         ₱{product.priceSmall}
                       </span>
-                      <span className="text-xs text-gray-500">(Regular)</span>
+                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                        (Regular)
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <CiCoffeeCup className="text-2xl text-black" />
-                      <span className="font-bold text-black">
+                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
                         ₱{product.priceLarge}
                       </span>
-                      <span className="text-xs text-gray-500">(Upsize)</span>
+                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                        (Upsize)
+                      </span>
                     </div>
                   </div>
                 </div>
