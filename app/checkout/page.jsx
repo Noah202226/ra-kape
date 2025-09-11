@@ -100,6 +100,7 @@ export default function CheckoutPage() {
       toast.error("Please fill in all fields.");
       return;
     }
+    setLoading(true);
 
     try {
       // upload image
@@ -152,8 +153,10 @@ export default function CheckoutPage() {
             toast.success("✅ Message sent successfully!");
             clearCart();
             router.push("/");
+            setLoading(false);
           } else {
             toast.error("❌ Failed to send message. Please try again.");
+            setLoading(false);
           }
         }
       } else if (paymentMethod === "cash" || paymentMethod === "cod") {

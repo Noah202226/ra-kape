@@ -36,6 +36,10 @@ export default function ProductGridFiltered({ type }) {
   const handleAdd = (product) => {
     addToCart(product);
     toast.success(`${product.productName} (${product.size}) added to cart!`);
+
+    setSelectedProduct(null);
+    setSelectedSize("22oz");
+    document.getElementById("order-modal")?.close();
   };
 
   if (loading)
@@ -67,8 +71,10 @@ export default function ProductGridFiltered({ type }) {
 
   if (filtered.length === 0)
     return (
-      <div className="text-center text-gray-500">
-        No products found for "{type}".
+      <div className="flex min-h-screen flex-col items-center justify-center px-4 md:42 pt-20">
+        <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold mb-6 capitalize text-center text-black">
+          No products found for "{type}".
+        </h2>
       </div>
     );
 
@@ -76,7 +82,7 @@ export default function ProductGridFiltered({ type }) {
     <main className="flex min-h-screen flex-col items-center justify-center px-4 md:42 pt-20">
       <div className="max-w-7xl mx-auto px-0 sm:px-6 md:px-8 lg:px-12 py-8">
         {/* Title */}
-        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-6 capitalize text-center text-black">
+        <h2 className="text-6xl sm:text-4xl lg:text-5xl font-bold mb-6 capitalize text-center text-black">
           {type.replace(/-/g, " ")}
         </h2>
 
