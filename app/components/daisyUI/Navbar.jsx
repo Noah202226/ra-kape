@@ -1,5 +1,8 @@
 "use client";
+import { useAuthStore } from "@/app/stores/useAuthStore";
 import useCartStore from "@/app/stores/useCartStore";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { RiShoppingCartFill } from "react-icons/ri";
 
@@ -9,8 +12,28 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
+  const [loading, setLoading] = useState(false); // for login/logout buttons
+  const { current, getCurrentUser, logout } = useAuthStore((state) => state);
+
+  const pathname = usePathname();
+  useEffect(() => {
+    setLoading(false);
+  }, [pathname]);
+
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await logout();
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     setHasMounted(true);
+
+    getCurrentUser();
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -66,6 +89,27 @@ function Navbar() {
 
         {/* Cart & CTA */}
         <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+          {current ? (
+            <div className="hidden md:flex items-center gap-3">
+              <span className="text-sm font-medium text-black">
+                {current.name || current.email}
+              </span>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className={`btn btn-primary hidden md:inline-flex rounded-md ${
+                loading ? "pointer-events-none opacity-70" : ""
+              }`}
+              onClick={() => setLoading(true)}
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                "Login"
+              )}
+            </Link>
+          )}
           <div className="relative group">
             <a href="/cart" className="block group-hover:animate-bounce">
               <RiShoppingCartFill
@@ -122,6 +166,47 @@ function Navbar() {
               {item.name}
             </a>
           ))}
+
+          {/* Auth state on mobile */}
+          {current ? (
+            <div className="border-t border-base-300 pt-4 flex flex-col gap-3">
+              <span className="block mb-2 text-sm font-medium text-base-content text-right">
+                {current.name || current.email}
+              </span>
+              <button
+                onClick={async () => {
+                  setLoading(true);
+                  await handleLogout();
+                  setMenuOpen(false);
+                }}
+                disabled={loading}
+                className="btn btn-primary rounded-md flex items-center justify-center"
+              >
+                {loading ? (
+                  <span className="loading loading-spinner loading-sm"></span>
+                ) : (
+                  "Logout"
+                )}
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className={`btn btn-primary w-full ${
+                loading ? "pointer-events-none opacity-70" : ""
+              }`}
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+                setLoading(true);
+              }}
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                "Login"
+              )}
+            </Link>
+          )}
         </div>
       )}
     </nav>

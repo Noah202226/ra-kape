@@ -1,4 +1,5 @@
 "use client";
+import { useAuthStore } from "@/app/stores/useAuthStore";
 import useCartStore from "@/app/stores/useCartStore";
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import React, { useState } from "react";
@@ -6,12 +7,15 @@ import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
 
 function BestSellerCarousel() {
+  const { current } = useAuthStore((state) => state);
+
   const addToCart = useCartStore((state) => state.addToCart);
   const { products } = useSettingsStore((state) => state);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("22oz"); // default size
 
+  console.log("Current user in BestSellerProducts:", current);
   if (products.length === 0) {
     return (
       <div className="py-12 px-4 max-w-7xl mx-auto">
@@ -26,6 +30,14 @@ function BestSellerCarousel() {
   }
 
   const handleAdd = () => {
+    if (current === null) {
+      toast.error("Please log in to add items to your cart.");
+      setSelectedProduct(null);
+      setSelectedSize("22oz");
+      document.getElementById("order-modal")?.close();
+      return;
+    }
+
     if (!selectedProduct) return;
 
     const sizePrices = {

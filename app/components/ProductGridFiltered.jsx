@@ -6,6 +6,7 @@ import { fetchProducts } from "@/app/utils/fetchProducts";
 import useCartStore from "@/app/stores/useCartStore";
 import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
+import { useAuthStore } from "../stores/useAuthStore";
 
 export default function ProductGridFiltered({ type }) {
   const [hasMounted, setHasMounted] = useState(false);
@@ -16,6 +17,8 @@ export default function ProductGridFiltered({ type }) {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("22oz");
+
+  const { current } = useAuthStore((state) => state);
 
   useEffect(() => {
     setHasMounted(true);
@@ -34,6 +37,14 @@ export default function ProductGridFiltered({ type }) {
   );
 
   const handleAdd = (product) => {
+    if (current === null) {
+      toast.error("Please log in to add items to your cart.");
+      setSelectedProduct(null);
+      setSelectedSize("22oz");
+      document.getElementById("order-modal")?.close();
+      return;
+    }
+
     addToCart(product);
     toast.success(`${product.productName} (${product.size}) added to cart!`);
 
@@ -140,7 +151,7 @@ export default function ProductGridFiltered({ type }) {
 
                 {/* Order Button */}
                 <button
-                  className="btn btn-sm btn-neutral w-full mt-3"
+                  className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
                   onClick={() => {
                     setSelectedProduct(product);
                     document.getElementById("order-modal").showModal();

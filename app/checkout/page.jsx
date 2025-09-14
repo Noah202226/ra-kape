@@ -289,9 +289,9 @@ export default function CheckoutPage() {
               </label>
 
               <div className="mb-4">
-                <label className="block mb-2 font-semibold">Barangay</label>
+                <label className="block m-2 font-semibold">Barangay</label>
                 <select
-                  className="border rounded p-2 w-full"
+                  className="border rounded p-4 w-full text-white bg-gray-900"
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
                   required
@@ -319,7 +319,7 @@ export default function CheckoutPage() {
               <div className="mb-4">
                 <label className="block mb-2 font-semibold">Barangay</label>
                 <select
-                  className="border rounded p-2 w-full"
+                  className="border rounded p-2 w-full text-white bg-gray-900"
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
                   required
