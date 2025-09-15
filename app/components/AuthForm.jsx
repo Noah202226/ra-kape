@@ -29,23 +29,23 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
     <div className="card w-full max-w-md shadow-xl bg-black">
       <form className="card-body space-y-2" onSubmit={onSubmit}>
         {/* Title */}
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-base-content text-center">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white text-center">
           {submitType === "Sign Up" ? "Create an Account" : "Welcome Back"}
         </h2>
 
         {/* Email */}
         <div className="form-control">
           <label className="label">
-            <span className="label-text text-base-content">Email</span>
+            <span className="label-text text-white">Email</span>
           </label>
           <label className="input input-bordered flex items-center gap-2 w-full">
-            <Mail className="w-5 h-5 opacity-70 text-base-content" />
+            <Mail className="w-5 h-5 opacity-70 text-white" />
             <input
               type="email"
               name="email"
               placeholder="Enter your email"
               required
-              className="grow text-base-content placeholder:text-base-content/60"
+              className="grow text-white placeholder:text-white/60"
             />
           </label>
         </div>
@@ -53,16 +53,16 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
         {/* Password */}
         <div className="form-control">
           <label className="label">
-            <span className="label-text text-base-content">Password</span>
+            <span className="label-text text-white">Password</span>
           </label>
           <label className="input input-bordered flex items-center gap-2 w-full">
-            <Lock className="w-5 h-5 opacity-70 text-base-content" />
+            <Lock className="w-5 h-5 opacity-70 text-white" />
             <input
               type="password"
               name="password"
               placeholder="Enter your password"
               required
-              className="grow text-base-content placeholder:text-base-content/60"
+              className="grow text-white placeholder:text-white/60"
             />
           </label>
         </div>
@@ -73,34 +73,32 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
             {/* Contact Number */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-base-content">Name</span>
+                <span className="label-text text-white">Name</span>
               </label>
               <label className="input input-bordered flex items-center gap-2 w-full">
-                <RiProfileFill className="w-5 h-5 opacity-70 text-base-content" />
+                <RiProfileFill className="w-5 h-5 opacity-70 text-white" />
                 <input
                   type="tel"
                   name="name"
                   placeholder="Enter your name"
                   required
-                  className="grow text-base-content placeholder:text-base-content/60"
+                  className="grow text-white placeholder:text-white/60"
                 />
               </label>
             </div>
             {/* Contact Number */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-base-content">
-                  Contact Number
-                </span>
+                <span className="label-text text-white">Contact Number</span>
               </label>
               <label className="input input-bordered flex items-center gap-2 w-full">
-                <Phone className="w-5 h-5 opacity-70 text-base-content" />
+                <Phone className="w-5 h-5 opacity-70 text-white" />
                 <input
                   type="tel"
                   name="contact"
                   placeholder="Enter your contact number"
                   required
-                  className="grow text-base-content placeholder:text-base-content/60"
+                  className="grow text-white placeholder:text-white/60"
                 />
               </label>
               <span className="label-text text-right text-orange-500">
@@ -111,16 +109,16 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
             {/* Address */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text text-base-content">Address</span>
+                <span className="label-text text-white">Address</span>
               </label>
               <label className="input input-bordered flex items-center gap-2 w-full">
-                <Home className="w-5 h-5 opacity-70 text-base-content" />
+                <Home className="w-5 h-5 opacity-70 text-white" />
                 <input
                   type="text"
                   name="address"
                   placeholder="Enter your address"
                   required
-                  className="grow text-base-content placeholder:text-base-content/60"
+                  className="grow text-white placeholder:text-white/60"
                 />
               </label>
             </div>
@@ -145,7 +143,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
 
         {/* Toggle */}
         {onToggle && (
-          <p className="text-center text-sm text-base-content">
+          <p className="text-center text-sm text-white">
             {submitType === "Sign Up" ? (
               <>
                 Already have an account?{" "}
