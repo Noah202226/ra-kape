@@ -1,6 +1,6 @@
 // stores/authStore.js
 import { create } from "zustand";
-import { account } from "../../appwrite";
+import { account, database } from "../../appwrite";
 import { ID } from "appwrite";
 import toast from "react-hot-toast";
 
@@ -8,21 +8,39 @@ export const useAuthStore = create((set) => ({
   current: null,
   loading: true,
 
-  register: async (email, password) => {
+  register: async ({ email, password, contact, address, name }) => {
+    console.log("Email", email);
     try {
-      await account.create(ID.unique(), email, password);
-      toast.success("Account created 🎉");
+      // Create auth account
+      const newUser = await account.create(ID.unique(), email, password, name);
+
+      // Save extra details in database
+      await database.createDocument(
+        "6870ab6f0018df40fa94",
+        "profiles",
+        newUser.$id,
+        {
+          userID: newUser.$id,
+          contactNumber: parseInt(contact),
+          address,
+          password,
+        }
+      );
+
+      // Auto-login
       await account.createEmailPasswordSession(email, password);
-      const user = await account.get();
-      set({ current: user });
-      return user;
+      const currentUser = await account.get();
+
+      set({ current: currentUser });
+      toast.success("Account created 🎉");
+      return currentUser;
     } catch (error) {
       toast.error(error?.message || "Signup failed ❌");
-      return null; // ✅ prevent app from crashing
+      return null;
     }
   },
 
-  login: async (email, password) => {
+  login: async ({ email, password }) => {
     try {
       await account.createEmailPasswordSession(email, password);
       const user = await account.get();

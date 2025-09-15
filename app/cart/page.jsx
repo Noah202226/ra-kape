@@ -52,22 +52,6 @@ export default function Page() {
       {/* show current user */}
       {current ? (
         <>
-          <div className="flex items-center gap-3 justify-end w-full max-w-4xl mb-4">
-            <span className="text-sm font-medium text-black">
-              {current.email || current.email}
-            </span>
-            <button
-              onClick={handleLogout}
-              disabled={loading}
-              className="btn btn-primary transition-colors duration-500 btn-sm rounded-md flex items-center justify-center"
-            >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Logout"
-              )}
-            </button>
-          </div>
           <div className="flex justify-between items-center w-full max-w-4xl mb-8">
             <h1 className="text-3xl font-bold text-gray-800">My Cart</h1>
             <button

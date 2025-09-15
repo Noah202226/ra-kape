@@ -89,27 +89,6 @@ function Navbar() {
 
         {/* Cart & CTA */}
         <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
-          {current ? (
-            <div className="hidden md:flex items-center gap-3">
-              <span className="text-sm font-medium text-black">
-                {current.name || current.email}
-              </span>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className={`btn btn-primary hidden md:inline-flex rounded-md ${
-                loading ? "pointer-events-none opacity-70" : ""
-              }`}
-              onClick={() => setLoading(true)}
-            >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Login"
-              )}
-            </Link>
-          )}
           <div className="relative group">
             <a href="/cart" className="block group-hover:animate-bounce">
               <RiShoppingCartFill
@@ -131,6 +110,30 @@ function Navbar() {
           >
             Facebook
           </a>
+
+          {current ? (
+            <div className="hidden md:flex items-center gap-3">
+              <Link href="/profile">
+                <span className="text-sm font-medium text-black cursor-pointer hover:underline">
+                  {current.name || current.email}
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className={`btn bg-black hidden md:inline-flex rounded-md ${
+                loading ? "pointer-events-none opacity-70" : ""
+              }`}
+              onClick={() => setLoading(true)}
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                "Login"
+              )}
+            </Link>
+          )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden focus:outline-none"
@@ -170,9 +173,11 @@ function Navbar() {
           {/* Auth state on mobile */}
           {current ? (
             <div className="border-t border-base-300 pt-4 flex flex-col gap-3">
-              <span className="block mb-2 text-sm font-medium text-base-content text-right">
-                {current.name || current.email}
-              </span>
+              <Link href="/profile">
+                <span className="block mb-2 text-sm font-medium text-base-content text-right">
+                  {current.name || current.email}
+                </span>
+              </Link>
               <button
                 onClick={async () => {
                   setLoading(true);

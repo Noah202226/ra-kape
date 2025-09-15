@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Phone, Home } from "lucide-react";
+import { RiProfileFill } from "react-icons/ri";
 
 export default function AuthForm({ handleSubmit, submitType, onToggle }) {
   const [loading, setLoading] = useState(false);
@@ -8,8 +9,15 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
     e.preventDefault();
     setLoading(true);
 
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const contact = formData.get("contact");
+    const address = formData.get("address");
+    const name = formData.get("name");
+
     try {
-      await handleSubmit(e); // your login/signup logic
+      await handleSubmit({ email, password, contact, address, name }); // ✅ pass values, not the event
     } catch (error) {
       console.error("Auth error:", error);
     } finally {
@@ -19,7 +27,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
 
   return (
     <div className="card w-full max-w-md shadow-xl bg-black">
-      <form onSubmit={onSubmit} className="card-body space-y-6">
+      <form className="card-body space-y-2" onSubmit={onSubmit}>
         {/* Title */}
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-base-content text-center">
           {submitType === "Sign Up" ? "Create an Account" : "Welcome Back"}
@@ -36,7 +44,6 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
               type="email"
               name="email"
               placeholder="Enter your email"
-              defaultValue={"noaligpitan@gmail.com"} // test only
               required
               className="grow text-base-content placeholder:text-base-content/60"
             />
@@ -54,12 +61,71 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
               type="password"
               name="password"
               placeholder="Enter your password"
-              defaultValue={"password123"} // test only
               required
               className="grow text-base-content placeholder:text-base-content/60"
             />
           </label>
         </div>
+
+        {/* Extra fields only for Sign Up */}
+        {submitType === "Sign Up" && (
+          <>
+            {/* Contact Number */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-base-content">Name</span>
+              </label>
+              <label className="input input-bordered flex items-center gap-2 w-full">
+                <RiProfileFill className="w-5 h-5 opacity-70 text-base-content" />
+                <input
+                  type="tel"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                  className="grow text-base-content placeholder:text-base-content/60"
+                />
+              </label>
+            </div>
+            {/* Contact Number */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-base-content">
+                  Contact Number
+                </span>
+              </label>
+              <label className="input input-bordered flex items-center gap-2 w-full">
+                <Phone className="w-5 h-5 opacity-70 text-base-content" />
+                <input
+                  type="tel"
+                  name="contact"
+                  placeholder="Enter your contact number"
+                  required
+                  className="grow text-base-content placeholder:text-base-content/60"
+                />
+              </label>
+              <span className="label-text text-right text-orange-500">
+                Expect a text or call for your orders confirmation
+              </span>
+            </div>
+
+            {/* Address */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-base-content">Address</span>
+              </label>
+              <label className="input input-bordered flex items-center gap-2 w-full">
+                <Home className="w-5 h-5 opacity-70 text-base-content" />
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Enter your address"
+                  required
+                  className="grow text-base-content placeholder:text-base-content/60"
+                />
+              </label>
+            </div>
+          </>
+        )}
 
         {/* Submit */}
         <button

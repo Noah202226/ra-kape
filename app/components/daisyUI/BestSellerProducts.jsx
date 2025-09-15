@@ -133,19 +133,19 @@ function BestSellerCarousel() {
                   <div className="flex gap-4">
                     <div className="flex items-center gap-1">
                       <CiCoffeeCup className="text-lg text-black" />
-                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
+                      <span className="font-bold text-xl sm:text-lg md:text-xs text-black">
                         ₱{product.priceSmall}
                       </span>
-                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                      <span className="text-xl sm:text-lg md:text-xs text-gray-500">
                         (Regular)
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <CiCoffeeCup className="text-2xl text-black" />
-                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
+                      <span className="font-bold text-xl sm:text-lg md:text-xs text-black">
                         ₱{product.priceLarge}
                       </span>
-                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                      <span className="text-xl sm:text-lg md:text-xs text-gray-500">
                         (Upsize)
                       </span>
                     </div>

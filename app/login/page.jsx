@@ -17,18 +17,22 @@ export default function LoginPage() {
     getCurrentUser();
   }, [getCurrentUser]);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const form = new FormData(e.target);
-    const user = await login(form.get("email"), form.get("password"));
-    if (user) router.push("/cart"); // ✅ safe navigation
+  const handleLogin = async ({ email, password }) => {
+    const user = await login({ email, password });
+    if (user) router.push("/"); // ✅ safe navigation
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    const form = new FormData(e.target);
-    const user = await register(form.get("email"), form.get("password"));
-    if (user) router.push("/cart"); // ✅ safe navigation
+  const handleRegister = async ({
+    email,
+    password,
+    contact,
+    address,
+    name,
+  }) => {
+    const user = await register({ email, password, contact, address, name });
+
+    console.log(user);
+    if (user) router.push("/"); // ✅ safe navigation
   };
 
   return (
