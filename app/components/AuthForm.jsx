@@ -45,7 +45,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
               name="email"
               placeholder="Enter your email"
               required
-              className="grow text-white placeholder:text-white/60"
+              className="grow text-gray-700 placeholder:text-white/60"
             />
           </label>
         </div>
@@ -62,7 +62,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
               name="password"
               placeholder="Enter your password"
               required
-              className="grow text-white placeholder:text-white/60"
+              className="grow text-gray-700 placeholder:text-white/60"
             />
           </label>
         </div>
@@ -82,7 +82,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="name"
                   placeholder="Enter your name"
                   required
-                  className="grow text-white placeholder:text-white/60"
+                  className="grow text-gray-700 placeholder:text-white/60"
                 />
               </label>
             </div>
@@ -98,7 +98,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="contact"
                   placeholder="Enter your contact number"
                   required
-                  className="grow text-white placeholder:text-white/60"
+                  className="grow text-gray-700 placeholder:text-white/60"
                 />
               </label>
               <span className="label-text text-right text-orange-500">
@@ -118,7 +118,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="address"
                   placeholder="Enter your address"
                   required
-                  className="grow text-white placeholder:text-white/60"
+                  className="grow text-gray-700 placeholder:text-white/60"
                 />
               </label>
             </div>
