@@ -317,7 +317,7 @@ export default function CheckoutPage() {
               {/* Image Upload */}
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold">
+                  <span className="label-text text-black font-semibold">
                     Product Image
                   </span>
                 </div>
@@ -330,7 +330,9 @@ export default function CheckoutPage() {
               </label>
 
               <div className="mb-4">
-                <label className="block m-2 font-semibold">Barangay</label>
+                <label className="block m-2 font-semibold text-black">
+                  Barangay
+                </label>
                 <select
                   className="border rounded p-4 w-full text-white bg-gray-900"
                   value={barangay}
