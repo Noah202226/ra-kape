@@ -21,6 +21,8 @@ export const useAuthStore = create((set) => ({
         newUser.$id,
         {
           userID: newUser.$id,
+          email,
+          name,
           contactNumber: parseInt(contact),
           address,
           password,

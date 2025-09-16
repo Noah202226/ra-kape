@@ -4,8 +4,48 @@ import React, { useEffect, useState } from "react";
 import useCartStore from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "../stores/useAuthStore";
+import { database } from "@/appwrite";
 
 export default function CheckoutPage() {
+  const { current } = useAuthStore((state) => state);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
+  // Replace with your own IDs
+  const DATABASE_ID = "6870ab6f0018df40fa94";
+  const PROFILES_COLLECTION = "profiles";
+
+  useEffect(() => {
+    console.log("Current:", current);
+    const fetchProfile = async () => {
+      try {
+        if (!current) return;
+
+        // fetch extra profile info
+        const doc = await database.getDocument(
+          DATABASE_ID,
+          PROFILES_COLLECTION,
+          current.$id
+        );
+        console.log(doc);
+
+        setName(doc.name);
+        setEmail(doc.email);
+        setAddress(doc.address);
+        setContact(doc.contactNumber);
+      } catch (error) {
+        console.error("Profile fetch error:", error);
+        toast.error("Could not load profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [current]);
+
   const cart = useCartStore((state) => state.cart);
   const totalPrice = useCartStore((state) => state.totalPrice);
   const clearCart = useCartStore((state) => state.clearCart);
@@ -50,8 +90,6 @@ export default function CheckoutPage() {
     { barangay: "Upig", price: 179 },
   ];
 
-  const router = useRouter();
-
   // form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -60,8 +98,6 @@ export default function CheckoutPage() {
   const [contact, setContact] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("gcash");
   const [gcashUrl, setGcashUrl] = useState("");
-
-  const [loading, setLoading] = useState(false);
 
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
@@ -223,6 +259,7 @@ export default function CheckoutPage() {
             className="input w-full text-white bg-gray-900"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            disabled
           />
           <input
             type="email"
@@ -230,6 +267,7 @@ export default function CheckoutPage() {
             className="input w-full text-white bg-gray-900"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled
           />
           <input
             type="text"
@@ -237,17 +275,20 @@ export default function CheckoutPage() {
             className="input w-full text-white bg-gray-900"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            disabled
           />
+          <span className="text-center text-orange-600 font-semibold italic">
+            Note: "For big orders, expect a quick call from us to verification"
+          </span>
           <input
             type="text"
             placeholder="Contact Number"
             className="input w-full text-white bg-gray-900"
             value={contact}
+            disabled
             onChange={(e) => setContact(e.target.value)}
           />
-          <p className="text-xs text-orange-400 italic">
-            Note: "For big orders, expect a quick call from us to verification"
-          </p>
+
           <textarea
             className="input w-full text-white bg-gray-900"
             maxLength={50}
@@ -303,6 +344,9 @@ export default function CheckoutPage() {
                     </option>
                   ))}
                 </select>
+                <span className="text-center text-orange-600 font-semibold italic">
+                  “Select your barangay to view delivery charges”
+                </span>
               </div>
 
               {imagePreview && (
@@ -331,6 +375,9 @@ export default function CheckoutPage() {
                     </option>
                   ))}
                 </select>
+                <span className="text-center text-orange-600 font-bold">
+                  “Select your barangay to view delivery charges”
+                </span>
               </div>
               <p className="text-gray-500 text-sm">
                 Payment will be collected upon delivery.

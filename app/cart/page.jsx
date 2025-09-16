@@ -130,19 +130,22 @@ export default function Page() {
           )}
         </>
       ) : (
-        <Link
-          href="/login"
-          className={`btn btn-primary hidden md:inline-flex rounded-md ${
-            loading ? "pointer-events-none opacity-70" : ""
-          }`}
-          onClick={() => setLoading(true)}
-        >
-          {loading ? (
-            <span className="loading loading-spinner loading-sm"></span>
-          ) : (
-            "Login"
-          )}
-        </Link>
+        <div className="flex  flex-col justify-between items-center w-full mb-8 h-full">
+          <h2>Please login first to continue</h2>
+          <Link
+            href="/login"
+            className={`btn btn-primary  md:inline-flex rounded-md ${
+              loading ? "pointer-events-none opacity-70" : ""
+            }`}
+            onClick={() => setLoading(true)}
+          >
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Login"
+            )}
+          </Link>
+        </div>
       )}
     </main>
   );

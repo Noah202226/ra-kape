@@ -16,6 +16,7 @@ import AddReview from "@/app/admin/AddReview";
 import { fetchReviews } from "@/app/utils/fetchReviews";
 import ShowAllEvents from "../ShowAllEvents";
 import AddEvent from "@/app/admin/AddEvent";
+import ShowAllUsers from "../ShowAllUsers";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -109,10 +110,11 @@ function TabsWithIcon() {
           <div className="w-full">
             <div className="flex flex-wrap w-full border-b border-black">
               {[
-                { id: "settings", label: "SETTINGS", icon: "▶" },
+                { id: "settings", label: "SETTINGS", icon: "⚙" },
                 { id: "products", label: "PRODUCTS", icon: "🍨" },
-                { id: "customers", label: "TESTIMONIALS", icon: "▶" },
-                { id: "events", label: "EVENTS", icon: "▶" },
+                { id: "customers", label: "TESTIMONIALS", icon: "📃" },
+                { id: "events", label: "EVENTS", icon: "🎉" },
+                { id: "users", label: "All users", icon: "👥" },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -475,6 +477,20 @@ function TabsWithIcon() {
               <button>close</button>
             </form>
           </dialog>
+        </div>
+      )}
+
+      {activeTab === "users" && (
+        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl text-black font-semibold ">👥 USERS</h2>
+          </div>
+
+          {/* Product List */}
+          <div>
+            <ShowAllUsers />
+          </div>
         </div>
       )}
     </div>
