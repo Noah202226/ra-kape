@@ -106,7 +106,7 @@ function Navbar() {
             href="https://www.facebook.com/RaKapeBulacan"
             target="_blank"
             className="px-3 sm:px-4 lg:px-6 py-1 sm:py-2 text-sm sm:text-base lg:text-lg rounded-xl
-              bg-[var(--title)] border-0 hover:shadow-2xl hover:bg-gray-800 text-white transition"
+              bg-black border-0 hover:shadow-2xl hover:bg-gray-800 text-white transition"
           >
             Facebook
           </a>
@@ -130,7 +130,7 @@ function Navbar() {
               {loading ? (
                 <span className="loading loading-spinner loading-sm"></span>
               ) : (
-                "Login"
+                <span className="text-white bg-black">LOGIN</span>
               )}
             </Link>
           )}

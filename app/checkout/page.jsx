@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../stores/useAuthStore";
 import { database } from "@/appwrite";
+import CouponInput from "../components/InputCoupon";
+import { Query } from "appwrite";
 
 export default function CheckoutPage() {
   const { current } = useAuthStore((state) => state);
@@ -49,6 +51,10 @@ export default function CheckoutPage() {
   const cart = useCartStore((state) => state.cart);
   const totalPrice = useCartStore((state) => state.totalPrice);
   const clearCart = useCartStore((state) => state.clearCart);
+  const discountedPrice = useCartStore((state) => state.discountedPrice);
+  const resetDiscountedPrice = useCartStore(
+    (state) => state.resetDiscountedPrice
+  );
   const [barangay, setBarangay] = useState(); // Default barangay, can be changed based on user selection
 
   const priceRange = [
@@ -115,9 +121,26 @@ export default function CheckoutPage() {
     return barangay ? barangay.price : 0;
   };
   const shippingFee = getShippingFee(barangay);
-  const grandTotal = totalPrice() + shippingFee;
+  const amountLestDiscount = totalPrice();
+  const grandTotal = totalPrice();
 
   const [hasMounted, setHasMounted] = useState(false);
+
+  const [couponCode, setCouponCode] = useState("");
+  const onApplyDiscount = async (couponCode) => {
+    // Example: call backend/Appwrite to validate
+    console.log("Coupon entered:", couponCode);
+
+    // TODO: validate with Appwrite
+    // e.g., fetch coupon from DB and check:
+    // - isActive
+    // - expiryDate
+    // - usageLimit
+    // - discountValue
+
+    // Example success
+    alert(`Coupon "${couponCode}" applied successfully! 🎉`);
+  };
 
   useEffect(() => {
     setHasMounted(true);
@@ -126,6 +149,43 @@ export default function CheckoutPage() {
   if (!hasMounted) {
     return null; // or simple static skeleton
   }
+
+  const COUPONS_COLLECTION_ID = "coupons";
+
+  const handleCheckoutSuccess = async () => {
+    try {
+      // 1. Find coupon by code
+      const response = await database.listDocuments(
+        DATABASE_ID,
+        COUPONS_COLLECTION_ID,
+        [Query.equal("code", couponCode.toUpperCase())]
+      );
+
+      if (response.total === 0) {
+        console.warn("Coupon not found:", couponCode);
+        return null;
+      }
+
+      const couponDoc = response.documents[0];
+
+      // 2. Increment usedCount
+      const updatedCoupon = await database.updateDocument(
+        DATABASE_ID,
+        COUPONS_COLLECTION_ID,
+        couponDoc.$id, // we still need the ID internally
+        {
+          usedCount: (couponDoc.usedCount || 0) + 1,
+        }
+      );
+
+      console.log("✅ Coupon usage updated:", updatedCoupon);
+      resetDiscountedPrice();
+      return updatedCoupon;
+    } catch (error) {
+      console.error("⚠️ Error updating coupon usage:", error);
+      return null;
+    }
+  };
 
   const handlePlaceOrder = async () => {
     console.log("Placing order with data:", {
@@ -187,6 +247,7 @@ export default function CheckoutPage() {
           const data = await res.json();
           if (data.success) {
             toast.success("✅ Message sent successfully!");
+            handleCheckoutSuccess();
             clearCart();
             router.push("/");
             setLoading(false);
@@ -217,6 +278,7 @@ export default function CheckoutPage() {
         const data = await res.json();
         if (data.success) {
           toast.success("✅ Message sent successfully!");
+          handleCheckoutSuccess();
           clearCart();
           router.push("/");
         } else {
@@ -230,6 +292,7 @@ export default function CheckoutPage() {
       setLoading(false);
     }
   };
+
   return (
     <main className="flex flex-col items-center px-6 pt-20">
       <h2 className="text-3xl font-bold mb-8 text-gray-900">Checkout</h2>
@@ -394,6 +457,12 @@ export default function CheckoutPage() {
           )}
         </div>
 
+        <CouponInput
+          onApplyDiscount={onApplyDiscount}
+          amountLestDiscount={amountLestDiscount}
+          couponCode={couponCode}
+          setCouponCode={setCouponCode}
+        />
         {/* Order Summary */}
         <div className="bg-gray-900 shadow rounded-xl p-6 space-y-2">
           <h3 className="text-xl font-semibold mb-2 text-white">
@@ -424,9 +493,14 @@ export default function CheckoutPage() {
             <span>Shipping Fee:</span>
             <span>₱{shippingFee.toLocaleString()}</span>
           </div>
+
+          <div className="flex justify-between italic text-orange-500">
+            <span>Discounted Amount:</span>
+            <span>₱{Math.round(grandTotal - discountedPrice)}</span>
+          </div>
           <div className="flex justify-between font-bold text-white">
             <span>Total:</span>
-            <span>₱{grandTotal.toLocaleString()}</span>
+            <span>₱{Math.round(discountedPrice + shippingFee)}</span>
           </div>
         </div>
 

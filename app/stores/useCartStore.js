@@ -66,6 +66,33 @@ const useCartStore = create(
 
       // ✅ Total quantity
       totalQuantity: () => get().cart.reduce((sum, i) => sum + i.quantity, 0),
+
+      discountedPrice: 0,
+
+      resetDiscountedPrice: () => set({ discountedPrice: 0 }),
+
+      calculateDiscountedTotal: (discount, amountLestDiscount) => {
+        let total = get().cart.reduce(
+          (sum, i) => sum + i.price * i.quantity,
+          0
+        );
+        console.log(
+          "Discount",
+          discount,
+          "amountLestDiscount:",
+          amountLestDiscount
+        );
+        if (discount) {
+          if (discount.type === "percentage") {
+            total -= (Number(total) * Number(discount.value)) / 100;
+          } else if (discount.type === "fixed") {
+            total -= total -= Number(discount.value);
+          }
+        }
+        console.log("Discounted", total);
+        set({ discountedPrice: total });
+        return total < 0 ? 0 : total; // prevent negative
+      },
     }),
     {
       name: "cart-storage", // key in localStorage
