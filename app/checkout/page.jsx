@@ -147,6 +147,7 @@ export default function CheckoutPage() {
   };
 
   useEffect(() => {
+    resetDiscountedPrice();
     setHasMounted(true);
   }, []);
 
@@ -192,7 +193,6 @@ export default function CheckoutPage() {
   };
 
   const handlePlaceOrder = async () => {
-    setCheckoutLoading(true);
     console.log("Placing order with data:", {
       name,
       imageFile,
@@ -211,6 +211,8 @@ export default function CheckoutPage() {
         toast.error("Please upload your GCash payment receipt.");
         return;
       } else if (paymentMethod === "gcash") {
+        setCheckoutLoading(true);
+
         const uploadRes = await fetch("/api/upload", {
           method: "POST",
           body: formData,
@@ -254,10 +256,10 @@ export default function CheckoutPage() {
             handleCheckoutSuccess();
             clearCart();
             router.push("/");
-            setLoading(false);
+            setCheckoutLoading(false);
           } else {
             toast.error("❌ Failed to send message. Please try again.");
-            setLoading(false);
+            setCheckoutLoading(false);
           }
         }
       } else if (paymentMethod === "cash" || paymentMethod === "cod") {
@@ -519,7 +521,7 @@ export default function CheckoutPage() {
                 ? grandTotal
                 : discountType === "percentage"
                 ? Math.round(discountedPrice + shippingFee)
-                : grandTotal - discountedPrice}
+                : grandTotal - discountedPrice + shippingFee}
             </span>
           </div>
         </div>
