@@ -139,7 +139,8 @@ export default function CheckoutPage() {
     // - discountValue
 
     // Example success
-    alert(`Coupon "${couponCode}" applied successfully! 🎉`);
+
+    toast.success(`Coupon applied successfully!`);
   };
 
   useEffect(() => {
@@ -496,11 +497,21 @@ export default function CheckoutPage() {
 
           <div className="flex justify-between italic text-orange-500">
             <span>Discounted Amount:</span>
-            <span>₱{Math.round(grandTotal - discountedPrice)}</span>
+            <span>
+              ₱
+              {discountedPrice === 0
+                ? "0"
+                : Math.round(grandTotal - discountedPrice)}
+            </span>
           </div>
           <div className="flex justify-between font-bold text-white">
             <span>Total:</span>
-            <span>₱{Math.round(discountedPrice + shippingFee)}</span>
+            <span>
+              ₱
+              {discountedPrice === 0
+                ? grandTotal
+                : Math.round(discountedPrice + shippingFee)}
+            </span>
           </div>
         </div>
 

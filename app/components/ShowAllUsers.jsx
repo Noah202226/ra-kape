@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import useSettingsStore from "../stores/useSettingsStore";
-import { account, database } from "@/appwrite";
+import { database } from "@/appwrite";
 import { Query } from "appwrite";
+
+const DATABASE_ID = "6870ab6f0018df40fa94";
+const PROFILES_COLLECTION_ID = "profiles";
 
 function ShowAllUsers() {
   const { users, setUsers } = useSettingsStore((state) => state);
-
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Replace with your Database + Collection IDs
-  const DATABASE_ID = "6870ab6f0018df40fa94";
-  const PROFILES_COLLECTION_ID = "profiles";
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -19,9 +17,10 @@ function ShowAllUsers() {
         const response = await database.listDocuments(
           DATABASE_ID,
           PROFILES_COLLECTION_ID,
-          [Query.orderDesc("$createdAt")] // newest first
+          [Query.orderDesc("$createdAt")]
         );
         setProfiles(response.documents);
+        setUsers(response.documents);
       } catch (err) {
         console.error("Error fetching profiles:", err);
       } finally {
@@ -30,37 +29,47 @@ function ShowAllUsers() {
     };
 
     fetchProfiles();
-  }, []);
+  }, [setUsers]);
 
-  if (loading) return <p className="p-4">Loading profiles...</p>;
+  if (loading) {
+    return <p className="p-6 text-gray-500">Loading profiles...</p>;
+  }
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">All Users (Profiles)</h1>
-      <div className="overflow-x-auto">
-        <table className="table w-full border border-gray-200">
-          <thead className="bg-base-200">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Contact</th>
-              <th>Address</th>
-              <th>Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {profiles.map((p) => (
-              <tr key={p.$id}>
-                <td className="font-mono text-sm">{p.name}</td>
-                <td>{p.email}</td>
-                <td>{p.contactNumber}</td>
-                <td>{p.address}</td>
-                <td>{new Date(p.$createdAt).toLocaleDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <h1 className="text-xl font-bold mb-6">👥 All Users</h1>
+
+      {profiles.length === 0 ? (
+        <p className="text-gray-500">No users found.</p>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {profiles.map((p) => (
+            <div
+              key={p.$id}
+              className="card bg-white text-black shadow-md border border-base-300"
+            >
+              <div className="card-body">
+                <h2 className="card-title text-base">{p.name || "Unnamed"}</h2>
+                <p className="text-sm text-gray-600">{p.email}</p>
+                <div className="mt-3 space-y-1 text-sm">
+                  <p>
+                    📞{" "}
+                    <span className="font-medium">
+                      {p.contactNumber || "-"}
+                    </span>
+                  </p>
+                  <p>
+                    🏠 <span>{p.address || "-"}</span>
+                  </p>
+                </div>
+                <div className="mt-4 text-xs text-gray-500">
+                  Created: {new Date(p.$createdAt).toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
