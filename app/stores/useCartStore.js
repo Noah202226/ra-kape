@@ -86,7 +86,7 @@ const useCartStore = create(
           if (discount.type === "percentage") {
             total -= (Number(total) * Number(discount.value)) / 100;
           } else if (discount.type === "fixed") {
-            total -= total -= Number(discount.value);
+            total -= parseInt(total) - Number(discount.value);
           }
         }
         console.log("Discounted", total);

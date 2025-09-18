@@ -11,8 +11,9 @@ import { Query } from "appwrite";
 
 export default function CheckoutPage() {
   const { current } = useAuthStore((state) => state);
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const [profileLoading, setProfileLoading] = useState(true); // for fetching profile
+  const [checkoutLoading, setCheckoutLoading] = useState(false); // for placing order
 
   const router = useRouter();
   // Replace with your own IDs
@@ -41,7 +42,7 @@ export default function CheckoutPage() {
         console.error("Profile fetch error:", error);
         toast.error("Could not load profile");
       } finally {
-        setLoading(false);
+        setProfileLoading(false);
       }
     };
 
@@ -127,9 +128,11 @@ export default function CheckoutPage() {
   const [hasMounted, setHasMounted] = useState(false);
 
   const [couponCode, setCouponCode] = useState("");
+  const [discountType, setDiscountType] = useState("");
   const onApplyDiscount = async (couponCode) => {
     // Example: call backend/Appwrite to validate
     console.log("Coupon entered:", couponCode);
+    setDiscountType(couponCode.type);
 
     // TODO: validate with Appwrite
     // e.g., fetch coupon from DB and check:
@@ -189,6 +192,7 @@ export default function CheckoutPage() {
   };
 
   const handlePlaceOrder = async () => {
+    setCheckoutLoading(true);
     console.log("Placing order with data:", {
       name,
       imageFile,
@@ -197,7 +201,6 @@ export default function CheckoutPage() {
       toast.error("Please fill in all fields.");
       return;
     }
-    setLoading(true);
 
     try {
       // upload image
@@ -497,11 +500,15 @@ export default function CheckoutPage() {
 
           <div className="flex justify-between italic text-orange-500">
             <span>Discounted Amount:</span>
+            {console.log("Discounted type:", discountType)}
+            {console.log("Discounted amount:", discountedPrice)}
             <span>
               ₱
               {discountedPrice === 0
                 ? "0"
-                : Math.round(grandTotal - discountedPrice)}
+                : discountType === "percentage"
+                ? Math.round(grandTotal - discountedPrice)
+                : discountedPrice}
             </span>
           </div>
           <div className="flex justify-between font-bold text-white">
@@ -510,7 +517,9 @@ export default function CheckoutPage() {
               ₱
               {discountedPrice === 0
                 ? grandTotal
-                : Math.round(discountedPrice + shippingFee)}
+                : discountType === "percentage"
+                ? Math.round(discountedPrice + shippingFee)
+                : grandTotal - discountedPrice}
             </span>
           </div>
         </div>
@@ -518,10 +527,10 @@ export default function CheckoutPage() {
         {/* Place Order */}
         <button
           onClick={handlePlaceOrder}
-          disabled={loading || cart.length === 0}
+          disabled={checkoutLoading}
           className="w-full py-3 bg-gray-800 hover:bg-black text-white font-semibold rounded-xl transition cursor-pointer"
         >
-          Place Order
+          {checkoutLoading ? "Placing Order..." : "Place Order"}
         </button>
       </div>
     </main>
