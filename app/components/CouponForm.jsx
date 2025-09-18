@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { database } from "@/appwrite";
 import { ID } from "appwrite";
+import toast from "react-hot-toast";
 
 const DATABASE_ID = "6870ab6f0018df40fa94";
 const COUPONS_COLLECTION_ID = "coupons";
@@ -53,8 +54,9 @@ export default function CouponForm({ fetchCoupons }) {
       document.getElementById("coupon_modal").close();
 
       fetchCoupons();
+      toast.success("New Coupon added ✔");
     } catch (err) {
-      console.error("Error creating coupon:", err);
+      toast.error("Error creating coupon", err);
     } finally {
       setLoading(false);
     }
@@ -74,68 +76,95 @@ export default function CouponForm({ fetchCoupons }) {
 
       {/* Modal */}
       <dialog id="coupon_modal" className="modal">
-        <div className="modal-box w-full max-w-2xl">
+        <div className="modal-box w-full max-w-2xl bg-white">
           <h3 className="text-xl font-bold mb-4">➕ Create Coupon</h3>
 
           <form onSubmit={handleSubmit} className="grid gap-4">
             {/* Row 1 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="code"
-                placeholder="Coupon Code"
-                value={form.code}
-                onChange={handleChange}
-                required
-                className="input input-bordered w-full"
-              />
-              <select
-                name="discountType"
-                value={form.discountType}
-                onChange={handleChange}
-                className="select select-bordered w-full"
-              >
-                <option value="percentage">Percentage</option>
-                <option value="fixed">Fixed Amount</option>
-              </select>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Coupon Code
+                </legend>
+                <input
+                  type="text"
+                  name="code"
+                  placeholder="Coupon Code"
+                  value={form.code}
+                  onChange={handleChange}
+                  required
+                  className="input input-bordered w-full text-white bg-black"
+                />
+              </fieldset>
+
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Discount Type
+                </legend>
+                <select
+                  name="discountType"
+                  value={form.discountType}
+                  onChange={handleChange}
+                  className="select select-bordered w-full text-white bg-black"
+                >
+                  <option value="percentage">Percentage</option>
+                  <option value="fixed">Fixed Amount</option>
+                </select>
+              </fieldset>
             </div>
 
             {/* Row 2 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                type="number"
-                name="discountValue"
-                placeholder="Discount Value"
-                value={form.discountValue}
-                onChange={handleChange}
-                required
-                className="input input-bordered w-full"
-              />
-              <input
-                type="date"
-                name="expiryDate"
-                value={form.expiryDate}
-                onChange={handleChange}
-                required
-                className="input input-bordered w-full"
-              />
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Discount Value
+                </legend>
+                <input
+                  type="number"
+                  name="discountValue"
+                  placeholder="Discount Value"
+                  value={form.discountValue}
+                  onChange={handleChange}
+                  required
+                  className="input input-bordered w-full text-white bg-black"
+                />
+              </fieldset>
+
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Discount Value
+                </legend>
+                <input
+                  type="date"
+                  name="expiryDate"
+                  value={form.expiryDate}
+                  onChange={handleChange}
+                  required
+                  className="input input-bordered w-full text-white bg-black"
+                />
+              </fieldset>
             </div>
 
             {/* Row 3 */}
-            <input
-              type="number"
-              name="usageLimit"
-              placeholder="Usage Limit (optional)"
-              value={form.usageLimit}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-            />
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend text-black">
+                Discount Value
+              </legend>
+              <input
+                type="number"
+                name="usageLimit"
+                placeholder="Usage Limit (optional)"
+                value={form.usageLimit}
+                onChange={handleChange}
+                className="input input-bordered w-full text-white bg-black"
+              />
+            </fieldset>
 
             {/* Actions */}
             <div className="modal-action flex flex-col sm:flex-row sm:justify-end gap-3">
               <button
                 type="button"
-                className="btn w-full sm:w-auto"
+                className="btn btn-outline w-full sm:w-auto"
                 onClick={() => document.getElementById("coupon_modal").close()}
               >
                 Cancel
@@ -143,7 +172,7 @@ export default function CouponForm({ fetchCoupons }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn btn-primary w-full sm:w-auto"
+                className="btn bg-black w-full sm:w-auto"
               >
                 {loading ? "Creating..." : "Create"}
               </button>
