@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useCartStore from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -12,32 +12,29 @@ import { Query } from "appwrite";
 export default function CheckoutPage() {
   const { current } = useAuthStore((state) => state);
 
-  const [profileLoading, setProfileLoading] = useState(true); // for fetching profile
-  const [checkoutLoading, setCheckoutLoading] = useState(false); // for placing order
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const router = useRouter();
-  // Replace with your own IDs
   const DATABASE_ID = "6870ab6f0018df40fa94";
   const PROFILES_COLLECTION = "profiles";
+  const COUPONS_COLLECTION_ID = "coupons";
 
   useEffect(() => {
-    console.log("Current:", current);
     const fetchProfile = async () => {
       try {
         if (!current) return;
 
-        // fetch extra profile info
         const doc = await database.getDocument(
           DATABASE_ID,
           PROFILES_COLLECTION,
           current.$id
         );
-        console.log(doc);
 
-        setName(doc.name);
-        setEmail(doc.email);
-        setAddress(doc.address);
-        setContact(doc.contactNumber);
+        setName(doc.name || "");
+        setEmail(doc.email || "");
+        setAddress(doc.address || "");
+        setContact(doc.contactNumber || "");
       } catch (error) {
         console.error("Profile fetch error:", error);
         toast.error("Could not load profile");
@@ -56,7 +53,9 @@ export default function CheckoutPage() {
   const resetDiscountedPrice = useCartStore(
     (state) => state.resetDiscountedPrice
   );
-  const [barangay, setBarangay] = useState(); // Default barangay, can be changed based on user selection
+
+  // shipping / barangay
+  const [barangay, setBarangay] = useState("");
 
   const priceRange = [
     { barangay: "Akle", price: 215 },
@@ -105,217 +104,156 @@ export default function CheckoutPage() {
   const [contact, setContact] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("gcash");
   const [gcashUrl, setGcashUrl] = useState("");
-
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+  const [hasMounted, setHasMounted] = useState(false);
+
+  // coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [discountType, setDiscountType] = useState("");
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
+    if (!file) return;
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
-  // Function to get shipping fee based on selected barangay
-  // This function can be used in the form to calculate shipping fee dynamically
+  // subtotal derived from cart
+  const subtotal = useMemo(() => {
+    return totalPrice();
+  }, [cart, totalPrice]);
+
+  const amountLestDiscount = subtotal;
+
   const getShippingFee = (selectedBarangay) => {
-    const barangay = priceRange.find((b) => b.barangay === selectedBarangay);
-    return barangay ? barangay.price : 0;
+    const barangayObj = priceRange.find((b) => b.barangay === selectedBarangay);
+    return barangayObj ? barangayObj.price : 0;
   };
-  const shippingFee = getShippingFee(barangay);
-  const amountLestDiscount = totalPrice();
-  const grandTotal = totalPrice();
 
-  const [hasMounted, setHasMounted] = useState(false);
+  const shippingFee = useMemo(() => getShippingFee(barangay), [barangay]);
 
-  const [couponCode, setCouponCode] = useState("");
-  const [discountType, setDiscountType] = useState("");
-  const onApplyDiscount = async (couponCode) => {
-    // Example: call backend/Appwrite to validate
-    console.log("Coupon entered:", couponCode);
-    setDiscountType(couponCode.type);
-
-    // TODO: validate with Appwrite
-    // e.g., fetch coupon from DB and check:
-    // - isActive
-    // - expiryDate
-    // - usageLimit
-    // - discountValue
-
-    // Example success
-
-    toast.success(`Coupon applied successfully!`);
-  };
+  // grand total = subtotal - discount + shipping
+  const grandTotal = useMemo(() => {
+    const total =
+      Number(subtotal) -
+      Number(discountedPrice || 0) +
+      Number(shippingFee || 0);
+    return Math.max(0, Math.round(total));
+  }, [subtotal, discountedPrice, shippingFee]);
 
   useEffect(() => {
     resetDiscountedPrice();
     setHasMounted(true);
   }, []);
 
-  if (!hasMounted) {
-    return null; // or simple static skeleton
-  }
+  if (!hasMounted) return null;
 
-  const COUPONS_COLLECTION_ID = "coupons";
+  const onApplyDiscount = async (codeOrObj) => {};
 
   const handleCheckoutSuccess = async () => {
     try {
-      // 1. Find coupon by code
+      if (!couponCode) return null;
+
       const response = await database.listDocuments(
         DATABASE_ID,
         COUPONS_COLLECTION_ID,
         [Query.equal("code", couponCode.toUpperCase())]
       );
 
-      if (response.total === 0) {
-        console.warn("Coupon not found:", couponCode);
-        return null;
-      }
+      if (response.total === 0) return null;
 
       const couponDoc = response.documents[0];
 
-      // 2. Increment usedCount
       const updatedCoupon = await database.updateDocument(
         DATABASE_ID,
         COUPONS_COLLECTION_ID,
-        couponDoc.$id, // we still need the ID internally
+        couponDoc.$id,
         {
           usedCount: (couponDoc.usedCount || 0) + 1,
         }
       );
 
-      console.log("✅ Coupon usage updated:", updatedCoupon);
       resetDiscountedPrice();
       return updatedCoupon;
     } catch (error) {
-      console.error("⚠️ Error updating coupon usage:", error);
+      console.error("Error updating coupon usage:", error);
       return null;
     }
   };
 
   const handlePlaceOrder = async () => {
-    console.log("Placing order with data:", {
-      name,
-      imageFile,
-    });
     if (!name || !address || !contact) {
       toast.error("Please fill in all fields.");
       return;
     }
 
     try {
-      // upload image
       const formData = new FormData();
-      formData.append("file", imageFile);
+      if (imageFile) formData.append("file", imageFile);
 
       if (paymentMethod === "gcash" && !imageFile) {
         toast.error("Please upload your GCash payment receipt.");
         return;
-      } else if (paymentMethod === "gcash") {
-        setCheckoutLoading(true);
+      }
 
+      setCheckoutLoading(true);
+
+      let gcashUrlTemp = "";
+      if (paymentMethod === "gcash") {
         const uploadRes = await fetch("/api/upload", {
           method: "POST",
           body: formData,
         });
         const uploadData = await uploadRes.json();
 
-        if (uploadData.error) {
-          throw new Error(uploadData.error);
-        } else {
-          setGcashUrl(uploadData.fileUrl);
-        }
-        if (!uploadData.success) {
-          throw new Error(uploadData.error);
-        } else {
-          setGcashUrl(uploadData.fileUrl);
-          toast.success("Uploaded", uploadData.fileUrl);
-          console.log("Gcash url::", gcashUrl);
+        if (!uploadData.success)
+          throw new Error(uploadData.error || "Upload failed");
+        gcashUrlTemp = uploadData.fileUrl;
+        setGcashUrl(uploadData.fileUrl);
+        toast.success("Uploaded");
+      }
 
-          const res = await fetch("/api/send-email", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name,
-              email,
-              address,
-              message,
-              orders: cart,
-              modeOfPayment: paymentMethod,
-              barangay,
-              shippingFee,
-              totalAmount: totalPrice,
-              grandTotal,
-              reference: uploadData.fileUrl, // Use the uploaded image URL as reference
-            }),
-          });
-          const data = await res.json();
-          if (data.success) {
-            toast.success("✅ Message sent successfully!");
-            handleCheckoutSuccess();
-            clearCart();
-            router.push("/");
-            setCheckoutLoading(false);
-          } else {
-            toast.error("❌ Failed to send message. Please try again.");
-            setCheckoutLoading(false);
-          }
-        }
-      } else if (paymentMethod === "cash" || paymentMethod === "cod") {
-        const res = await fetch("/api/send-email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            address,
-            message,
-            orders: cart,
-            barangay,
-            shippingFee,
-            modeOfPayment: paymentMethod,
-            totalAmount: totalPrice,
-            grandTotal,
-          }),
-        });
-        const data = await res.json();
-        if (data.success) {
-          toast.success("✅ Message sent successfully!");
-          handleCheckoutSuccess();
-          clearCart();
-          router.push("/");
-        } else {
-          toast.error("❌ Failed to send message. Please try again.");
-        }
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          address,
+          message,
+          orders: cart,
+          barangay,
+          shippingFee,
+          discountedPrice,
+          modeOfPayment: paymentMethod,
+          subtotal,
+          discountedAmount: discountedPrice,
+          grandTotal,
+          reference: gcashUrlTemp || undefined,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success("✅ Order placed successfully!");
+        await handleCheckoutSuccess();
+        clearCart();
+        router.push("/");
+      } else {
+        toast.error("❌ Failed to place order. Please try again.");
       }
     } catch (err) {
-      console.error(err);
+      console.error("place order error:", err);
       toast.error(err.message || "Upload failed");
     } finally {
-      setLoading(false);
+      setCheckoutLoading(false);
     }
   };
 
   return (
     <main className="flex flex-col items-center px-6 pt-20">
       <h2 className="text-3xl font-bold mb-8 text-gray-900">Checkout</h2>
-      {/* <ReceiptGenerator
-        order={{
-          orderId: "RAKAPE-20250806",
-          customerName: "Noa Ligpitan",
-          date: Date.now(),
-          paymentMethod: "GCash",
-          items: [
-            { name: "Iced Latte", qty: 2, price: 120 },
-            { name: "Espresso", qty: 1, price: 100 },
-          ],
-          total: 340,
-        }}
-      /> */}
-      ;
       <div className="w-full max-w-xl space-y-6">
         {/* Shipping Info */}
         <div className="bg-white shadow rounded-xl p-6 space-y-4">
@@ -344,7 +282,6 @@ export default function CheckoutPage() {
             className="input w-full text-white bg-gray-900"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            disabled
           />
           <span className="text-center text-orange-600 font-semibold italic">
             Note: "For big orders, expect a quick call from us to verification"
@@ -383,7 +320,6 @@ export default function CheckoutPage() {
           </select>
           {paymentMethod === "gcash" && (
             <>
-              {/* Image Upload */}
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text text-black font-semibold">
@@ -469,6 +405,7 @@ export default function CheckoutPage() {
           couponCode={couponCode}
           setCouponCode={setCouponCode}
         />
+
         {/* Order Summary */}
         <div className="bg-gray-900 shadow rounded-xl p-6 space-y-2">
           <h3 className="text-xl font-semibold mb-2 text-white">
@@ -479,7 +416,7 @@ export default function CheckoutPage() {
           ) : (
             cart?.map((item, index) => (
               <div
-                key={`${item.$id} - ${index}`}
+                key={`${item.$id}-${index}`}
                 className="flex justify-between"
               >
                 <span className="text-white">
@@ -493,7 +430,7 @@ export default function CheckoutPage() {
           )}
           <div className="flex justify-between text-white">
             <span>Subtotal:</span>
-            <span>₱{totalPrice().toLocaleString()}</span>
+            <span>₱{subtotal.toLocaleString()}</span>
           </div>
           <div className="flex justify-between text-white">
             <span>Shipping Fee:</span>
@@ -502,27 +439,11 @@ export default function CheckoutPage() {
 
           <div className="flex justify-between italic text-orange-500">
             <span>Discounted Amount:</span>
-            {console.log("Discounted type:", discountType)}
-            {console.log("Discounted amount:", discountedPrice)}
-            <span>
-              ₱
-              {discountedPrice === 0
-                ? "0"
-                : discountType === "percentage"
-                ? Math.round(grandTotal - discountedPrice)
-                : discountedPrice}
-            </span>
+            <span>₱{discountedPrice.toLocaleString()}</span>
           </div>
           <div className="flex justify-between font-bold text-white">
             <span>Total:</span>
-            <span>
-              ₱
-              {discountedPrice === 0
-                ? grandTotal
-                : discountType === "percentage"
-                ? Math.round(discountedPrice + shippingFee)
-                : grandTotal - discountedPrice + shippingFee}
-            </span>
+            <span>₱{grandTotal.toLocaleString()}</span>
           </div>
         </div>
 
