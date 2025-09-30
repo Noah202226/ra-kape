@@ -76,12 +76,12 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                 <span className="label-text text-white">Name</span>
               </label>
               <label className="input input-bordered flex items-center gap-2 w-full">
-                <RiProfileFill className="w-5 h-5 opacity-70 text-white" />
+                <RiProfileFill className="w-5 h-5 opacity-70 text-black" />
                 <input
                   name="name"
                   placeholder="Enter your name"
                   required
-                  className="grow  text-white placeholder:text-white/60"
+                  className="grow  text-black placeholder:text-white/60"
                 />
               </label>
             </div>
@@ -91,13 +91,13 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                 <span className="label-text text-white">Contact Number</span>
               </label>
               <label className="input input-bordered flex items-center gap-2 w-full">
-                <Phone className="w-5 h-5 opacity-70 text-white" />
+                <Phone className="w-5 h-5 opacity-70 text-black" />
                 <input
                   type="tel"
                   name="contact"
                   placeholder="Enter your contact number"
                   required
-                  className="grow text-white placeholder:text-white/60"
+                  className="grow text-black placeholder:text-white/60"
                 />
               </label>
               <span className="label-text text-right text-orange-500">
@@ -117,7 +117,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="address"
                   placeholder="Enter your address"
                   required
-                  className="grow text-white placeholder:text-white/60"
+                  className="grow text-black placeholder:text-white/60"
                 />
               </label>
             </div>
