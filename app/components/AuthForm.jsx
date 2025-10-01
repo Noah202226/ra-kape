@@ -45,7 +45,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
               name="email"
               placeholder="Enter your email"
               required
-              className="grow text-gray-700 placeholder:text-white/60"
+              className="grow text-black bg-white pl-2.5 placeholder:text-white/60"
             />
           </label>
         </div>
@@ -56,13 +56,13 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
             <span className="label-text text-white">Password</span>
           </label>
           <label className="input input-bordered flex items-center gap-2 w-full">
-            <Lock className="w-5 h-5 opacity-70 text-white" />
+            <Lock className="w-5 h-5 opacity-70 text-black" />
             <input
               type="password"
               name="password"
               placeholder="Enter your password"
               required
-              className="grow text-gray-700 placeholder:text-white/60"
+              className="grow text-black bg-white pl-2.5 placeholder:text-white/60"
             />
           </label>
         </div>
@@ -81,7 +81,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="name"
                   placeholder="Enter your name"
                   required
-                  className="grow  text-black placeholder:text-white/60"
+                  className="grow text-black bg-white pl-2.5 placeholder:text-white/60"
                 />
               </label>
             </div>
@@ -97,7 +97,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="contact"
                   placeholder="Enter your contact number"
                   required
-                  className="grow text-black placeholder:text-white/60"
+                  className="grow text-black bg-white pl-2.5 placeholder:text-white/60"
                 />
               </label>
               <span className="label-text text-right text-orange-500">
@@ -117,7 +117,7 @@ export default function AuthForm({ handleSubmit, submitType, onToggle }) {
                   name="address"
                   placeholder="Enter your address"
                   required
-                  className="grow text-black placeholder:text-white/60"
+                  className="grow text-black bg-white pl-2.5 placeholder:text-white/60"
                 />
               </label>
             </div>
