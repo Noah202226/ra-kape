@@ -291,7 +291,6 @@ export default function CheckoutPage() {
             placeholder="Contact Number"
             className="input w-full text-white bg-gray-900"
             value={contact}
-            disabled
             onChange={(e) => setContact(e.target.value)}
           />
 
