@@ -22,10 +22,10 @@
     "framer-motion": "^12.23.12",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.544.0",
-    "next": "15.3.5",
+    "next": "15.5.4",
     "nodemailer": "^7.0.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "zustand": "^5.0.6"
@@ -33,6 +33,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "daisyui": "^5.0.46",
+    "lightningcss": "^1.30.2",
     "tailwindcss": "^4"
   }
 }

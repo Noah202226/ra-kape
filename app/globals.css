@@ -245,12 +245,8 @@ li:hover {
   background-size: 200% 100%;
 }
 
-/* ✅ Patch: wrap DaisyUI’s radial-progress property in @supports */
 @layer base {
-  @supports (property(--radialprogress: 0%)) {
-    @property --radialprogress {
-      syntax: "<percentage>";
-      inherits: true;
-    }
+  select {
+    appearance: auto !important; /* fallback */
   }
 }
