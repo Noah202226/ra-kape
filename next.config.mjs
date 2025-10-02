@@ -5,6 +5,7 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: false, // disable Lightning CSS
+    useLightningcss: false,
   },
 };
 
