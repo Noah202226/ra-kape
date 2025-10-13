@@ -283,7 +283,7 @@ export default function CheckoutPage() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          <span className="text-center text-orange-600 font-semibold italic">
+          <span className="text-center text-orange-600 text-sm font-light italic">
             Note: "For big orders, expect a quick call from us to verification"
           </span>
           <input
@@ -350,8 +350,9 @@ export default function CheckoutPage() {
                     </option>
                   ))}
                 </select>
-                <span className="text-center text-orange-600 font-semibold italic">
-                  “Select your barangay to view delivery charges”
+                <span className="text-center text-orange-600 text-sm font-light italic">
+                  “Delivery fee stated is a base rate and may differ depending
+                  on your location”
                 </span>
               </div>
 
