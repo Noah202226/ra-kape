@@ -146,7 +146,7 @@ function AddImage({ onSave }) {
           <option value="non-coffee">NON COFFEE</option>
           <option value="ice-blended">ICE BLENDED</option>
           <option value="hot-coffee">HOT COFFEE</option>
-          <option value="add-ons">ADD-ONS</option>
+          <option value="pastry">Pastry</option>
         </select>
       </label>
 

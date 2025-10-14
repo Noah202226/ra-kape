@@ -47,7 +47,7 @@ function Navbar() {
     { name: "Non Coffee", link: "/non-coffee" },
     { name: "Hot Coffee", link: "/hot-coffee" },
     { name: "Ice Blended", link: "/ice-blended" },
-    { name: "Add-ons", link: "/add-ons" },
+    { name: "Pastry", link: "/pastry" },
   ];
 
   return (
