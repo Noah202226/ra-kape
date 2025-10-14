@@ -107,11 +107,17 @@ export default function ProductGridFiltered({ type }) {
               className="bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg w-full flex flex-col"
             >
               <figure className="relative group overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.productName}
-                  className="w-full aspect-[4/3] object-cover transition-transform duration-300 group-hover:scale-110"
-                />
+                <div className="relative">
+                  <img
+                    src={product.image}
+                    alt={product.productName}
+                    className={`w-full 
+      h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
+      object-cover 
+      transition-transform duration-300 group-hover:scale-110
+      ${!product.isAvailable ? "opacity-50 grayscale" : ""}`}
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </figure>
               <div className="p-4">
@@ -150,15 +156,21 @@ export default function ProductGridFiltered({ type }) {
                 </div>
 
                 {/* Order Button */}
-                <button
-                  className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
-                  onClick={() => {
-                    setSelectedProduct(product);
-                    document.getElementById("order-modal").showModal();
-                  }}
-                >
-                  Order
-                </button>
+                {product.isAvailable ? (
+                  <button
+                    className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      document.getElementById("order-modal")?.showModal();
+                    }}
+                  >
+                    Order
+                  </button>
+                ) : (
+                  <button className="btn btn-ghost btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold ">
+                    Not Available
+                  </button>
+                )}
               </div>
             </div>
           ))}

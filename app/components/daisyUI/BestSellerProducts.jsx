@@ -95,16 +95,17 @@ function BestSellerCarousel() {
             >
               {/* Image */}
               <figure className="relative group overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.productName}
-                  className="
-        w-full 
-        h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
-        object-cover 
-        transition-transform duration-300 group-hover:scale-110
-      "
-                />
+                <div className="relative">
+                  <img
+                    src={product.image}
+                    alt={product.productName}
+                    className={`w-full 
+      h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
+      object-cover 
+      transition-transform duration-300 group-hover:scale-110
+      ${!product.isAvailable ? "opacity-50 grayscale" : ""}`}
+                  />
+                </div>
                 <div
                   className="
         absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
@@ -153,7 +154,7 @@ function BestSellerCarousel() {
                 </div>
 
                 {/* Order Button */}
-                <button
+                {/* <button
                   className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
                   onClick={() => {
                     setSelectedProduct(product);
@@ -161,7 +162,23 @@ function BestSellerCarousel() {
                   }}
                 >
                   Order
-                </button>
+                </button> */}
+
+                {product.isAvailable ? (
+                  <button
+                    className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      document.getElementById("order-modal")?.showModal();
+                    }}
+                  >
+                    Order
+                  </button>
+                ) : (
+                  <button className="btn btn-ghost btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold ">
+                    Not Available
+                  </button>
+                )}
               </div>
             </div>
           ))}

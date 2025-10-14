@@ -13,6 +13,7 @@ function AddImage({ onSave }) {
   const [category, setCategory] = useState("ice-drip-coffee");
   const [description, setDescription] = useState("");
   const [productType, setProductType] = useState("Normal");
+  const [isAvailable, setIsAvailable] = useState(true);
 
   const [loading, setLoading] = useState(false);
 
@@ -63,6 +64,7 @@ function AddImage({ onSave }) {
           description,
           image: uploadData.fileUrl,
           productType,
+          isAvailable,
         }),
       });
 
@@ -224,6 +226,24 @@ function AddImage({ onSave }) {
         />
       )}
 
+      {/* Product Availability */}
+      <label className="form-control w-full">
+        <div className="label">
+          <span className="label-text font-semibold text-black">
+            Availability
+          </span>
+        </div>
+        <select
+          className="select select-bordered text-black bg-white border-2 border-black"
+          value={isAvailable ? "available" : "not-available"}
+          onChange={(e) => setIsAvailable(e.target.value === "available")}
+        >
+          <option value="available">Available</option>
+          <option value="not-available">Not Available</option>
+        </select>
+      </label>
+
+      {/* Product Availability */}
       <button
         className="btn bg-black text-white border-2  border-black hover:bg-amber-600 w-full my-2"
         disabled={loading}

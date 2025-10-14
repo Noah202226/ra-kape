@@ -50,27 +50,39 @@ export default function ShowAllProducts() {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSaveEdit = async () => {
-    setIsSaving(true); // show loading
+    setIsSaving(true);
     try {
-      // upload image
-      const formData = new FormData();
-      formData.append("file", imageFile);
+      let imageUrl = editingProduct.image; // default to existing image
 
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const uploadData = await uploadRes.json();
+      // ✅ Only upload if a new file was selected
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("file", imageFile);
 
-      if (!uploadData.success) {
-        throw new Error(uploadData.error);
-      } else {
-        toast.success("Uploaded");
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        // check response first
+        if (!uploadRes.ok) {
+          throw new Error("Image upload failed");
+        }
+
+        const uploadData = await uploadRes.json();
+        if (!uploadData.success) {
+          throw new Error(uploadData.error);
+        }
+
+        imageUrl = uploadData.fileUrl;
+        toast.success("Image uploaded");
       }
+
+      // ✅ Update document with the correct values
       const response = await database.updateDocument(
         "6870ab6f0018df40fa94",
         "products",
-        editingProduct.$id, // documentId
+        editingProduct.$id,
         {
           productName: editingProduct.productName,
           productDescription: editingProduct.productDescription,
@@ -78,11 +90,12 @@ export default function ShowAllProducts() {
           priceLarge: editingProduct.priceLarge,
           category: editingProduct.category,
           productType: editingProduct.productType,
-          image: uploadData.fileUrl,
+          image: imageUrl,
+          isAvailable: editingProduct.isAvailable,
         }
       );
 
-      // Update state with new product
+      // ✅ Update local state
       setProducts(
         products.map((p) => (p.$id === editingProduct.$id ? response : p))
       );
@@ -93,7 +106,7 @@ export default function ShowAllProducts() {
       console.error("Error updating product:", error);
       toast.error("Failed to update product.");
     } finally {
-      setIsSaving(false); // hide loading
+      setIsSaving(false);
     }
   };
 
@@ -159,14 +172,18 @@ export default function ShowAllProducts() {
     hover:scale-105 hover:-translate-y-1
     flex flex-col"
           >
-            <img
-              src={product.image}
-              alt={product.productName}
-              className="w-full 
-        h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
-        object-cover 
-        transition-transform duration-300 group-hover:scale-110"
-            />
+            <div className="relative">
+              <img
+                src={product.image}
+                alt={product.productName}
+                className={`w-full 
+      h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
+      object-cover 
+      transition-transform duration-300 group-hover:scale-110
+      ${!product.isAvailable ? "opacity-50 grayscale" : ""}`}
+              />
+            </div>
+
             <div>
               <h3 className="text-lg font-semibold">{product.productName}</h3>
               <p className="text-gray-600">{product.productDescription}</p>
@@ -317,6 +334,29 @@ export default function ShowAllProducts() {
                   <option value="normal">Normal</option>
                   <option value="best-seller">Best Seller</option>
                   <option value="special">Special</option>
+                </select>
+              </label>
+
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text font-semibold text-black">
+                    Availability
+                  </span>
+                </div>
+                <select
+                  className="select w-full bg-white border-2 border-black"
+                  value={
+                    editingProduct.isAvailable ? "available" : "not-available"
+                  }
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      isAvailable: e.target.value === "available",
+                    })
+                  }
+                >
+                  <option value="available">Available</option>
+                  <option value="not-available">Not Available</option>
                 </select>
               </label>
 
