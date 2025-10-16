@@ -71,7 +71,7 @@ export default function CouponInput({
         placeholder="Enter coupon"
         value={couponCode}
         onChange={(e) => setCouponCode(e.target.value)}
-        className="input input-bordered w-full text-white"
+        className="input input-bordered w-full text-black bg-white"
       />
       <button
         onClick={handleApplyCoupon}
