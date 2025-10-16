@@ -8,6 +8,7 @@ import { useAuthStore } from "../stores/useAuthStore";
 import { database } from "@/appwrite";
 import CouponInput from "../components/InputCoupon";
 import { Query } from "appwrite";
+import GCashPaymentInfo from "./GCashPaymentInfo";
 
 export default function CheckoutPage() {
   const { current } = useAuthStore((state) => state);
@@ -398,6 +399,8 @@ export default function CheckoutPage() {
             </p>
           )}
         </div>
+
+        <GCashPaymentInfo />
 
         <CouponInput
           onApplyDiscount={onApplyDiscount}
