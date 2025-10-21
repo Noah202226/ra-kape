@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 export async function POST(req) {
   const {
     name,
+    contact,
     email,
     address,
     message,
@@ -46,6 +47,7 @@ export async function POST(req) {
 
       <div style="padding:20px; color:#333;">
         <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Contact #:</strong> ${contact}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Address:</strong> ${address}</p>
         <p><strong>Mode of Payment:</strong> ${modeOfPayment}</p>

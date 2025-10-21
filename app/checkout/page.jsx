@@ -220,6 +220,7 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
+          contact,
           email,
           address,
           message,
