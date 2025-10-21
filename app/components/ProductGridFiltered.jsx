@@ -104,7 +104,7 @@ export default function ProductGridFiltered({ type }) {
             <div
               key={product.$id}
               data-aos="zoom-in"
-              className="bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg w-full flex flex-col"
+              className="bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg flex flex-col w-[300px] sm:w-[280px] mx-auto"
             >
               <figure className="relative group overflow-hidden">
                 <div className="relative">
@@ -134,24 +134,38 @@ export default function ProductGridFiltered({ type }) {
                 {/* Price Section */}
                 <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
                   <div className="flex gap-4">
-                    <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-lg text-black" />
-                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
-                        ₱{product.priceSmall}
-                      </span>
-                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
-                        (Regular)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-2xl text-black" />
-                      <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
-                        ₱{product.priceLarge}
-                      </span>
-                      <span className="text-xl sm:text-lg md:text-sm text-gray-500">
-                        (Upsize)
-                      </span>
-                    </div>
+                    {product.category === "hot-coffee" ? (
+                      <div className="flex items-center gap-1">
+                        <CiCoffeeCup className="text-2xl text-black" />
+                        <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
+                          ₱{product.priceLarge}
+                        </span>
+                        <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                          (10oz)
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-1">
+                          <CiCoffeeCup className="text-lg text-black" />
+                          <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
+                            ₱{product.priceSmall}
+                          </span>
+                          <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                            (Regular)
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <CiCoffeeCup className="text-2xl text-black" />
+                          <span className="font-bold text-xl sm:text-lg md:text-sm text-black">
+                            ₱{product.priceLarge}
+                          </span>
+                          <span className="text-xl sm:text-lg md:text-sm text-gray-500">
+                            (Upsize)
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -185,47 +199,94 @@ export default function ProductGridFiltered({ type }) {
                   Choose size for {selectedProduct.productName}
                 </h3>
 
-                <div className="flex flex-col gap-3 mb-4">
-                  {[
-                    { label: "16oz", price: selectedProduct.priceSmall },
-                    { label: "22oz", price: selectedProduct.priceLarge },
-                  ].map((opt) => (
-                    <button
-                      key={opt.label}
-                      onClick={() => setSelectedSize(opt.label)}
-                      className={`flex justify-between px-4 py-2 rounded-lg border ${
-                        selectedSize === opt.label
-                          ? "bg-gray-600 text-white border-gray-600"
-                          : "bg-white text-black border-gray-300"
-                      }`}
-                    >
-                      <span>{opt.label}</span>
-                      <span>₱{opt.price}</span>
-                    </button>
-                  ))}
-                </div>
+                {selectedProduct.category === "hot-coffee" ? (
+                  <>
+                    <div className="flex flex-col gap-3 mb-4">
+                      {[
+                        { label: "10oz", price: selectedProduct.priceLarge },
+                      ].map((opt) => (
+                        <button
+                          key={opt.label}
+                          onClick={() => setSelectedSize(opt.label)}
+                          className={`flex justify-between px-4 py-2 rounded-lg border ${
+                            selectedSize === opt.label
+                              ? "bg-gray-600 text-white border-gray-600"
+                              : "bg-white text-black border-gray-300"
+                          }`}
+                        >
+                          <span>{opt.label}</span>
+                          <span>₱{opt.price}</span>
+                        </button>
+                      ))}
+                    </div>
 
-                <div className="modal-action flex flex-col sm:flex-row gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleAdd({
-                        ...selectedProduct,
-                        size: selectedSize,
-                        price:
-                          selectedSize === "16oz"
-                            ? selectedProduct.priceSmall
-                            : selectedProduct.priceLarge,
-                      })
-                    }
-                    className="btn bg-white text-black border border-black hover:bg-gray-600 hover:text-white w-full sm:w-auto"
-                  >
-                    Add to Cart
-                  </button>
-                  <form method="dialog" className="w-full sm:w-auto">
-                    <button className="btn w-full sm:w-auto">Cancel</button>
-                  </form>
-                </div>
+                    <div className="modal-action flex flex-col sm:flex-row gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleAdd({
+                            ...selectedProduct,
+                            size: selectedSize,
+                            price:
+                              selectedSize === "16oz"
+                                ? selectedProduct.priceSmall
+                                : selectedProduct.priceLarge,
+                          })
+                        }
+                        className="btn bg-white text-black border border-black hover:bg-gray-600 hover:text-white w-full sm:w-auto"
+                      >
+                        Add to Cart
+                      </button>
+                      <form method="dialog" className="w-full sm:w-auto">
+                        <button className="btn w-full sm:w-auto">Cancel</button>
+                      </form>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex flex-col gap-3 mb-4">
+                      {[
+                        { label: "16oz", price: selectedProduct.priceSmall },
+                        { label: "22oz", price: selectedProduct.priceLarge },
+                      ].map((opt) => (
+                        <button
+                          key={opt.label}
+                          onClick={() => setSelectedSize(opt.label)}
+                          className={`flex justify-between px-4 py-2 rounded-lg border ${
+                            selectedSize === opt.label
+                              ? "bg-gray-600 text-white border-gray-600"
+                              : "bg-white text-black border-gray-300"
+                          }`}
+                        >
+                          <span>{opt.label}</span>
+                          <span>₱{opt.price}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="modal-action flex flex-col sm:flex-row gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleAdd({
+                            ...selectedProduct,
+                            size: selectedSize,
+                            price:
+                              selectedSize === "16oz"
+                                ? selectedProduct.priceSmall
+                                : selectedProduct.priceLarge,
+                          })
+                        }
+                        className="btn bg-white text-black border border-black hover:bg-gray-600 hover:text-white w-full sm:w-auto"
+                      >
+                        Add to Cart
+                      </button>
+                      <form method="dialog" className="w-full sm:w-auto">
+                        <button className="btn w-full sm:w-auto">Cancel</button>
+                      </form>
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>
