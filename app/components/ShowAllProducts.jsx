@@ -251,6 +251,19 @@ export default function ShowAllProducts() {
                 className="border rounded p-2 w-full mb-2"
               />
 
+              <label className="py-4 my-4">Description :</label>
+              <textarea
+                type="text"
+                value={editingProduct.productDescription}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    productDescription: e.target.value,
+                  })
+                }
+                className="border rounded p-2 w-full mb-2"
+              />
+
               <img
                 src={imageFile ? imagePreview : editingProduct.image}
                 alt={editingProduct.productName}
