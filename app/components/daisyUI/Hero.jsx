@@ -15,7 +15,10 @@ function Hero() {
     return () => unsubscribe();
   }, []);
 
-  const menuImage = "/rakape-new-menu.jpg";
+  // FLEXIBLE IMAGE LOGIC:
+  // Priority 1: Image URL from Appwrite/Settings store
+  // Priority 2: Local fallback image
+  const menuImage = settings?.heroImage || "/rakape-new-menu.jpg";
 
   return (
     <div
