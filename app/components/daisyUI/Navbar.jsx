@@ -1,5 +1,8 @@
 "use client";
+import { useAuthStore } from "@/app/stores/useAuthStore";
 import useCartStore from "@/app/stores/useCartStore";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { RiShoppingCartFill } from "react-icons/ri";
 
@@ -9,8 +12,28 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
+  const [loading, setLoading] = useState(false); // for login/logout buttons
+  const { current, getCurrentUser, logout } = useAuthStore((state) => state);
+
+  const pathname = usePathname();
+  useEffect(() => {
+    setLoading(false);
+  }, [pathname]);
+
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await logout();
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     setHasMounted(true);
+
+    getCurrentUser();
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -24,7 +47,7 @@ function Navbar() {
     { name: "Non Coffee", link: "/non-coffee" },
     { name: "Hot Coffee", link: "/hot-coffee" },
     { name: "Ice Blended", link: "/ice-blended" },
-    { name: "Add-ons", link: "/add-ons" },
+    { name: "Pastry", link: "/pastry" },
   ];
 
   return (
@@ -83,10 +106,34 @@ function Navbar() {
             href="https://www.facebook.com/RaKapeBulacan"
             target="_blank"
             className="px-3 sm:px-4 lg:px-6 py-1 sm:py-2 text-sm sm:text-base lg:text-lg rounded-xl
-              bg-[var(--title)] border-0 hover:shadow-2xl hover:bg-gray-800 text-white transition"
+              bg-black border-0 hover:shadow-2xl hover:bg-gray-800 text-white transition"
           >
             Facebook
           </a>
+
+          {current ? (
+            <div className="hidden md:flex items-center gap-3">
+              <Link href="/profile">
+                <span className="text-sm font-medium text-black cursor-pointer hover:underline">
+                  {current.name || current.email}
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className={`btn bg-black hidden md:inline-flex rounded-md ${
+                loading ? "pointer-events-none opacity-70" : ""
+              }`}
+              onClick={() => setLoading(true)}
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                <span className="text-white bg-black">LOGIN</span>
+              )}
+            </Link>
+          )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden focus:outline-none"
@@ -122,6 +169,49 @@ function Navbar() {
               {item.name}
             </a>
           ))}
+
+          {/* Auth state on mobile */}
+          {current ? (
+            <div className="border-t border-base-300 pt-4 flex flex-col gap-3">
+              <Link href="/profile">
+                <span className="block mb-2 text-sm font-medium text-base-content text-right">
+                  {current.name || current.email}
+                </span>
+              </Link>
+              <button
+                onClick={async () => {
+                  setLoading(true);
+                  await handleLogout();
+                  setMenuOpen(false);
+                }}
+                disabled={loading}
+                className="btn btn-primary rounded-md flex items-center justify-center"
+              >
+                {loading ? (
+                  <span className="loading loading-spinner loading-sm"></span>
+                ) : (
+                  "Logout"
+                )}
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className={`btn btn-primary w-full ${
+                loading ? "pointer-events-none opacity-70" : ""
+              }`}
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+                setLoading(true);
+              }}
+            >
+              {loading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : (
+                "Login"
+              )}
+            </Link>
+          )}
         </div>
       )}
     </nav>

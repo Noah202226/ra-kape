@@ -1,15 +1,62 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useCartStore from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "../stores/useAuthStore";
+import { database } from "@/appwrite";
+import CouponInput from "../components/InputCoupon";
+import { Query } from "appwrite";
+import GCashPaymentInfo from "./GCashPaymentInfo";
 
 export default function CheckoutPage() {
+  const { current } = useAuthStore((state) => state);
+
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  const router = useRouter();
+  const DATABASE_ID = "6870ab6f0018df40fa94";
+  const PROFILES_COLLECTION = "profiles";
+  const COUPONS_COLLECTION_ID = "coupons";
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (!current) return;
+
+        const doc = await database.getDocument(
+          DATABASE_ID,
+          PROFILES_COLLECTION,
+          current.$id
+        );
+
+        setName(doc.name || "");
+        setEmail(doc.email || "");
+        setAddress(doc.address || "");
+        setContact(doc.contactNumber || "");
+      } catch (error) {
+        console.error("Profile fetch error:", error);
+        toast.error("Could not load profile");
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [current]);
+
   const cart = useCartStore((state) => state.cart);
   const totalPrice = useCartStore((state) => state.totalPrice);
   const clearCart = useCartStore((state) => state.clearCart);
-  const [barangay, setBarangay] = useState(); // Default barangay, can be changed based on user selection
+  const discountedPrice = useCartStore((state) => state.discountedPrice);
+  const resetDiscountedPrice = useCartStore(
+    (state) => state.resetDiscountedPrice
+  );
+
+  // shipping / barangay
+  const [barangay, setBarangay] = useState("");
 
   const priceRange = [
     { barangay: "Akle", price: 215 },
@@ -50,8 +97,6 @@ export default function CheckoutPage() {
     { barangay: "Upig", price: 179 },
   ];
 
-  const router = useRouter();
-
   // form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -60,154 +105,157 @@ export default function CheckoutPage() {
   const [contact, setContact] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("gcash");
   const [gcashUrl, setGcashUrl] = useState("");
-
-  const [loading, setLoading] = useState(false);
-
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+  const [hasMounted, setHasMounted] = useState(false);
+
+  // coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [discountType, setDiscountType] = useState("");
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
+    if (!file) return;
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
-  // Function to get shipping fee based on selected barangay
-  // This function can be used in the form to calculate shipping fee dynamically
-  const getShippingFee = (selectedBarangay) => {
-    const barangay = priceRange.find((b) => b.barangay === selectedBarangay);
-    return barangay ? barangay.price : 0;
-  };
-  const shippingFee = getShippingFee(barangay);
-  const grandTotal = totalPrice() + shippingFee;
+  // subtotal derived from cart
+  const subtotal = useMemo(() => {
+    return totalPrice();
+  }, [cart, totalPrice]);
 
-  const [hasMounted, setHasMounted] = useState(false);
+  const amountLestDiscount = subtotal;
+
+  const getShippingFee = (selectedBarangay) => {
+    const barangayObj = priceRange.find((b) => b.barangay === selectedBarangay);
+    return barangayObj ? barangayObj.price : 0;
+  };
+
+  const shippingFee = useMemo(() => getShippingFee(barangay), [barangay]);
+
+  // grand total = subtotal - discount + shipping
+  const grandTotal = useMemo(() => {
+    const total =
+      Number(subtotal) -
+      Number(discountedPrice || 0) +
+      Number(shippingFee || 0);
+    return Math.max(0, Math.round(total));
+  }, [subtotal, discountedPrice, shippingFee]);
 
   useEffect(() => {
+    resetDiscountedPrice();
     setHasMounted(true);
   }, []);
 
-  if (!hasMounted) {
-    return null; // or simple static skeleton
-  }
+  if (!hasMounted) return null;
+
+  const onApplyDiscount = async (codeOrObj) => {};
+
+  const handleCheckoutSuccess = async () => {
+    try {
+      if (!couponCode) return null;
+
+      const response = await database.listDocuments(
+        DATABASE_ID,
+        COUPONS_COLLECTION_ID,
+        [Query.equal("code", couponCode.toUpperCase())]
+      );
+
+      if (response.total === 0) return null;
+
+      const couponDoc = response.documents[0];
+
+      const updatedCoupon = await database.updateDocument(
+        DATABASE_ID,
+        COUPONS_COLLECTION_ID,
+        couponDoc.$id,
+        {
+          usedCount: (couponDoc.usedCount || 0) + 1,
+        }
+      );
+
+      resetDiscountedPrice();
+      return updatedCoupon;
+    } catch (error) {
+      console.error("Error updating coupon usage:", error);
+      return null;
+    }
+  };
 
   const handlePlaceOrder = async () => {
-    console.log("Placing order with data:", {
-      name,
-      imageFile,
-    });
     if (!name || !address || !contact) {
       toast.error("Please fill in all fields.");
       return;
     }
 
     try {
-      // upload image
       const formData = new FormData();
-      formData.append("file", imageFile);
+      if (imageFile) formData.append("file", imageFile);
 
       if (paymentMethod === "gcash" && !imageFile) {
         toast.error("Please upload your GCash payment receipt.");
         return;
-      } else if (paymentMethod === "gcash") {
+      }
+
+      setCheckoutLoading(true);
+
+      let gcashUrlTemp = "";
+      if (paymentMethod === "gcash") {
         const uploadRes = await fetch("/api/upload", {
           method: "POST",
           body: formData,
         });
         const uploadData = await uploadRes.json();
 
-        if (uploadData.error) {
-          throw new Error(uploadData.error);
-        } else {
-          setGcashUrl(uploadData.fileUrl);
-        }
-        if (!uploadData.success) {
-          throw new Error(uploadData.error);
-        } else {
-          setGcashUrl(uploadData.fileUrl);
-          toast.success("Uploaded", uploadData.fileUrl);
-          console.log("Gcash url::", gcashUrl);
+        if (!uploadData.success)
+          throw new Error(uploadData.error || "Upload failed");
+        gcashUrlTemp = uploadData.fileUrl;
+        setGcashUrl(uploadData.fileUrl);
+        toast.success("Uploaded");
+      }
 
-          const res = await fetch("/api/send-email", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name,
-              email,
-              address,
-              message,
-              orders: cart,
-              modeOfPayment: paymentMethod,
-              barangay,
-              shippingFee,
-              totalAmount: totalPrice,
-              grandTotal,
-              reference: uploadData.fileUrl, // Use the uploaded image URL as reference
-            }),
-          });
-          const data = await res.json();
-          if (data.success) {
-            toast.success("✅ Message sent successfully!");
-            clearCart();
-            router.push("/");
-          } else {
-            toast.error("❌ Failed to send message. Please try again.");
-          }
-        }
-      } else if (paymentMethod === "cash" || paymentMethod === "cod") {
-        const res = await fetch("/api/send-email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            address,
-            message,
-            orders: cart,
-            barangay,
-            shippingFee,
-            modeOfPayment: paymentMethod,
-            totalAmount: totalPrice,
-            grandTotal,
-          }),
-        });
-        const data = await res.json();
-        if (data.success) {
-          toast.success("✅ Message sent successfully!");
-          clearCart();
-          router.push("/");
-        } else {
-          toast.error("❌ Failed to send message. Please try again.");
-        }
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          contact,
+          email,
+          address,
+          message,
+          orders: cart,
+          barangay,
+          shippingFee,
+          discountedPrice,
+          modeOfPayment: paymentMethod,
+          subtotal,
+          discountedAmount: discountedPrice,
+          grandTotal,
+          reference: gcashUrlTemp || undefined,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success("✅ Order placed successfully!");
+        await handleCheckoutSuccess();
+        clearCart();
+        router.push("/");
+      } else {
+        toast.error("❌ Failed to place order. Please try again.");
       }
     } catch (err) {
-      console.error(err);
+      console.error("place order error:", err);
       toast.error(err.message || "Upload failed");
     } finally {
-      setLoading(false);
+      setCheckoutLoading(false);
     }
   };
+
   return (
     <main className="flex flex-col items-center px-6 pt-20">
       <h2 className="text-3xl font-bold mb-8 text-gray-900">Checkout</h2>
-      {/* <ReceiptGenerator
-        order={{
-          orderId: "RAKAPE-20250806",
-          customerName: "Noa Ligpitan",
-          date: Date.now(),
-          paymentMethod: "GCash",
-          items: [
-            { name: "Iced Latte", qty: 2, price: 120 },
-            { name: "Espresso", qty: 1, price: 100 },
-          ],
-          total: 340,
-        }}
-      /> */}
-      ;
       <div className="w-full max-w-xl space-y-6">
         {/* Shipping Info */}
         <div className="bg-white shadow rounded-xl p-6 space-y-4">
@@ -220,6 +268,7 @@ export default function CheckoutPage() {
             className="input w-full text-white bg-gray-900"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            disabled
           />
           <input
             type="email"
@@ -227,6 +276,7 @@ export default function CheckoutPage() {
             className="input w-full text-white bg-gray-900"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled
           />
           <input
             type="text"
@@ -235,6 +285,9 @@ export default function CheckoutPage() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
+          <span className="text-center text-orange-600 text-sm font-light italic">
+            Note: "For big orders, expect a quick call from us to verification"
+          </span>
           <input
             type="text"
             placeholder="Contact Number"
@@ -242,9 +295,7 @@ export default function CheckoutPage() {
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
-          <p className="text-xs text-orange-400 italic">
-            Note: "For big orders, expect a quick call from us to verification"
-          </p>
+
           <textarea
             className="input w-full text-white bg-gray-900"
             maxLength={50}
@@ -270,10 +321,9 @@ export default function CheckoutPage() {
           </select>
           {paymentMethod === "gcash" && (
             <>
-              {/* Image Upload */}
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold">
+                  <span className="label-text text-black font-semibold">
                     Product Image
                   </span>
                 </div>
@@ -286,9 +336,11 @@ export default function CheckoutPage() {
               </label>
 
               <div className="mb-4">
-                <label className="block mb-2 font-semibold">Barangay</label>
+                <label className="block m-2 font-semibold text-black">
+                  Barangay
+                </label>
                 <select
-                  className="border rounded p-2 w-full"
+                  className="border rounded p-4 w-full text-white bg-gray-900"
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
                   required
@@ -300,6 +352,10 @@ export default function CheckoutPage() {
                     </option>
                   ))}
                 </select>
+                <span className="text-center text-orange-600 text-sm font-light italic">
+                  “Delivery fee stated is a base rate and may differ depending
+                  on your location”
+                </span>
               </div>
 
               {imagePreview && (
@@ -316,7 +372,7 @@ export default function CheckoutPage() {
               <div className="mb-4">
                 <label className="block mb-2 font-semibold">Barangay</label>
                 <select
-                  className="border rounded p-2 w-full"
+                  className="border rounded p-2 w-full text-white bg-gray-900"
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
                   required
@@ -328,6 +384,9 @@ export default function CheckoutPage() {
                     </option>
                   ))}
                 </select>
+                <span className="text-center text-orange-600 font-bold">
+                  “Select your barangay to view delivery charges”
+                </span>
               </div>
               <p className="text-gray-500 text-sm">
                 Payment will be collected upon delivery.
@@ -342,6 +401,15 @@ export default function CheckoutPage() {
           )}
         </div>
 
+        <GCashPaymentInfo />
+
+        <CouponInput
+          onApplyDiscount={onApplyDiscount}
+          amountLestDiscount={amountLestDiscount}
+          couponCode={couponCode}
+          setCouponCode={setCouponCode}
+        />
+
         {/* Order Summary */}
         <div className="bg-gray-900 shadow rounded-xl p-6 space-y-2">
           <h3 className="text-xl font-semibold mb-2 text-white">
@@ -352,7 +420,7 @@ export default function CheckoutPage() {
           ) : (
             cart?.map((item, index) => (
               <div
-                key={`${item.$id} - ${index}`}
+                key={`${item.$id}-${index}`}
                 className="flex justify-between"
               >
                 <span className="text-white">
@@ -366,11 +434,16 @@ export default function CheckoutPage() {
           )}
           <div className="flex justify-between text-white">
             <span>Subtotal:</span>
-            <span>₱{totalPrice().toLocaleString()}</span>
+            <span>₱{subtotal.toLocaleString()}</span>
           </div>
           <div className="flex justify-between text-white">
             <span>Shipping Fee:</span>
             <span>₱{shippingFee.toLocaleString()}</span>
+          </div>
+
+          <div className="flex justify-between italic text-orange-500">
+            <span>Discounted Amount:</span>
+            <span>₱{discountedPrice.toLocaleString()}</span>
           </div>
           <div className="flex justify-between font-bold text-white">
             <span>Total:</span>
@@ -381,10 +454,10 @@ export default function CheckoutPage() {
         {/* Place Order */}
         <button
           onClick={handlePlaceOrder}
-          disabled={loading || cart.length === 0}
+          disabled={checkoutLoading}
           className="w-full py-3 bg-gray-800 hover:bg-black text-white font-semibold rounded-xl transition cursor-pointer"
         >
-          Place Order
+          {checkoutLoading ? "Placing Order..." : "Place Order"}
         </button>
       </div>
     </main>

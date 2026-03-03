@@ -16,6 +16,9 @@ import AddReview from "@/app/admin/AddReview";
 import { fetchReviews } from "@/app/utils/fetchReviews";
 import ShowAllEvents from "../ShowAllEvents";
 import AddEvent from "@/app/admin/AddEvent";
+import ShowAllUsers from "../ShowAllUsers";
+
+import AdminCouponsPage from "../CouponPage";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -101,37 +104,35 @@ function TabsWithIcon() {
     }
   };
 
+  const tabs = [
+    { id: "settings", label: "Settings", icon: "⚙" },
+    { id: "products", label: "Products", icon: "🍨" },
+    { id: "customers", label: "Testimonials", icon: "📃" },
+    { id: "events", label: "Events", icon: "🎉" },
+    { id: "users", label: "Users", icon: "👥" },
+    { id: "coupons", label: "Coupons", icon: "🎟" },
+  ];
+
   return (
-    <div className="w-full">
-      {/* Tabs Header */}
-      <div className="w-full">
-        <div className="mx-auto px-2 md:px-4">
-          <div className="w-full">
-            <div className="flex flex-wrap w-full border-b border-black">
-              {[
-                { id: "settings", label: "SETTINGS", icon: "▶" },
-                { id: "products", label: "PRODUCTS", icon: "🍨" },
-                { id: "customers", label: "TESTIMONIALS", icon: "▶" },
-                { id: "events", label: "EVENTS", icon: "▶" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 text-sm md:text-base font-medium py-3 px-4 transition-all duration-200 
-          ${
-            activeTab === tab.id
-              ? "text-black border-b-2 border-black"
-              : "text-gray-500 border-b-2 border-transparent hover:text-black hover:border-black"
-          }`}
-                  style={{ minWidth: "120px", maxWidth: "200px" }}
-                >
-                  <span className="flex items-center justify-center gap-1">
-                    {tab.icon} <span>{tab.label}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
+    <div className="min-h-screen bg-white">
+      {/* Sticky Top Tabs */}
+      <div className="sticky top-0 bg-white z-40 border-b border-base-300 shadow-sm">
+        <div className="flex overflow-x-auto no-scrollbar">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all
+                ${
+                  activeTab === tab.id
+                    ? "border-b-2 border-primary text-primary"
+                    : "text-gray-500 hover:text-black"
+                }`}
+            >
+              <span className="text-lg">{tab.icon}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
@@ -388,9 +389,7 @@ function TabsWithIcon() {
         <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
           {/* Section Header */}
           <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold ">
-              📦 Product Manager
-            </h2>
+            <h2 className="text-xl text-black font-semibold ">📦 Products</h2>
             <button
               className="btn btn-accent"
               onClick={() => modalRef.current?.showModal()}
@@ -475,6 +474,34 @@ function TabsWithIcon() {
               <button>close</button>
             </form>
           </dialog>
+        </div>
+      )}
+
+      {activeTab === "users" && (
+        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl text-black font-semibold ">👥 USERS</h2>
+          </div>
+
+          {/* Product List */}
+          <div>
+            <ShowAllUsers />
+          </div>
+        </div>
+      )}
+
+      {activeTab === "coupons" && (
+        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl text-black font-semibold ">🎟 Coupons</h2>
+          </div>
+
+          {/* Product List */}
+          <div>
+            <AdminCouponsPage />
+          </div>
         </div>
       )}
     </div>

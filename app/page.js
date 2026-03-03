@@ -13,12 +13,12 @@ import { fetchSettings } from "./utils/fetchSettings";
 import { fetchProducts } from "./utils/fetchProducts";
 import { fetchReviews } from "./utils/fetchReviews";
 
-import useAuthStore from "./stores/useAuthStore";
+import { useAuthStore } from "./stores/useAuthStore";
 import useSettingsStore from "./stores/useSettingsStore";
 import Carousel from "./components/daisyUI/Carousel";
 import { fetchEvents } from "./utils/fetchEvents";
 export default function Home() {
-  const { authUser, checkUser } = useAuthStore((state) => state);
+  const { getCurrentUser } = useAuthStore((state) => state);
   const { setProducts } = useSettingsStore((state) => state);
   useEffect(() => {
     // Initialize AOS (Animate On Scroll) library
@@ -33,7 +33,7 @@ export default function Home() {
     fetchReviews();
     fetchEvents();
 
-    checkUser();
+    getCurrentUser();
   }, []);
 
   return (

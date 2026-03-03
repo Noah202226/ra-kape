@@ -46,6 +46,10 @@ const useSettingsStore = create((set) => ({
     set((state) => ({
       events: state.events.filter((event) => event.$id !== id),
     })),
+
+  // Add users state
+  users: [],
+  setUsers: (users) => set(() => ({ users })),
 }));
 
 export default useSettingsStore;

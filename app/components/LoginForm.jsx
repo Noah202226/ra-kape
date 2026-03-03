@@ -26,7 +26,10 @@ export default function LoginForm() {
     e.preventDefault();
     if (validate()) {
       console.log("Form submitted:", { email, password });
-      if (email === "admin" && password === "admin@rakape") {
+      if (
+        email === process.env.NEXT_PUBLIC_ADMIN_USER &&
+        password === process.env.NEXT_PUBLIC_ADMIN_PASS
+      ) {
         toast.success("Login successful");
         setIslogin(true);
       } else {

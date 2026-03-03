@@ -18,8 +18,9 @@ export async function POST(req) {
         priceLarge: parseInt(body.priceLarge),
         productDescription: body.description,
         category: body.category,
-        image: body.image, // usually image URL from Appwrite Storage
+        image: body.image,
         productType: body.productType,
+        isAvailable: body.isAvailable ?? true, // <--- new field
       }
     );
 

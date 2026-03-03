@@ -1,4 +1,5 @@
 "use client";
+import { useAuthStore } from "@/app/stores/useAuthStore";
 import useCartStore from "@/app/stores/useCartStore";
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import React, { useState } from "react";
@@ -6,12 +7,15 @@ import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
 
 function BestSellerCarousel() {
+  const { current } = useAuthStore((state) => state);
+
   const addToCart = useCartStore((state) => state.addToCart);
   const { products } = useSettingsStore((state) => state);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("22oz"); // default size
 
+  console.log("Current user in BestSellerProducts:", current);
   if (products.length === 0) {
     return (
       <div className="py-12 px-4 max-w-7xl mx-auto">
@@ -26,6 +30,14 @@ function BestSellerCarousel() {
   }
 
   const handleAdd = () => {
+    if (current === null) {
+      toast.error("Please log in to add items to your cart.");
+      setSelectedProduct(null);
+      setSelectedSize("22oz");
+      document.getElementById("order-modal")?.close();
+      return;
+    }
+
     if (!selectedProduct) return;
 
     const sizePrices = {
@@ -83,16 +95,17 @@ function BestSellerCarousel() {
             >
               {/* Image */}
               <figure className="relative group overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.productName}
-                  className="
-        w-full 
-        h-40 sm:h-48 md:h-56 lg:h-64 xl:h-72 
-        object-cover 
-        transition-transform duration-300 group-hover:scale-110
-      "
-                />
+                <div className="relative">
+                  <img
+                    src={product.image}
+                    alt={product.productName}
+                    className={`w-full 
+      h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
+      object-cover 
+      transition-transform duration-300 group-hover:scale-110
+      ${!product.isAvailable ? "opacity-50 grayscale" : ""}`}
+                  />
+                </div>
                 <div
                   className="
         absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
@@ -104,51 +117,68 @@ function BestSellerCarousel() {
 
               {/* Card Content */}
               <div className="p-3 sm:p-4 flex-1 flex flex-col">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1">
+                <h3 className="text-4xl sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1 text-center sm:text-left">
                   {product.productName}
                 </h3>
 
-                <div className="badge badge-outline mb-2 text-xs sm:text-sm text-black">
+                <div className="badge badge-outline mb-2 text-lg sm:text-sm text-black text-center sm:text-left">
                   {product.category}
                 </div>
 
-                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3">
+                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3 text-center sm:text-left">
                   {product.productDescription}
                 </p>
 
                 {/* Price Section */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 gap-2 mt-auto">
-                  <div className="flex items-center gap-1">
-                    <CiCoffeeCup className="text-sm sm:text-base md:text-lg text-black" />
-                    <span className="font-bold text-black text-xs sm:text-sm md:text-base">
-                      ₱{product.priceSmall}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-gray-500">
-                      (16oz)
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    <CiCoffeeCup className="text-base sm:text-lg md:text-xl text-black" />
-                    <span className="font-bold text-black text-xs sm:text-sm md:text-base">
-                      ₱{product.priceLarge}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-gray-500">
-                      (22oz)
-                    </span>
+                <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
+                  <div className="flex gap-4">
+                    <div className="flex items-center gap-1">
+                      <CiCoffeeCup className="text-lg text-black" />
+                      <span className="font-bold text-xl sm:text-lg md:text-xs text-black">
+                        ₱{product.priceSmall}
+                      </span>
+                      <span className="text-xl sm:text-lg md:text-xs text-gray-500">
+                        (Regular)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <CiCoffeeCup className="text-2xl text-black" />
+                      <span className="font-bold text-xl sm:text-lg md:text-xs text-black">
+                        ₱{product.priceLarge}
+                      </span>
+                      <span className="text-xl sm:text-lg md:text-xs text-gray-500">
+                        (Upsize)
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Order Button */}
-                <button
-                  className="btn btn-xs sm:btn-sm md:btn-md btn-neutral w-full mt-3"
+                {/* <button
+                  className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
                   onClick={() => {
                     setSelectedProduct(product);
                     document.getElementById("order-modal")?.showModal();
                   }}
                 >
                   Order
-                </button>
+                </button> */}
+
+                {product.isAvailable ? (
+                  <button
+                    className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      document.getElementById("order-modal")?.showModal();
+                    }}
+                  >
+                    Order
+                  </button>
+                ) : (
+                  <button className="btn btn-ghost btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold ">
+                    Not Available
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -156,10 +186,10 @@ function BestSellerCarousel() {
 
       {/* Modal */}
       <dialog id="order-modal" className="modal">
-        <div className="modal-box bg-gray-900 max-w-md sm:max-w-lg">
+        <div className="modal-box bg-gray-300 max-w-md sm:max-w-lg">
           {selectedProduct && (
             <>
-              <h3 className="text-base sm:text-lg font-bold mb-4 text-white">
+              <h3 className="text-base sm:text-lg font-bold mb-4 text-black">
                 Choose size for {selectedProduct.productName}
               </h3>
 

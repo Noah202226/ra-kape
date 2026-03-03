@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 export async function POST(req) {
   const {
     name,
+    contact,
     email,
     address,
     message,
@@ -10,6 +11,7 @@ export async function POST(req) {
     modeOfPayment,
     shippingFee = 0,
     grandTotal = 0,
+    discountedPrice = 0,
 
     reference = "",
   } = await req.json();
@@ -32,8 +34,8 @@ export async function POST(req) {
 
     // send mail
     await transporter.sendMail({
-      from: `"RA Kape" <chitomiryenda24@gmail.com>`,
-      to: ["noaligpitan@gmail.com", "rakape31@gmail.com", email],
+      from: `"RA Kape" <rakape26@gmail.com>`,
+      to: ["noaligpitan@gmail.com", email, "rakape26@gmail.com"],
       // to: ["noaligpitan@gmail.com"],
       subject: "New Order from RaKape Website",
       html: `
@@ -45,6 +47,7 @@ export async function POST(req) {
 
       <div style="padding:20px; color:#333;">
         <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Contact #:</strong> ${contact}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Address:</strong> ${address}</p>
         <p><strong>Mode of Payment:</strong> ${modeOfPayment}</p>
@@ -62,7 +65,9 @@ export async function POST(req) {
           (sum, i) => sum + i.price * i.quantity,
           0
         )}</strong>
+        
         <p>Shipping Fee: ${shippingFee} </p>
+        <p>Discount: ${discountedPrice} </p>
         <strong><p>Grand Total: ${grandTotal} </p> </strong>
         <br />
         --------------------------------------------------------------------------
