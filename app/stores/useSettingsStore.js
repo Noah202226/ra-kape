@@ -1,7 +1,9 @@
 import { create } from "zustand";
 
+import { dbId } from "@/appwrite";
+
 const useSettingsStore = create((set) => ({
-  dbId: "6870ab6f0018df40fa94",
+  dbId: dbId,
   settings: {},
   setSettings: (settings) => set(() => ({ settings })),
 
@@ -17,7 +19,7 @@ const useSettingsStore = create((set) => ({
   updateProduct: (updatedProduct) =>
     set((state) => ({
       products: state.products.map((product) =>
-        product.$id === updatedProduct.$id ? updatedProduct : product
+        product.$id === updatedProduct.$id ? updatedProduct : product,
       ),
     })),
 
@@ -33,7 +35,7 @@ const useSettingsStore = create((set) => ({
   updateReview: (updatedReview) =>
     set((state) => ({
       reviews: state.reviews.map((review) =>
-        review.$id === updatedReview.$id ? updatedReview : review
+        review.$id === updatedReview.$id ? updatedReview : review,
       ),
     })),
 

@@ -1,4 +1,4 @@
-import { database } from "@/appwrite";
+import { database, dbId } from "@/appwrite";
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import { Query } from "appwrite";
 
@@ -10,9 +10,9 @@ export async function fetchProducts() {
 
     while (true) {
       const response = await database.listDocuments(
-        "6870ab6f0018df40fa94", // database ID
+        dbId, // database ID
         "products", // collection ID
-        [Query.limit(limit), Query.offset(offset)]
+        [Query.limit(limit), Query.offset(offset)],
       );
 
       allProducts = [...allProducts, ...response.documents];

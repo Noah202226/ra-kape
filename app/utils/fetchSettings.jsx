@@ -1,11 +1,11 @@
-import { database } from "@/appwrite";
+import { database, dbId } from "@/appwrite";
 import useSettingsStore from "@/app/stores/useSettingsStore";
 
 export async function fetchSettings() {
   try {
     const response = await database.listDocuments(
-      "6870ab6f0018df40fa94", // database ID
-      "6870ab9e0013bcd4d615" // collection ID
+      dbId, // database ID
+      "6870ab9e0013bcd4d615", // collection ID
     );
 
     // Convert array into an object keyed by settingName

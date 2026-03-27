@@ -16,7 +16,7 @@ export default function CouponInput({
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const DATABASE_ID = "6870ab6f0018df40fa94";
+  const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
   const COUPONS_COLLECTION_ID = "coupons";
 
   const handleApplyCoupon = async () => {
@@ -29,7 +29,7 @@ export default function CouponInput({
       const response = await database.listDocuments(
         DATABASE_ID,
         COUPONS_COLLECTION_ID,
-        [Query.equal("code", couponCode.toUpperCase())]
+        [Query.equal("code", couponCode.toUpperCase())],
       );
 
       if (response.total === 0) {

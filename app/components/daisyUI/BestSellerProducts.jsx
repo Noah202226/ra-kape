@@ -55,7 +55,7 @@ function BestSellerCarousel() {
 
     addToCart(productWithSize);
     toast.success(
-      `${selectedProduct.productName} (${selectedSize}) added to cart!`
+      `${selectedProduct.productName} (${selectedSize}) added to cart!`,
     );
 
     setSelectedProduct(null);

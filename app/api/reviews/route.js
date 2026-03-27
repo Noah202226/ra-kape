@@ -1,6 +1,6 @@
 import { database } from "@/appwrite";
 
-const DB_ID = "6870ab6f0018df40fa94";
+const DB_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = "68842cca00175d53d7f5";
 
 // ---------------- POST: Add Product ----------------
@@ -15,7 +15,7 @@ export async function POST(req) {
       {
         reviewImage: body.reviewImage, // usually image URL from Appwrite Storage
         comments: body.comments,
-      }
+      },
     );
 
     return Response.json({ success: true, product: newReview });
@@ -23,7 +23,7 @@ export async function POST(req) {
     console.error("POST /api/reviews error:", err);
     return Response.json(
       { success: false, error: err.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -51,7 +51,7 @@ export async function DELETE(req) {
   if (!id) {
     return Response.json(
       { success: false, error: "Product ID is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -62,7 +62,7 @@ export async function DELETE(req) {
     console.error("DELETE /api/products error:", err);
     return Response.json(
       { success: false, error: err.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

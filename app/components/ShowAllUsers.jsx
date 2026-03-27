@@ -3,7 +3,7 @@ import useSettingsStore from "../stores/useSettingsStore";
 import { database } from "@/appwrite";
 import { Query } from "appwrite";
 
-const DATABASE_ID = "6870ab6f0018df40fa94";
+const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
 const PROFILES_COLLECTION_ID = "profiles";
 
 function ShowAllUsers() {
@@ -17,7 +17,7 @@ function ShowAllUsers() {
         const response = await database.listDocuments(
           DATABASE_ID,
           PROFILES_COLLECTION_ID,
-          [Query.orderDesc("$createdAt")]
+          [Query.orderDesc("$createdAt")],
         );
         setProfiles(response.documents);
         setUsers(response.documents);

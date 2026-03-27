@@ -1,14 +1,12 @@
-import { database } from "@/appwrite";
+import { database, dbId } from "@/appwrite";
 import { Query } from "appwrite";
 
 export async function updateSettingByName(settingName, newValue) {
   try {
     // Find document by settingName
-    const list = await database.listDocuments(
-      "6870ab6f0018df40fa94",
-      "6870ab9e0013bcd4d615",
-      [Query.equal("settingName", settingName)]
-    );
+    const list = await database.listDocuments(dbId, "6870ab9e0013bcd4d615", [
+      Query.equal("settingName", settingName),
+    ]);
 
     if (list.total === 0) {
       throw new Error(`No document found for settingName: ${settingName}`);
@@ -18,10 +16,10 @@ export async function updateSettingByName(settingName, newValue) {
 
     // Update the document
     const updated = await database.updateDocument(
-      "6870ab6f0018df40fa94",
+      dbId,
       "6870ab9e0013bcd4d615",
       docId,
-      { value: newValue }
+      { value: newValue },
     );
 
     console.log(`Updated ${settingName} to:`, newValue);

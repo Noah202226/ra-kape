@@ -5,7 +5,7 @@ import { database } from "@/appwrite";
 import { ID } from "appwrite";
 import toast from "react-hot-toast";
 
-const DATABASE_ID = "6870ab6f0018df40fa94";
+const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
 const COUPONS_COLLECTION_ID = "coupons";
 
 export default function CouponForm({ fetchCoupons }) {
@@ -39,7 +39,7 @@ export default function CouponForm({ fetchCoupons }) {
           usageLimit: form.usageLimit ? Number(form.usageLimit) : null,
           isActive: true,
           usedCount: 0,
-        }
+        },
       );
 
       setForm({

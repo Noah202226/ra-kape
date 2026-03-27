@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { account, database } from "../../appwrite"; // adjust your import path
+import { account, database, dbId } from "../../appwrite"; // adjust your import path
 import { useAuthStore } from "@/app/stores/useAuthStore";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export default function Profile() {
 
   const router = useRouter();
   // Replace with your own IDs
-  const DATABASE_ID = "6870ab6f0018df40fa94";
+  const DATABASE_ID = dbId;
   const PROFILES_COLLECTION = "profiles";
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Profile() {
         const doc = await database.getDocument(
           DATABASE_ID,
           PROFILES_COLLECTION,
-          current.$id
+          current.$id,
         );
 
         setProfile(doc);

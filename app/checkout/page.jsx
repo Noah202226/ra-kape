@@ -17,7 +17,7 @@ export default function CheckoutPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const router = useRouter();
-  const DATABASE_ID = "6870ab6f0018df40fa94";
+  const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
   const PROFILES_COLLECTION = "profiles";
   const COUPONS_COLLECTION_ID = "coupons";
 
@@ -29,7 +29,7 @@ export default function CheckoutPage() {
         const doc = await database.getDocument(
           DATABASE_ID,
           PROFILES_COLLECTION,
-          current.$id
+          current.$id,
         );
 
         setName(doc.name || "");
@@ -52,7 +52,7 @@ export default function CheckoutPage() {
   const clearCart = useCartStore((state) => state.clearCart);
   const discountedPrice = useCartStore((state) => state.discountedPrice);
   const resetDiscountedPrice = useCartStore(
-    (state) => state.resetDiscountedPrice
+    (state) => state.resetDiscountedPrice,
   );
 
   // shipping / barangay
@@ -159,7 +159,7 @@ export default function CheckoutPage() {
       const response = await database.listDocuments(
         DATABASE_ID,
         COUPONS_COLLECTION_ID,
-        [Query.equal("code", couponCode.toUpperCase())]
+        [Query.equal("code", couponCode.toUpperCase())],
       );
 
       if (response.total === 0) return null;
@@ -172,7 +172,7 @@ export default function CheckoutPage() {
         couponDoc.$id,
         {
           usedCount: (couponDoc.usedCount || 0) + 1,
-        }
+        },
       );
 
       resetDiscountedPrice();

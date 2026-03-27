@@ -1,6 +1,6 @@
 // stores/authStore.js
 import { create } from "zustand";
-import { account, database } from "../../appwrite";
+import { account, database, dbId } from "../../appwrite";
 import { ID } from "appwrite";
 import toast from "react-hot-toast";
 
@@ -15,19 +15,14 @@ export const useAuthStore = create((set) => ({
       const newUser = await account.create(ID.unique(), email, password, name);
 
       // Save extra details in database
-      await database.createDocument(
-        "6870ab6f0018df40fa94",
-        "profiles",
-        newUser.$id,
-        {
-          userID: newUser.$id,
-          email,
-          name,
-          contactNumber: parseInt(contact),
-          address,
-          password,
-        }
-      );
+      await database.createDocument(dbId, "profiles", newUser.$id, {
+        userID: newUser.$id,
+        email,
+        name,
+        contactNumber: parseInt(contact),
+        address,
+        password,
+      });
 
       // Auto-login
       await account.createEmailPasswordSession(email, password);

@@ -32,10 +32,10 @@ export default function FileUploader({ imageId }) {
     // 3. Update settings document in Appwrite
     try {
       const updated = await database.updateDocument(
-        "6870ab6f0018df40fa94", // RakapeDB
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
         "6870ab9e0013bcd4d615", // settings collection
         imageId, // document ID of heroImage
-        { value: data.fileUrl } // Use `value` field (based on your Appwrite structure)
+        { value: data.fileUrl }, // Use `value` field (based on your Appwrite structure)
       );
 
       console.log("Settings updated with new hero image:", updated);

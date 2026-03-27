@@ -1,11 +1,11 @@
-import { database } from "@/appwrite";
+import { database, dbId } from "@/appwrite";
 import useSettingsStore from "@/app/stores/useSettingsStore";
 
 export async function fetchEvents() {
   try {
     const response = await database.listDocuments(
-      "6870ab6f0018df40fa94", // database ID
-      "689898d3001b38bc0cf3" // collection ID
+      dbId, // database ID
+      "689898d3001b38bc0cf3", // collection ID
     );
 
     console.log("Fetched events:", response.documents);

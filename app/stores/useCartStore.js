@@ -9,7 +9,7 @@ const useCartStore = create(
 
       addToCart: (item) => {
         const existingItem = get().cart.find(
-          (i) => i.$id === item.$id && i.size === item.size
+          (i) => i.$id === item.$id && i.size === item.size,
         );
 
         if (existingItem) {
@@ -17,7 +17,7 @@ const useCartStore = create(
             cart: get().cart.map((i) =>
               i.$id === item.$id && i.size === item.size
                 ? { ...i, quantity: i.quantity + 1 }
-                : i
+                : i,
             ),
           });
         } else {
@@ -32,7 +32,7 @@ const useCartStore = create(
           cart: get().cart.map((i) =>
             i.$id === id && i.size === size
               ? { ...i, quantity: i.quantity + 1 }
-              : i
+              : i,
           ),
         });
       },
@@ -43,7 +43,7 @@ const useCartStore = create(
             .cart.map((i) =>
               i.$id === id && i.size === size
                 ? { ...i, quantity: i.quantity - 1 }
-                : i
+                : i,
             )
             .filter((i) => i.quantity > 0),
         });
@@ -92,8 +92,8 @@ const useCartStore = create(
     }),
     {
       name: "cart-storage",
-    }
-  )
+    },
+  ),
 );
 
 export default useCartStore;

@@ -19,7 +19,7 @@ function AboutUs() {
             alt="About Us"
             className="
               rounded-xl shadow-lg w-full object-cover
-              h-56 sm:h-72 md:h-96 lg:h-[28rem] xl:h-[32rem]
+              h-56 sm:h-72 md:h-96 lg:h-112 xl:h-[32rem]
               transition-all duration-300
               hover:ring-4 hover:ring-[var(--title)] hover:ring-offset-2
             "

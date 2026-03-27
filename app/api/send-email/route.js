@@ -35,13 +35,13 @@ export async function POST(req) {
     // send mail
     await transporter.sendMail({
       from: `"RA Kape" <rakape26@gmail.com>`,
-      to: ["noaligpitan@gmail.com", email, "rakape26@gmail.com"],
+      to: ["noaligpitan26@gmail.com", email, "rakape26@gmail.com"],
       // to: ["noaligpitan@gmail.com"],
       subject: "New Order from RaKape Website",
       html: `
     <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto; border:1px solid #000; border-radius:8px; overflow:hidden;">
       <div style="background:#000; color:white; padding:20px; text-align:center;">
-        <img src="https://fra.cloud.appwrite.io/v1/storage/buckets/images/files/68a1b5720033113c66bf/view?project=686e20fe00214a6c2fac&mode=admin" alt="RA Kape" style="height:50px; margin-bottom:10px;" />
+        <img src="https://appwrite-g7kpzn0lrb8trwg58bhs7x2h.arctech.fun/v1/storage/buckets/images/files/68a1b5720033113c66bf/view?project=686e20fe00214a6c2fac&mode=admin" alt="RA Kape" style="height:50px; margin-bottom:10px;" />
         <h2 style="margin:0;">New Order from RAKAPE WEBSITE</h2>
       </div>
 
@@ -56,14 +56,14 @@ export async function POST(req) {
         <p><strong>Orders:</strong> 
         ${orders.map(
           (order) =>
-            `<p>${order.productName} (${order.size}) - (${order.quantity} x P:${order.price})`
+            `<p>${order.productName} (${order.size}) - (${order.quantity} x P:${order.price})`,
         )}
         <br />
         --------------------------------------------------------------------------
         <br />
         <strong> TOTAL AMOUNT: ${orders.reduce(
           (sum, i) => sum + i.price * i.quantity,
-          0
+          0,
         )}</strong>
         
         <p>Shipping Fee: ${shippingFee} </p>
@@ -86,7 +86,7 @@ export async function POST(req) {
     console.error("Error sending email:", error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

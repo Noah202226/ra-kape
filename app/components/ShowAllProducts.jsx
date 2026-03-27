@@ -12,7 +12,7 @@ export default function ShowAllProducts() {
 
   const [editingProduct, setEditingProduct] = useState(null);
   const [category, setCategory] = useState(
-    products?.category || "ice-drip-coffee"
+    products?.category || "ice-drip-coffee",
   );
 
   const [sortBy, setSortBy] = useState("productType");
@@ -92,12 +92,12 @@ export default function ShowAllProducts() {
           productType: editingProduct.productType,
           image: imageUrl,
           isAvailable: editingProduct.isAvailable,
-        }
+        },
       );
 
       // ✅ Update local state
       setProducts(
-        products.map((p) => (p.$id === editingProduct.$id ? response : p))
+        products.map((p) => (p.$id === editingProduct.$id ? response : p)),
       );
 
       toast.success(`✅ Updated: ${response.productName}`);
@@ -124,7 +124,7 @@ export default function ShowAllProducts() {
       setProducts(products.filter((p) => p.$id !== id));
 
       toast.success(
-        `🗑️ Deleted: ${deletedProduct?.productName || deletedProduct?.$id}`
+        `🗑️ Deleted: ${deletedProduct?.productName || deletedProduct?.$id}`,
       );
     } catch (err) {
       console.error("Failed to delete product", err);

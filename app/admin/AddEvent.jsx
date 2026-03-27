@@ -75,7 +75,7 @@ export default function AddEvent({ onSave }) {
         } else {
           toast.error(
             data.error,
-            "ERROR SAVING EVENT" || "Something went wrong"
+            "ERROR SAVING EVENT" || "Something went wrong",
           );
         }
       }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { database, ID } from "@/appwrite";
 import toast from "react-hot-toast";
 
-const DATABASE_ID = "6870ab6f0018df40fa94";
+const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID;
 const COUPONS_COLLECTION_ID = "coupons";
 
 export default function CouponsTable({ fetchCoupons, loading, coupons }) {
