@@ -22,7 +22,7 @@ export default function GCashPaymentInfo() {
 
   return (
     <div
-      className="mt-6 p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 
+      className="mt-6 p-6 bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 
                  border border-gray-700 rounded-xl shadow-lg text-white text-center"
       data-aos="fade-up"
       data-aos-offset="100"

@@ -1,7 +1,15 @@
-/** @type {import('next').NextConfig} */
+import withPWAInit from "@ducanh2912/next-pwa";
+
 const nextConfig = {
   images: {
-    domains: ["fra.cloud.appwrite.io", "localhost"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "appwrite.arctech.fun", // Your self-hosted domain
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
   experimental: {
     optimizeCss: false, // disable Lightning CSS
@@ -14,4 +22,16 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+const withPWA = withPWAInit({
+  dest: "public",
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true,
+  swcMinify: true,
+  disable: process.env.NODE_ENV === "development", // Disable PWA in dev mode
+  workboxOptions: {
+    disableDevLogs: true,
+  },
+});
+
+export default withPWA(nextConfig);

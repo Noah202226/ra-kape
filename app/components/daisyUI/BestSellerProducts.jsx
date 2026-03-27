@@ -19,7 +19,7 @@ function BestSellerCarousel() {
   if (products.length === 0) {
     return (
       <div className="py-12 px-4 max-w-7xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-[var(--title)]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-(--title)">
           Best Sellers
         </h2>
         <p className="text-center text-gray-500 text-sm sm:text-base">
@@ -65,7 +65,7 @@ function BestSellerCarousel() {
 
   return (
     <div className="py-12 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto w-full">
-      <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center mb-10 text-[var(--title)]">
+      <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center mb-10 text-(--title)">
         Best Sellers
       </h2>
 
@@ -108,7 +108,7 @@ function BestSellerCarousel() {
                 </div>
                 <div
                   className="
-        absolute inset-0 bg-gradient-to-t from-amber-800/40 to-transparent 
+        absolute inset-0 bg-linear-to-t from-amber-800/40 to-transparent 
         opacity-0 group-hover:opacity-100 
         transition-opacity duration-300
       "
