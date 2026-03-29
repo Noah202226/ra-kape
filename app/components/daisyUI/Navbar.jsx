@@ -189,7 +189,7 @@ function Navbar() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden p-2"
+            className="lg:hidden p-2 text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
           >
             {menuOpen ? <HiX size={30} /> : <HiMenuAlt3 size={30} />}
           </button>
@@ -204,13 +204,13 @@ function Navbar() {
             animate="open"
             exit="closed"
             variants={mobileMenuVariants}
-            className="absolute top-20 right-0 w-70 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-gray-100 p-6 flex flex-col gap-3 lg:hidden"
+            className="absolute text-gray-800 top-20 right-0 w-70 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-gray-100 p-6 flex flex-col gap-3 lg:hidden"
           >
             {menuItems.map((item) => (
               <motion.div key={item.name} variants={itemVariants}>
                 <Link
                   href={item.link}
-                  className={`block px-4 py-3 rounded-xl font-bold transition-colors ${
+                  className={`block px-4 py-3 rounded-xl font-bold transition-colors text-gray-800 ${
                     pathname === item.link
                       ? "bg-(--title) text-white"
                       : "hover:bg-gray-100"
@@ -235,12 +235,15 @@ function Navbar() {
               </a>
 
               {current ? (
-                <button
-                  onClick={handleLogout}
-                  className="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold"
-                >
-                  {loading ? "..." : "Logout"}
-                </button>
+                <div className="flex flex-col gap-2 items-center ">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold"
+                  >
+                    {loading ? "..." : "Logout"}
+                  </button>
+                  {current.name?.split(" ")[0]}
+                </div>
               ) : (
                 <Link
                   href="/login"
