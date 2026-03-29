@@ -66,12 +66,12 @@ export default function InstallPWA() {
           initial={{ y: 50, x: "-50%", opacity: 0 }}
           animate={{ y: 0, x: "-50%", opacity: 1 }}
           exit={{ y: 50, x: "-50%", opacity: 0 }}
-          className="fixed bottom-6 left-1/2 z-[9999] w-[92%] max-w-md"
+          className="fixed bottom-6 left-1/2 z-9999 w-[92%] max-w-md"
         >
           <div className="bg-white/90 backdrop-blur-lg border border-gray-200 shadow-[0_20px_50px_rgba(0,0,0,0.2)] rounded-2xl p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               {/* BRAND ICON */}
-              <div className="bg-[var(--title)] w-12 h-12 flex items-center justify-center rounded-xl text-black text-xl shadow-inner">
+              <div className="bg-(--title) w-12 h-12 flex items-center justify-center rounded-xl text-black text-xl shadow-inner">
                 <img
                   src="/r.jpg"
                   alt="RA KAPE"
@@ -91,7 +91,7 @@ export default function InstallPWA() {
             <div className="flex flex-col gap-1">
               <button
                 onClick={handleInstallClick}
-                className="bg-[var(--title)] text-white text-xs font-bold px-5 py-2.5 rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-md"
+                className="bg-(--title) text-white text-xs font-bold px-5 py-2.5 rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-md"
               >
                 Install
               </button>
