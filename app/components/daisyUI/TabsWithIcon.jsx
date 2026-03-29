@@ -19,6 +19,15 @@ import AddEvent from "@/app/admin/AddEvent";
 import ShowAllUsers from "../ShowAllUsers";
 
 import AdminCouponsPage from "../CouponPage";
+import {
+  HiOutlineAdjustmentsHorizontal,
+  HiOutlineCube,
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineTicket,
+  HiOutlineUsers,
+  HiOutlineSparkles,
+  HiOutlineArrowUpTray,
+} from "react-icons/hi2";
 
 function TabsWithIcon() {
   const router = useRouter();
@@ -39,17 +48,16 @@ function TabsWithIcon() {
   const [aboutDescription2, setAboutDescription2] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
-
   const [activeTab, setActiveTab] = useState("settings");
 
   const modalRef = useRef(null);
   const modalCustomerRef = useRef(null);
 
   const handleSave = async () => {
-    modalRef.current?.close(); // Close the modal
+    modalRef.current?.close();
   };
   const handleSave2 = async () => {
-    modalCustomerRef.current?.close(); // Close the modal
+    modalCustomerRef.current?.close();
   };
 
   useEffect(() => {
@@ -88,14 +96,12 @@ function TabsWithIcon() {
         heroCard2Subtitle: card2Description,
         heroCard3Title: card3Title,
         heroCard3Subtitle: card3Description,
-
-        // Add other settings here as needed
         aboutTitle: aboutTitle,
         aboutDescription: aboutDescription,
         aboutDescription2: aboutDescription2,
       });
-      toast.success("Settings updated! Redirecting to home...");
-      setTimeout(() => router.push("/"), 2000);
+      toast.success("Settings updated!");
+      setTimeout(() => router.push("/"), 1500);
     } catch (err) {
       toast.error("Failed to update settings.");
       console.error(err);
@@ -105,405 +111,358 @@ function TabsWithIcon() {
   };
 
   const tabs = [
-    { id: "settings", label: "Settings", icon: "⚙" },
-    { id: "products", label: "Products", icon: "🍨" },
-    { id: "customers", label: "Testimonials", icon: "📃" },
-    { id: "events", label: "Events", icon: "🎉" },
-    { id: "users", label: "Users", icon: "👥" },
-    { id: "coupons", label: "Coupons", icon: "🎟" },
+    {
+      id: "settings",
+      label: "General",
+      icon: <HiOutlineAdjustmentsHorizontal size={18} />,
+    },
+    { id: "products", label: "Inventory", icon: <HiOutlineCube size={18} /> },
+    {
+      id: "customers",
+      label: "Reviews",
+      icon: <HiOutlineChatBubbleLeftRight size={18} />,
+    },
+    { id: "events", label: "Events", icon: <HiOutlineSparkles size={18} /> },
+    {
+      id: "users",
+      label: "Users", // Shortened for mobile space
+      icon: <HiOutlineUsers size={18} />,
+    },
+    { id: "coupons", label: "Coupons", icon: <HiOutlineTicket size={18} /> },
   ];
 
+  // Refined Input Component for better mobile verticality
+  const AdminInput = ({ label, value, onChange, placeholder, lastData }) => (
+    <div className="space-y-1 w-full">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 ml-1">
+        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+          {label}
+        </label>
+        {lastData && (
+          <span className="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded self-start sm:self-auto truncate max-w-full">
+            Current: {lastData}
+          </span>
+        )}
+      </div>
+      <input
+        type="text"
+        className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-xl text-sm font-bold transition-all outline-none"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Sticky Top Tabs */}
-      <div className="sticky top-0 bg-white z-40 border-b border-base-300 shadow-sm">
-        <div className="flex overflow-x-auto no-scrollbar">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all
-                ${
-                  activeTab === tab.id
-                    ? "border-b-2 border-primary text-primary"
-                    : "text-gray-500 hover:text-black"
-                }`}
-            >
-              <span className="text-lg">{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
-            </button>
-          ))}
+    <div className="min-h-screen bg-[#F9FAFB] pb-24">
+      {/* Sticky Tab Navigation - Optimized for mobile touch & visibility */}
+      <div className="sticky top-23 bg-white/90 backdrop-blur-lg z-40 border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex overflow-x-auto no-scrollbar gap-1 p-2 md:p-3 scroll-smooth items-center">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap
+                  ${
+                    activeTab === tab.id
+                      ? "bg-black text-white shadow-md scale-100"
+                      : "text-gray-400 hover:text-black hover:bg-gray-50"
+                  }`}
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Tab Content */}
-      {activeTab === "settings" && (
-        <div className="w-full border-t border-base-300 py-0 md:py-6">
-          <div className="mx-auto p-2 md:p-6 grid gap-8 grid-cols-1 lg:grid-cols-1">
-            {/* Hero Section */}
-            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-2 md:p-10 space-y-4">
-              <h2 className="text-2xl font-bold text-black">
-                Hero Section Settings
-              </h2>
-              <fieldset className="space-y-1">
-                <legend className="text-sm font-semibold text-black">
-                  WEB TITLE
-                </legend>
-                <input
-                  type="text"
-                  className="input bg-black w-full text-white"
-                  placeholder="Type here"
-                  value={appTitle}
-                  onChange={(e) => setApptitle(e.target.value)}
-                />
-                <p className="text-xs text-black">
-                  Last data: {settings.webTitle}
-                </p>
-              </fieldset>
-              <fieldset className="space-y-1">
-                <legend className="text-sm font-semibold text-black">
-                  Landing Page Descriptions
-                </legend>
-                <input
-                  type="text"
-                  className="input bg-black w-full text-white"
-                  placeholder="Type here"
-                  value={heroDescription}
-                  onChange={(e) => setHeroDescription(e.target.value)}
-                />
-                <p className="text-xs text-black">
-                  Last data: {settings.heroDescriptions}
-                </p>
-              </fieldset>
-              <fieldset className="space-y-1">
-                <legend className="text-sm font-semibold text-black">
-                  CTA BUTTON
-                </legend>
-                <input
-                  type="text"
-                  className="input bg-black w-full text-white"
-                  placeholder="Type here"
-                  value={CTAButton}
-                  onChange={(e) => setCTAButton(e.target.value)}
-                />
-                <p className="text-xs text-black">
-                  Last data: {settings.heroCTA}
-                </p>
-              </fieldset>
-
-              <div className="card shadow-md p-0 md:p-6">
-                <h2 className="text-lg font-bold mb-4 text-neutral">
-                  Hero Image
-                </h2>
-                <ImagePreview fileUrl={settings.heroImage} />
-                <FileUploader imageId={"687e3bc3003e319903fa"} />
-              </div>
-
-              <div className="card shadow-lg border-2 p-0 md:p-6">
-                <h2 className="text-lg font-bold mb-4 text-neutral">
-                  Hero Card 1
-                </h2>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    Card Title
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
-                    value={card1Title}
-                    onChange={(e) => setCard1Title(e.target.value)}
-                  />
-                  <p className="text-xs text-black">
-                    Last data: {settings.heroCard1Title}
-                  </p>
-                </fieldset>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    Description
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
-                    value={card1Description}
-                    onChange={(e) => setCard1Description(e.target.value)}
-                  />
-                  <p className="text-xs text-black">
-                    Last data: {settings.heroCard1Subtitle}
-                  </p>
-                </fieldset>
-              </div>
-
-              <div className="card shadow-lg border-2 p-0 md:p-6">
-                <h2 className="text-lg font-bold mb-4 text-neutral">
-                  Hero Card 2
-                </h2>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    Title
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
-                    value={card2Title}
-                    onChange={(e) => setCard2Title(e.target.value)}
-                  />
-                  <p className="text-xs text-black">
-                    Last data: {settings.heroCard1Title}
-                  </p>
-                </fieldset>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    Description
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
-                    value={card2Description}
-                    onChange={(e) => setCard2Description(e.target.value)}
-                  />
-                  <p className="text-xs text-black">
-                    Last data: {settings.heroCard1Subtitle}
-                  </p>
-                </fieldset>
-              </div>
-
-              <div className="card shadow-lg border-2 p-0 md:p-6">
-                <h2 className="text-lg font-bold mb-4 text-neutral">
-                  Hero Card 3
-                </h2>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    Title
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
-                    value={card3Title}
-                    onChange={(e) => setCard3Title(e.target.value)}
-                  />
-                  <p className="text-xs text-black">
-                    Last data: {settings.heroCard3Title}
-                  </p>
-                </fieldset>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    1st Hero Card Description
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
-                    value={card3Description}
-                    onChange={(e) => setCard3Description(e.target.value)}
-                  />
-                  <p className="text-xs text-black">
-                    Last data: {settings.heroCard3Subtitle}
-                  </p>
-                </fieldset>
-              </div>
+      <div className="max-w-6xl mx-auto p-4 md:p-8 mt-23">
+        {activeTab === "settings" && (
+          <div className="space-y-6 md:space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            {/* Header - Scaled for mobile */}
+            <div>
+              <h1 className="text-2xl md:text-4xl font-black text-gray-900 tracking-tight">
+                Site Settings
+              </h1>
+              <p className="text-xs md:text-base text-gray-500 font-medium mt-1">
+                Manage your storefront content and branding
+              </p>
             </div>
 
-            {/* About Section */}
-            <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-2 space-y-4">
-              <div className="bg-[white] shadow-2xl border-2 border-black rounded-2xl p-2 space-y-4">
-                <h2 className="text-2xl font-bold text-black">
-                  About Section Settings
-                </h2>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    ABOUT TITLE
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Main Content Area */}
+              <div className="lg:col-span-8 space-y-6">
+                <section className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-sm border border-gray-100 space-y-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-1 h-4 bg-amber-500 rounded-full"></div>
+                    <h2 className="text-sm md:text-xl font-black text-gray-900 uppercase tracking-tight">
+                      Hero Section
+                    </h2>
+                  </div>
+
+                  <AdminInput
+                    label="Website Title"
+                    value={appTitle}
+                    onChange={(e) => setApptitle(e.target.value)}
+                    lastData={settings.webTitle}
+                  />
+                  <AdminInput
+                    label="Landing Description"
+                    value={heroDescription}
+                    onChange={(e) => setHeroDescription(e.target.value)}
+                    lastData={settings.heroDescriptions}
+                  />
+                  <AdminInput
+                    label="Call to Action Label"
+                    value={CTAButton}
+                    onChange={(e) => setCTAButton(e.target.value)}
+                    lastData={settings.heroCTA}
+                  />
+                </section>
+
+                <section className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-sm border border-gray-100 space-y-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-1 h-4 bg-amber-500 rounded-full"></div>
+                    <h2 className="text-sm md:text-xl font-black text-gray-900 uppercase tracking-tight">
+                      About Story
+                    </h2>
+                  </div>
+
+                  <AdminInput
+                    label="About Title"
                     value={aboutTitle}
                     onChange={(e) => setAboutTitle(e.target.value)}
+                    lastData={settings.aboutTitle}
                   />
-                  <p className="text-xs text-black">
-                    Last data: {settings.aboutTitle}
-                  </p>
-                </fieldset>
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    About Descriptions
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
+                  <AdminInput
+                    label="Primary Story"
                     value={aboutDescription}
                     onChange={(e) => setAboutDescription(e.target.value)}
+                    lastData={settings.aboutDescription}
                   />
-                  <p className="text-xs text-black">
-                    Last data: {settings.aboutDescription}
-                  </p>
-                </fieldset>
-
-                <fieldset className="space-y-1">
-                  <legend className="text-sm font-semibold text-black">
-                    About Description 2
-                  </legend>
-                  <input
-                    type="text"
-                    className="input bg-black w-full text-white"
-                    placeholder="Type here"
+                  <AdminInput
+                    label="Secondary Story"
                     value={aboutDescription2}
                     onChange={(e) => setAboutDescription2(e.target.value)}
+                    lastData={settings.aboutDescription2}
                   />
-                  <p className="text-xs text-black">
-                    Last data: {settings.aboutDescription2}
-                  </p>
-                </fieldset>
+                </section>
 
-                <div className="card shadow-md p-0 md:p-6">
-                  <h2 className="text-lg font-bold mb-4 text-neutral">
-                    About Section Image
-                  </h2>
-                  <ImagePreview fileUrl={settings.aboutImage} />
-                  <FileUploader imageId={"6883a2d20011c869fdbf"} />
+                {/* Info Cards Grid - Better Spacing for Mobile */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    {
+                      id: 1,
+                      title: card1Title,
+                      setT: setCard1Title,
+                      desc: card1Description,
+                      setD: setCard1Description,
+                    },
+                    {
+                      id: 2,
+                      title: card2Title,
+                      setT: setCard2Title,
+                      desc: card2Description,
+                      setD: setCard2Description,
+                    },
+                    {
+                      id: 3,
+                      title: card3Title,
+                      setT: setCard3Title,
+                      desc: card3Description,
+                      setD: setCard3Description,
+                    },
+                  ].map((card) => (
+                    <div
+                      key={card.id}
+                      className="bg-white rounded-[1.5rem] p-5 shadow-sm border border-gray-100 space-y-4"
+                    >
+                      <h3 className="font-black text-[10px] uppercase tracking-widest text-gray-400">
+                        Card 0{card.id}
+                      </h3>
+                      <AdminInput
+                        label="Title"
+                        value={card.title}
+                        onChange={(e) => card.setT(e.target.value)}
+                      />
+                      <AdminInput
+                        label="Subtitle"
+                        value={card.desc}
+                        onChange={(e) => card.setD(e.target.value)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sidebar Assets Area */}
+              <div className="lg:col-span-4 space-y-6">
+                <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100">
+                  <h3 className="font-black text-sm text-gray-900 mb-4 flex items-center gap-2">
+                    <HiOutlineArrowUpTray /> Hero Asset
+                  </h3>
+                  <div className="rounded-2xl overflow-hidden border-2 border-dashed border-gray-100 p-2 bg-gray-50">
+                    <ImagePreview fileUrl={settings.heroImage} />
+                  </div>
+                  <div className="mt-4">
+                    <FileUploader imageId={"687e3bc3003e319903fa"} />
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100">
+                  <h3 className="font-black text-sm text-gray-900 mb-4 flex items-center gap-2">
+                    <HiOutlineArrowUpTray /> About Asset
+                  </h3>
+                  <div className="rounded-2xl overflow-hidden border-2 border-dashed border-gray-100 p-2 bg-gray-50">
+                    <ImagePreview fileUrl={settings.aboutImage} />
+                  </div>
+                  <div className="mt-4">
+                    <FileUploader imageId={"6883a2d20011c869fdbf"} />
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Sticky Save Button */}
-            <div className="fixed bottom-0 left-0 right-0 border-t border-base-100 p-2 flex justify-center shadow z-50">
+            {/* Sticky Save Bar - Compact and floating on mobile */}
+            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md">
               <button
-                className="btn btn-accent px-6"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-black text-white rounded-2xl font-black text-base shadow-2xl hover:scale-102 active:scale-95 transition-all disabled:opacity-50"
                 onClick={saveUpdate}
                 disabled={isSaving}
               >
-                {isSaving ? "Saving..." : "💾 Save All"}
+                {isSaving ? (
+                  <span className="loading loading-spinner loading-sm"></span>
+                ) : (
+                  <>
+                    <span>💾</span> Save All Changes
+                  </>
+                )}
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === "products" && (
-        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
-          {/* Section Header */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold ">📦 Products</h2>
-            <button
-              className="btn btn-accent"
-              onClick={() => modalRef.current?.showModal()}
-            >
-              ➕ Add New Product
-            </button>
-          </div>
-
-          {/* Product List */}
-          <div>
-            <ShowAllProducts />
-          </div>
-
-          {/* Modal */}
-          <dialog id="my_modal_2" ref={modalRef} className="modal">
-            <div className="modal-box">
-              <AddImage onSave={handleSave} />
+        {/* --- Other Tabs (Shortened padding for mobile) --- */}
+        {activeTab === "products" && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black text-gray-900">Inventory</h2>
+                <p className="text-xs text-gray-500 font-medium">
+                  Manage menu and stock
+                </p>
+              </div>
+              <button
+                className="btn btn-primary rounded-xl font-bold w-full sm:w-auto"
+                onClick={() => modalRef.current?.showModal()}
+              >
+                + New Product
+              </button>
             </div>
-            <form method="dialog" className="modal-backdrop bg-black">
-              <button>close</button>
-            </form>
-          </dialog>
-        </div>
-      )}
-
-      {activeTab === "customers" && (
-        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
-          {/* Section Header */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold ">
-              📦 CUSTOMERS REVIEWS
-            </h2>
-            <button
-              className="btn btn-accent"
-              onClick={() => modalCustomerRef.current?.showModal()}
-            >
-              ➕ Add New Review
-            </button>
-          </div>
-
-          {/* Product List */}
-          <div>
-            <ShowAllReviews />
-          </div>
-
-          {/* Modal */}
-          <dialog id="my_modal_3" ref={modalCustomerRef} className="modal">
-            <div className="modal-box ">
-              <AddReview onSave={handleSave2} />
+            <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-hidden">
+              <ShowAllProducts />
             </div>
-            <form method="dialog" className="modal-backdrop ">
-              <button>close</button>
-            </form>
-          </dialog>
-        </div>
-      )}
-
-      {activeTab === "events" && (
-        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
-          {/* Section Header */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold ">📦 EVENTS</h2>
-            <button
-              className="btn btn-accent"
-              onClick={() => modalCustomerRef.current?.showModal()}
-            >
-              ➕ Add Event
-            </button>
           </div>
+        )}
 
-          {/* Product List */}
-          <div>
-            <ShowAllEvents />
-          </div>
-
-          {/* Modal */}
-          <dialog id="my_modal_3" ref={modalCustomerRef} className="modal">
-            <div className="modal-box ">
-              <AddEvent onSave={handleSave2} />
+        {activeTab === "customers" && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black text-gray-900">Reviews</h2>
+                <p className="text-xs text-gray-500 font-medium">
+                  Public feedback
+                </p>
+              </div>
+              <button
+                className="btn btn-primary rounded-xl font-bold w-full sm:w-auto"
+                onClick={() => modalCustomerRef.current?.showModal()}
+              >
+                + Add Review
+              </button>
             </div>
-            <form method="dialog" className="modal-backdrop ">
-              <button>close</button>
-            </form>
-          </dialog>
+            <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-hidden">
+              <ShowAllReviews />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "events" && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-black text-gray-900">Events</h2>
+                <p className="text-xs text-gray-500 font-medium">
+                  Promotions and shop news
+                </p>
+              </div>
+              <button
+                className="btn btn-primary rounded-xl font-bold w-full sm:w-auto"
+                onClick={() => modalCustomerRef.current?.showModal()}
+              >
+                + Add Event
+              </button>
+            </div>
+            <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100">
+              <ShowAllEvents />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "users" && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <h2 className="text-2xl font-black text-gray-900">Accounts</h2>
+            <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-x-auto">
+              <ShowAllUsers />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "coupons" && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <h2 className="text-2xl font-black text-gray-900">Coupons</h2>
+            <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-x-auto">
+              <AdminCouponsPage />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Shared Modals */}
+      <dialog
+        id="my_modal_2"
+        ref={modalRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box rounded-t-[2rem] sm:rounded-[2.5rem] p-6 w-full">
+          <AddImage onSave={handleSave} />
         </div>
-      )}
+        <form
+          method="dialog"
+          className="modal-backdrop bg-black/40 backdrop-blur-sm"
+        >
+          <button>close</button>
+        </form>
+      </dialog>
 
-      {activeTab === "users" && (
-        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
-          {/* Section Header */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold ">👥 USERS</h2>
-          </div>
-
-          {/* Product List */}
-          <div>
-            <ShowAllUsers />
-          </div>
+      <dialog
+        id="my_modal_3"
+        ref={modalCustomerRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box rounded-t-[2rem] sm:rounded-[2.5rem] p-6 w-full">
+          <AddReview onSave={handleSave2} />
         </div>
-      )}
-
-      {activeTab === "coupons" && (
-        <div className="w-full border-t border-base-300 py-8 px-4 space-y-6">
-          {/* Section Header */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl text-black font-semibold ">🎟 Coupons</h2>
-          </div>
-
-          {/* Product List */}
-          <div>
-            <AdminCouponsPage />
-          </div>
-        </div>
-      )}
+        <form
+          method="dialog"
+          className="modal-backdrop bg-black/40 backdrop-blur-sm"
+        >
+          <button>close</button>
+        </form>
+      </dialog>
     </div>
   );
 }

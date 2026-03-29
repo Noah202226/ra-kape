@@ -6,6 +6,14 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../stores/useAuthStore";
 import Link from "next/link";
+import {
+  HiOutlineTrash,
+  HiMinus,
+  HiPlus,
+  HiOutlineLockClosed,
+} from "react-icons/hi2";
+import { IoArrowBackOutline } from "react-icons/io5";
+import { CiCoffeeCup } from "react-icons/ci";
 
 export default function Page() {
   const cart = useCartStore((state) => state.cart);
@@ -13,24 +21,24 @@ export default function Page() {
   const decreaseQty = useCartStore((state) => state.decreaseQty);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const totalPrice = useCartStore((state) => state.totalPrice);
+  const clearCart = useCartStore((state) => state.clearCart);
 
   const router = useRouter();
-  const [loading, setLoading] = useState(false); // for login/logout buttons
+  const [loading, setLoading] = useState(false);
   const { current, getCurrentUser, logout } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, [getCurrentUser]);
 
   const handleCheckout = () => {
     if (cart.length === 0) {
       toast.error("Your cart is empty!");
       return;
     }
-
     toast.success("Proceeding to checkout...");
     router.push("/checkout");
   };
-
-  useEffect(() => {
-    getCurrentUser();
-  }, [getCurrentUser]);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -43,107 +51,184 @@ export default function Page() {
     }
   };
 
-  console.log("Cart items:", cart);
-  console.log("Current User sss:", current);
-
   return (
-    <main className="flex min-h-screen flex-col items-center px-6 pt-20">
-      {/* flex of my cart and clear cart button */}
-      {/* show current user */}
+    <main className="flex min-h-screen flex-col items-center px-4 md:px-8 pt-28 pb-12 bg-gray-50">
       {current ? (
-        <>
-          <div className="flex justify-between items-center w-full max-w-4xl mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">My Cart</h1>
-            <button
-              onClick={() => {
-                useCartStore.getState().clearCart();
-                toast.success("Cart cleared!");
-              }}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-            >
-              Clear Cart
-            </button>
+        <div className="w-full max-w-3xl mx-auto">
+          {/* Header Section */}
+          <div className="flex justify-between items-end mb-8 w-full">
+            <div>
+              <Link
+                href="/"
+                className="text-amber-600 flex items-center gap-1 text-sm font-bold mb-2 hover:underline transition-all"
+              >
+                <IoArrowBackOutline /> Back to Home
+              </Link>
+              <h1 className="text-4xl font-black text-gray-900 tracking-tight">
+                My Cart
+              </h1>
+            </div>
+
+            {cart.length > 0 && (
+              <button
+                onClick={() => {
+                  clearCart();
+                  toast.success("Cart cleared!");
+                }}
+                className="text-sm font-bold text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors px-3 py-1 rounded-lg hover:bg-red-50"
+              >
+                <HiOutlineTrash /> Clear Cart
+              </button>
+            )}
           </div>
 
           {cart.length === 0 ? (
-            <>
-              <p className="text-gray-500">Your cart is empty</p>
-            </>
+            <div className="bg-white rounded-[2.5rem] p-16 text-center shadow-sm border border-gray-100 animate-in fade-in zoom-in duration-300">
+              <div className="bg-gray-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CiCoffeeCup className="text-5xl text-gray-300" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Your cart is empty
+              </h2>
+              <p className="text-gray-500 mb-8 max-w-xs mx-auto">
+                Looks like you haven't added any of our delicious brews yet.
+              </p>
+              <Link
+                href="/menu"
+                className="inline-block bg-black text-white px-10 py-4 rounded-2xl font-bold hover:bg-gray-800 transition-all active:scale-95 shadow-lg"
+              >
+                Start Ordering
+              </Link>
+            </div>
           ) : (
-            <div className="w-full max-w-xl space-y-4">
-              {cart.map((item, index) => (
-                <div
-                  key={`${item.$id}-${item.size}`}
-                  className="flex justify-between items-center bg-white rounded-2xl shadow p-4"
-                >
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {item.productName} - {item.size}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      ₱{item.price} x {item.quantity} = ₱
-                      {(item.price * item.quantity).toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => decreaseQty(item.$id, item.size)}
-                      className="bg-gray-400 hover:bg-gray-300 text-amber-700 text-lg w-8 h-8 rounded-full transition"
-                    >
-                      -
-                    </button>
-                    <span className="w-6 text-center">{item.quantity}</span>
-                    <button
-                      onClick={() => increaseQty(item.$id, item.size)}
-                      className="bg-gray-400 hover:bg-gray-300 text-amber-700 text-lg w-8 h-8 rounded-full transition"
-                    >
-                      +
-                    </button>
+            <div className="space-y-6">
+              {/* Cart Items List */}
+              <div className="space-y-4">
+                {cart.map((item) => (
+                  <div
+                    key={`${item.$id}-${item.size}`}
+                    className="flex items-center gap-4 bg-white rounded-[2rem] p-4 pr-6 shadow-sm border border-gray-100 transition-all hover:shadow-md group"
+                  >
+                    {/* Item Image */}
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 relative">
+                      <img
+                        src={item.image}
+                        alt={item.productName}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+
+                    {/* Item Details */}
+                    <div className="flex-grow">
+                      <h3 className="font-bold text-gray-900 text-lg leading-tight">
+                        {item.productName}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-black bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                          {item.size}
+                        </span>
+                      </div>
+                      <p className="text-sm font-black text-gray-900 mt-2">
+                        ₱{item.price.toLocaleString()}
+                      </p>
+                    </div>
+
+                    {/* Quantity Controls */}
+                    <div className="flex items-center gap-3 bg-gray-50 rounded-2xl p-1.5 border border-gray-100">
+                      <button
+                        onClick={() => decreaseQty(item.$id, item.size)}
+                        className="w-9 h-9 flex items-center justify-center bg-white rounded-xl shadow-sm hover:bg-gray-100 transition-colors text-gray-600 active:scale-90"
+                      >
+                        <HiMinus />
+                      </button>
+                      <span className="font-bold text-gray-900 min-w-[24px] text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => increaseQty(item.$id, item.size)}
+                        className="w-9 h-9 flex items-center justify-center bg-white rounded-xl shadow-sm hover:bg-gray-100 transition-colors text-gray-600 active:scale-90"
+                      >
+                        <HiPlus />
+                      </button>
+                    </div>
+
+                    {/* Delete Action */}
                     <button
                       onClick={() => {
                         removeFromCart(item.$id, item.size);
-                        toast.success(
-                          `${item.name} - ${item.size} removed from cart`
-                        );
+                        toast.success(`${item.productName} removed`);
                       }}
-                      className="ml-2 text-red-500 hover:text-red-700 transition"
+                      className="text-gray-300 hover:text-red-500 transition-colors ml-2 p-2"
+                      title="Remove Item"
                     >
-                      Remove
+                      <HiOutlineTrash size={22} />
                     </button>
                   </div>
-                </div>
-              ))}
-
-              <div className="mt-6 p-4 bg-gray-500 rounded-xl text-center shadow text-white">
-                <h3 className="text-xl font-bold">
-                  Total: ₱{totalPrice().toLocaleString()}
-                </h3>
+                ))}
               </div>
 
-              <button
-                onClick={handleCheckout}
-                className="w-full mt-4 py-3 bg-gray-800 text-white hover:bg-black hover:text-white  font-semibold rounded-xl transition cursor-pointer shadow-lg"
-              >
-                Proceed to Checkout
-              </button>
+              {/* Order Summary Card */}
+              <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-gray-200/50 border border-gray-100 mt-10">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <p className="text-gray-400 text-sm font-bold uppercase tracking-widest">
+                      Total Amount
+                    </p>
+                    <p className="text-4xl font-black text-gray-900 mt-1">
+                      ₱{totalPrice().toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="text-right hidden sm:block">
+                    <p className="text-gray-400 text-xs font-medium italic">
+                      Tax included
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleCheckout}
+                  className="w-full py-5 bg-black hover:bg-zinc-800 text-white font-black text-lg rounded-2xl transition-all active:scale-95 shadow-lg flex items-center justify-center gap-3"
+                >
+                  Confirm & Checkout
+                </button>
+              </div>
             </div>
           )}
-        </>
+        </div>
       ) : (
-        <div className="flex  flex-col justify-between items-center w-full mb-8 h-full">
-          <h2>Please login first to continue</h2>
+        /* Login Required State */
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center max-w-md mx-auto">
+          <div className="w-24 h-24 bg-amber-50 rounded-full flex items-center justify-center mb-8 text-amber-500 shadow-inner">
+            <HiOutlineLockClosed size={48} />
+          </div>
+          <h2 className="text-3xl font-black text-gray-900 mb-3 tracking-tight">
+            Access Required
+          </h2>
+          <p className="text-gray-500 mb-10 leading-relaxed">
+            Please log in to your account to view your saved items and proceed
+            with your order.
+          </p>
           <Link
             href="/login"
-            className={`btn btn-primary  md:inline-flex rounded-md ${
+            className={`w-full bg-black text-white py-5 rounded-[1.5rem] font-bold text-lg hover:bg-gray-800 transition-all active:scale-95 shadow-xl ${
               loading ? "pointer-events-none opacity-70" : ""
             }`}
             onClick={() => setLoading(true)}
           >
             {loading ? (
-              <span className="loading loading-spinner loading-sm"></span>
+              <div className="flex items-center justify-center gap-2">
+                <span className="loading loading-spinner loading-md"></span>
+                <span>Authenticating...</span>
+              </div>
             ) : (
-              "Login"
+              "Login to Continue"
             )}
+          </Link>
+          <Link
+            href="/register"
+            className="mt-6 text-sm font-bold text-gray-400 hover:text-black transition-colors"
+          >
+            Don't have an account? Sign up
           </Link>
         </div>
       )}

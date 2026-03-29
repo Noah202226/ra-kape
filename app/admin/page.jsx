@@ -1,18 +1,24 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LoginForm from "../components/LoginForm";
 import { fetchProducts } from "../utils/fetchProducts";
 import { fetchEvents } from "../utils/fetchEvents";
 
 function page() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
     fetchProducts();
     fetchEvents();
   }, []);
 
+  const containerClasses = isAuthenticated
+    ? "flex min-h-screen w-full flex-col"
+    : "";
+
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center px-0 md:px-24 pt-20">
-      <LoginForm />
+    <main className={containerClasses}>
+      <LoginForm onLoginSuccess={() => setIsAuthenticated(true)} />
     </main>
   );
 }

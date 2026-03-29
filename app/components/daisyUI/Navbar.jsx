@@ -5,20 +5,41 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { RiShoppingCartFill } from "react-icons/ri";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 function Navbar() {
   const totalQuantity = useCartStore((state) => state.totalQuantity());
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [loading, setLoading] = useState(false); // for login/logout buttons
   const { current, getCurrentUser, logout } = useAuthStore((state) => state);
-
   const pathname = usePathname();
+
+  // Scroll Progress Logic
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   useEffect(() => {
+    setMenuOpen(false);
     setLoading(false);
   }, [pathname]);
+
+  useEffect(() => {
+    setHasMounted(true);
+    getCurrentUser();
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!hasMounted) return null;
 
   const handleLogout = async () => {
     setLoading(true);
@@ -30,191 +51,209 @@ function Navbar() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    setHasMounted(true);
-
-    getCurrentUser();
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  if (!hasMounted) return null;
 
   const menuItems = [
-    { name: "Ice Drip Coffee", link: "/ice-drip-coffee" },
-    { name: "Ice Premium Espresso", link: "/ice-premium-espresso" },
-    { name: "Non Coffee", link: "/non-coffee" },
+    { name: "Ice Drip", link: "/ice-drip-coffee" },
+    { name: "Espresso", link: "/ice-premium-espresso" },
+    { name: "Non-Coffee", link: "/non-coffee" },
     { name: "Hot Coffee", link: "/hot-coffee" },
     { name: "Ice Blended", link: "/ice-blended" },
     { name: "Pastry", link: "/pastry" },
   ];
 
+  // Animation Variants
+  const navVariants = {
+    top: { y: 0, width: "100%", borderRadius: "0px", padding: "12px 24px" },
+    scrolled: {
+      y: 10,
+      width: "95%",
+      borderRadius: "20px",
+      padding: "8px 20px",
+    },
+  };
+
+  const mobileMenuVariants = {
+    closed: { opacity: 0, scale: 0.95, y: -20 },
+    open: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, x: 10 },
+    open: { opacity: 1, x: 0 },
+  };
+
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 
-        ${
-          scrolled
-            ? "bg-[rgba(255,255,255,0.6)] backdrop-blur-md shadow"
-            : "bg-transparent"
-        }
-      `}
+    <motion.nav
+      initial="top"
+      animate={scrolled ? "scrolled" : "top"}
+      variants={navVariants}
+      className="fixed left-1/2 -translate-x-1/2 z-100 transition-all duration-500"
     >
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-0.75 bg-(--title) origin-[0%] z-101"
+        style={{ scaleX, borderRadius: scrolled ? "20px 20px 0 0" : "0" }}
+      />
+
+      <div
+        className={`max-w-7xl mx-auto flex justify-between items-center transition-all duration-500
+          ${
+            scrolled
+              ? "bg-white/80 backdrop-blur-xl shadow-lg border border-white/20 px-6 py-2"
+              : "bg-transparent px-4 py-3"
+          }`}
+      >
         {/* Logo */}
-        <a href="/" className="flex items-center space-x-2">
-          <img
+        <Link href="/" className="flex items-center">
+          <motion.img
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             src="/r.jpg"
             alt="Ra Kape Logo"
-            className="h-8 sm:h-10 lg:h-12 w-auto rounded-3xl transition hover:scale-105"
+            className="h-10 sm:h-12 w-auto rounded-xl shadow-sm cursor-pointer"
           />
-        </a>
+        </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-4 sm:space-x-6 lg:space-x-10">
+        {/* Desktop Links */}
+        <div className="hidden lg:flex items-center space-x-8">
           {menuItems.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.link}
-              className="relative text-sm sm:text-base lg:text-lg 
-                after:content-[''] after:absolute after:left-0 after:-bottom-1 
-                after:w-0 after:h-[2px] after:bg-[var(--title)]
-                hover:after:w-full after:transition-all after:duration-300
-                hover:scale-105 transition text-[var(--title)]"
+              className="relative group text-sm font-bold text-gray-800"
             >
               {item.name}
-            </a>
+              {pathname === item.link && (
+                <motion.div
+                  layoutId="underline"
+                  className="absolute -bottom-1 left-0 w-full h-0.5 bg-(--title)"
+                />
+              )}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-(--title) transition-all group-hover:w-full" />
+            </Link>
           ))}
         </div>
 
-        {/* Cart & CTA */}
-        <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
-          <div className="relative group">
-            <a href="/cart" className="block group-hover:animate-bounce">
-              <RiShoppingCartFill
-                className="text-[var(--title)]"
-                style={{ width: 28, height: 28 }}
-              />
+        {/* Actions */}
+        <div className="flex items-center space-x-4">
+          <Link href="/cart">
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="relative p-2 cursor-pointer"
+            >
+              <RiShoppingCartFill size={26} className="text-gray-800" />
+              {totalQuantity > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute top-0 right-0 bg-red-500 text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center border-2 border-white"
+                >
+                  {totalQuantity}
+                </motion.span>
+              )}
+            </motion.div>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="https://www.facebook.com/RaKapeBulacan"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#1877F2] text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-[#166fe5] transition-colors"
+            >
+              Facebook
             </a>
-            {totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {totalQuantity}
-              </span>
+
+            {current ? (
+              <Link
+                href="/profile"
+                className="text-sm font-bold hover:underline"
+              >
+                {current.name?.split(" ")[0]}
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="bg-black text-white px-6 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-gray-800"
+              >
+                LOGIN
+              </Link>
             )}
           </div>
-          <a
-            href="https://www.facebook.com/RaKapeBulacan"
-            target="_blank"
-            className="px-3 sm:px-4 lg:px-6 py-1 sm:py-2 text-sm sm:text-base lg:text-lg rounded-xl
-              bg-black border-0 hover:shadow-2xl hover:bg-gray-800 text-white transition"
-          >
-            Facebook
-          </a>
 
-          {current ? (
-            <div className="hidden md:flex items-center gap-3">
-              <Link href="/profile">
-                <span className="text-sm font-medium text-black cursor-pointer hover:underline">
-                  {current.name || current.email}
-                </span>
-              </Link>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className={`btn bg-black hidden md:inline-flex rounded-md ${
-                loading ? "pointer-events-none opacity-70" : ""
-              }`}
-              onClick={() => setLoading(true)}
-            >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                <span className="text-white bg-black">LOGIN</span>
-              )}
-            </Link>
-          )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden focus:outline-none"
+            className="lg:hidden p-2"
           >
-            <svg
-              className="w-6 h-6 text-black"
-              fill="none"
-              stroke="black"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={
-                  menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
-                }
-              />
-            </svg>
+            {menuOpen ? <HiX size={30} /> : <HiMenuAlt3 size={30} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-black text-white text-center space-y-4 py-6 transition-all duration-300 ease-in-out">
-          {menuItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.link}
-              className="block text-lg hover:underline hover:scale-105 transition"
-            >
-              {item.name}
-            </a>
-          ))}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={mobileMenuVariants}
+            className="absolute top-20 right-0 w-70 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-gray-100 p-6 flex flex-col gap-3 lg:hidden"
+          >
+            {menuItems.map((item) => (
+              <motion.div key={item.name} variants={itemVariants}>
+                <Link
+                  href={item.link}
+                  className={`block px-4 py-3 rounded-xl font-bold transition-colors ${
+                    pathname === item.link
+                      ? "bg-(--title) text-white"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
+            ))}
 
-          {/* Auth state on mobile */}
-          {current ? (
-            <div className="border-t border-base-300 pt-4 flex flex-col gap-3">
-              <Link href="/profile">
-                <span className="block mb-2 text-sm font-medium text-base-content text-right">
-                  {current.name || current.email}
-                </span>
-              </Link>
-              <button
-                onClick={async () => {
-                  setLoading(true);
-                  await handleLogout();
-                  setMenuOpen(false);
-                }}
-                disabled={loading}
-                className="btn btn-primary rounded-md flex items-center justify-center"
-              >
-                {loading ? (
-                  <span className="loading loading-spinner loading-sm"></span>
-                ) : (
-                  "Logout"
-                )}
-              </button>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className={`btn btn-primary w-full ${
-                loading ? "pointer-events-none opacity-70" : ""
-              }`}
-              onClick={() => {
-                setMenuOpen(!menuOpen);
-                setLoading(true);
-              }}
+            <motion.div
+              variants={itemVariants}
+              className="pt-4 border-t border-gray-100 flex flex-col gap-3"
             >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
+              <a
+                href="https://www.facebook.com/RaKapeBulacan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-[#1877F2] text-white py-3 rounded-xl font-bold text-center shadow-md"
+              >
+                Facebook
+              </a>
+
+              {current ? (
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold"
+                >
+                  {loading ? "..." : "Logout"}
+                </button>
               ) : (
-                "Login"
+                <Link
+                  href="/login"
+                  className="block w-full bg-black text-white py-4 rounded-xl font-bold text-center"
+                >
+                  Login
+                </Link>
               )}
-            </Link>
-          )}
-        </div>
-      )}
-    </nav>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }
 

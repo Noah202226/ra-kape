@@ -8,22 +8,20 @@ import { CiCoffeeCup } from "react-icons/ci";
 
 function BestSellerCarousel() {
   const { current } = useAuthStore((state) => state);
-
   const addToCart = useCartStore((state) => state.addToCart);
   const { products } = useSettingsStore((state) => state);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState("22oz"); // default size
+  const [selectedSize, setSelectedSize] = useState("22oz");
 
-  console.log("Current user in BestSellerProducts:", current);
   if (products.length === 0) {
     return (
-      <div className="py-12 px-4 max-w-7xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-(--title)">
+      <div className="py-20 px-4 max-w-7xl mx-auto text-center">
+        <h2 className="text-3xl md:text-5xl font-extrabold mb-6 text-gray-900">
           Best Sellers
         </h2>
-        <p className="text-center text-gray-500 text-sm sm:text-base">
-          No products available yet.
+        <p className="text-gray-500 text-lg">
+          Our favorites are brewing. Check back soon!
         </p>
       </div>
     );
@@ -64,170 +62,176 @@ function BestSellerCarousel() {
   };
 
   return (
-    <div className="py-12 px-2 sm:px-4 lg:px-8 max-w-7xl mx-auto w-full">
-      <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-center mb-10 text-(--title)">
-        Best Sellers
-      </h2>
+    <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full bg-white">
+      {/* Modern Header */}
+      <div className="text-center mb-12">
+        <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight inline-block relative">
+          Best Sellers
+          <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-black rounded-full"></span>
+        </h2>
+        <p className="mt-6 text-gray-500 font-medium">
+          The most loved brews in the house.
+        </p>
+      </div>
 
       {/* Responsive Grid */}
-      <div
-        className="
-          grid gap-6 sm:gap-8
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-4
-        "
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {products
           .filter((product) => product.productType === "best-seller")
           .map((product) => (
             <div
               key={product.$id}
-              data-aos="zoom-in"
-              className="
-    bg-white rounded-xl shadow-lg overflow-hidden 
-    transition-all duration-300 
-    hover:shadow-[0_0_25px_rgba(0,0,0,0.6)]
-    hover:scale-105 hover:-translate-y-1
-    flex flex-col
-  "
+              data-aos="fade-up"
+              className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full overflow-hidden"
             >
-              {/* Image */}
-              <figure className="relative group overflow-hidden">
-                <div className="relative">
-                  <img
-                    src={product.image}
-                    alt={product.productName}
-                    className={`w-full 
-      h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
-      object-cover 
-      transition-transform duration-300 group-hover:scale-110
-      ${!product.isAvailable ? "opacity-50 grayscale" : ""}`}
-                  />
-                </div>
-                <div
-                  className="
-        absolute inset-0 bg-linear-to-t from-amber-800/40 to-transparent 
-        opacity-0 group-hover:opacity-100 
-        transition-opacity duration-300
-      "
+              {/* Image with consistent aspect ratio */}
+              <figure className="relative w-full aspect-[4/5] overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.productName}
+                  className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${
+                    !product.isAvailable ? "opacity-40 grayscale" : ""
+                  }`}
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Availability Badge */}
+                {!product.isAvailable && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="bg-white/90 backdrop-blur-md text-black px-6 py-2 rounded-full font-bold text-sm">
+                      OUT OF STOCK
+                    </span>
+                  </div>
+                )}
               </figure>
 
-              {/* Card Content */}
-              <div className="p-3 sm:p-4 flex-1 flex flex-col">
-                <h3 className="text-4xl sm:text-lg md:text-xl font-semibold mb-2 text-black line-clamp-1 text-center sm:text-left">
-                  {product.productName}
-                </h3>
-
-                <div className="badge badge-outline mb-2 text-lg sm:text-sm text-black text-center sm:text-left">
-                  {product.category}
+              {/* Content */}
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="mb-auto">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 mb-2 block">
+                    {product.category.replace(/-/g, " ")}
+                  </span>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3 line-clamp-1">
+                    {product.productName}
+                  </h3>
+                  <p className="text-sm text-gray-500 line-clamp-2 mb-6 leading-relaxed">
+                    {product.productDescription}
+                  </p>
                 </div>
 
-                <p className="text-xs sm:text-sm md:text-base text-gray-800 mb-4 line-clamp-3 text-center sm:text-left">
-                  {product.productDescription}
-                </p>
-
-                {/* Price Section */}
-                <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
-                  <div className="flex gap-4">
-                    <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-lg text-black" />
-                      <span className="font-bold text-xl sm:text-lg md:text-xs text-black">
-                        ₱{product.priceSmall}
-                      </span>
-                      <span className="text-xl sm:text-lg md:text-xs text-gray-500">
-                        (Regular)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CiCoffeeCup className="text-2xl text-black" />
-                      <span className="font-bold text-xl sm:text-lg md:text-xs text-black">
-                        ₱{product.priceLarge}
-                      </span>
-                      <span className="text-xl sm:text-lg md:text-xs text-gray-500">
-                        (Upsize)
-                      </span>
-                    </div>
+                {/* Pricing Interface */}
+                <div className="flex items-center justify-between mb-6 px-1">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase">
+                      Regular
+                    </span>
+                    <span className="text-lg font-black text-gray-900">
+                      ₱{product.priceSmall}
+                    </span>
+                  </div>
+                  <div className="h-8 w-[1px] bg-gray-100" />
+                  <div className="flex flex-col text-right">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase">
+                      Upsize
+                    </span>
+                    <span className="text-lg font-black text-gray-900">
+                      ₱{product.priceLarge}
+                    </span>
                   </div>
                 </div>
 
-                {/* Order Button */}
-                {/* <button
-                  className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
+                {/* Modern Button */}
+                <button
+                  disabled={!product.isAvailable}
+                  className={`w-full py-4 rounded-2xl font-bold transition-all active:scale-95 ${
+                    product.isAvailable
+                      ? "bg-gray-900 text-white hover:bg-black shadow-lg shadow-gray-200"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  }`}
                   onClick={() => {
                     setSelectedProduct(product);
                     document.getElementById("order-modal")?.showModal();
                   }}
                 >
-                  Order
-                </button> */}
-
-                {product.isAvailable ? (
-                  <button
-                    className="btn btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold "
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      document.getElementById("order-modal")?.showModal();
-                    }}
-                  >
-                    Order
-                  </button>
-                ) : (
-                  <button className="btn btn-ghost btn-xl sm:btn-sm md:btn-md btn-neutral w-full mt-3 text-xl sm:text-lg md:text-xl font-semibold ">
-                    Not Available
-                  </button>
-                )}
+                  {product.isAvailable ? "Add to Order" : "Unavailable"}
+                </button>
               </div>
             </div>
           ))}
       </div>
 
-      {/* Modal */}
-      <dialog id="order-modal" className="modal">
-        <div className="modal-box bg-gray-300 max-w-md sm:max-w-lg">
+      {/* Modern Modal / Bottom Sheet */}
+      <dialog id="order-modal" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box bg-white rounded-t-[2rem] sm:rounded-[2rem] p-8 shadow-2xl">
           {selectedProduct && (
             <>
-              <h3 className="text-base sm:text-lg font-bold mb-4 text-black">
-                Choose size for {selectedProduct.productName}
-              </h3>
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-2xl font-black text-gray-900">
+                  Pick Your Size
+                </h3>
+                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-xs font-bold uppercase">
+                  Best Seller
+                </span>
+              </div>
 
-              <div className="flex flex-col gap-3 mb-4">
+              <div className="space-y-4 mb-10">
                 {[
-                  { label: "16oz", price: selectedProduct.priceSmall },
-                  { label: "22oz", price: selectedProduct.priceLarge },
+                  {
+                    label: "16oz",
+                    price: selectedProduct.priceSmall,
+                    type: "Regular",
+                  },
+                  {
+                    label: "22oz",
+                    price: selectedProduct.priceLarge,
+                    type: "Upsize",
+                  },
                 ].map((opt) => (
                   <button
                     key={opt.label}
                     onClick={() => setSelectedSize(opt.label)}
-                    className={`flex justify-between px-4 py-2 rounded-lg border text-sm sm:text-base ${
+                    className={`w-full flex justify-between items-center p-5 rounded-2xl border-2 transition-all ${
                       selectedSize === opt.label
-                        ? "bg-gray-600 text-white border-gray-600"
-                        : "bg-white text-black border-gray-300"
+                        ? "border-black bg-gray-900 text-white"
+                        : "border-gray-100 bg-gray-50 text-gray-900 hover:border-gray-200"
                     }`}
                   >
-                    <span>{opt.label}</span>
-                    <span>₱{opt.price}</span>
+                    <div className="text-left">
+                      <p className="font-bold text-lg">{opt.label}</p>
+                      <p
+                        className={`text-xs ${selectedSize === opt.label ? "text-gray-400" : "text-gray-500"}`}
+                      >
+                        {opt.type} Serving
+                      </p>
+                    </div>
+                    <p className="text-xl font-black">₱{opt.price}</p>
                   </button>
                 ))}
               </div>
 
-              <div className="modal-action flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   type="button"
                   onClick={handleAdd}
-                  className="btn bg-white text-black border border-black hover:bg-gray-600 hover:text-white w-full sm:w-auto"
+                  className="flex-1 py-4 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-2xl shadow-xl shadow-amber-100 transition-all active:scale-95"
                 >
                   Add to Cart
                 </button>
-                <form method="dialog" className="w-full sm:w-auto">
-                  <button className="btn w-full">Cancel</button>
+                <form method="dialog" className="flex-1">
+                  <button className="w-full py-4 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold rounded-2xl transition-all">
+                    Maybe Later
+                  </button>
                 </form>
               </div>
             </>
           )}
         </div>
+        <form
+          method="dialog"
+          className="modal-backdrop bg-black/40 backdrop-blur-sm"
+        >
+          <button>close</button>
+        </form>
       </dialog>
     </div>
   );
