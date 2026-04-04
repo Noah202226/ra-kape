@@ -94,7 +94,7 @@ export default function Page() {
                 Looks like you haven't added any of our delicious brews yet.
               </p>
               <Link
-                href="/menu"
+                href="/"
                 className="inline-block bg-black text-white px-10 py-4 rounded-2xl font-bold hover:bg-gray-800 transition-all active:scale-95 shadow-lg"
               >
                 Start Ordering
@@ -107,10 +107,10 @@ export default function Page() {
                 {cart.map((item) => (
                   <div
                     key={`${item.$id}-${item.size}`}
-                    className="flex items-center gap-4 bg-white rounded-[2rem] p-4 pr-6 shadow-sm border border-gray-100 transition-all hover:shadow-md group"
+                    className="flex items-center gap-4 bg-white rounded-4xl p-4 pr-6 shadow-sm border border-gray-100 transition-all hover:shadow-md group"
                   >
                     {/* Item Image */}
-                    <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0 relative">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 shrink-0 relative">
                       <img
                         src={item.image}
                         alt={item.productName}
@@ -119,7 +119,7 @@ export default function Page() {
                     </div>
 
                     {/* Item Details */}
-                    <div className="flex-grow">
+                    <div className="grow">
                       <h3 className="font-bold text-gray-900 text-lg leading-tight">
                         {item.productName}
                       </h3>
@@ -141,7 +141,7 @@ export default function Page() {
                       >
                         <HiMinus />
                       </button>
-                      <span className="font-bold text-gray-900 min-w-[24px] text-center">
+                      <span className="font-bold text-gray-900 min-w-6 text-center">
                         {item.quantity}
                       </span>
                       <button
@@ -210,7 +210,7 @@ export default function Page() {
           </p>
           <Link
             href="/login"
-            className={`w-full bg-black text-white py-5 rounded-[1.5rem] font-bold text-lg hover:bg-gray-800 transition-all active:scale-95 shadow-xl ${
+            className={`w-full bg-black text-white py-5 rounded-3xl font-bold text-lg hover:bg-gray-800 transition-all active:scale-95 shadow-xl ${
               loading ? "pointer-events-none opacity-70" : ""
             }`}
             onClick={() => setLoading(true)}

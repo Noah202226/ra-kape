@@ -132,7 +132,11 @@ export default function CheckoutPage() {
     return barangayObj ? barangayObj.price : 0;
   };
 
-  const shippingFee = useMemo(() => getShippingFee(barangay), [barangay]);
+  let shippingFee = useMemo(() => getShippingFee(barangay), [barangay]);
+
+  if (paymentMethod === "cash") {
+    shippingFee = 0;
+  }
 
   // grand total = subtotal - discount + shipping
   const grandTotal = useMemo(() => {

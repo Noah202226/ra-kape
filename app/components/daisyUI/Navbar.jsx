@@ -111,11 +111,11 @@ function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <motion.img
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.3 }}
             whileTap={{ scale: 0.95 }}
-            src="/r.jpg"
+            src="/rakape-new-logo.jpg"
             alt="Ra Kape Logo"
-            className="h-10 sm:h-12 w-auto rounded-xl shadow-sm cursor-pointer"
+            className="h-10 sm:h-16 w-auto rounded-xl shadow-sm cursor-pointer"
           />
         </Link>
 
