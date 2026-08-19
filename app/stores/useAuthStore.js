@@ -9,20 +9,25 @@ export const useAuthStore = create((set) => ({
   loading: true,
 
   register: async ({ email, password, contact, address, name }) => {
-    console.log("Email", email);
+    console.log("Registering user:", email);
     try {
       // Create auth account
       const newUser = await account.create(ID.unique(), email, password, name);
 
-      // Save extra details in database
-      await database.createDocument(dbId, "profiles", newUser.$id, {
-        userID: newUser.$id,
-        email,
-        name,
-        contactNumber: parseInt(contact),
-        address,
-        password,
-      });
+      // Save extra details in database profiles collection
+      try {
+        const parsedContact = contact ? (isNaN(parseInt(contact)) ? 0 : parseInt(contact)) : 0;
+        await database.createDocument(dbId, "profiles", newUser.$id, {
+          userID: newUser.$id,
+          email: email || "",
+          name: name || "",
+          contactNumber: parsedContact,
+          address: address || "",
+          password: password || "",
+        });
+      } catch (dbErr) {
+        console.warn("Could not save profile details to database:", dbErr);
+      }
 
       // Auto-login
       await account.createEmailPasswordSession(email, password);
@@ -32,6 +37,7 @@ export const useAuthStore = create((set) => ({
       toast.success("Account created 🎉");
       return currentUser;
     } catch (error) {
+      console.error("Signup error:", error);
       toast.error(error?.message || "Signup failed ❌");
       return null;
     }
