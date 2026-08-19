@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import useSettingsStore from "../stores/useSettingsStore";
 import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
-import { database } from "@/appwrite";
+import { database, dbId } from "@/appwrite";
 import { getThumbnailUrl, getProductFallback } from "@/app/lib/imageHelper";
 
 export default function ShowAllProducts() {
@@ -81,7 +81,7 @@ export default function ShowAllProducts() {
 
       // ✅ Update document with the correct values
       const response = await database.updateDocument(
-        "6870ab6f0018df40fa94",
+        dbId,
         "products",
         editingProduct.$id,
         {

@@ -1,6 +1,6 @@
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import React, { useEffect, useState } from "react";
-import { client } from "@/appwrite";
+import { client, dbId } from "@/appwrite";
 import { normalizeImageUrl } from "@/app/lib/imageHelper";
 
 function Hero() {
@@ -8,8 +8,7 @@ function Hero() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const channel =
-      "databases.6870ab6f0018df40fa94.collections.6870ab9e0013bcd4d615.documents";
+    const channel = `databases.${dbId || "rakape"}.collections.6870ab9e0013bcd4d615.documents`;
     const unsubscribe = client.subscribe(channel, (response) => {
       console.log(response.events, response.payload);
     });
