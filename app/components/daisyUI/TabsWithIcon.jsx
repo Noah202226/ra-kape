@@ -195,7 +195,7 @@ function TabsWithIcon() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Main Content Area */}
               <div className="lg:col-span-8 space-y-6">
-                <section className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-sm border border-gray-100 space-y-5">
+                <section className="bg-white rounded-3xl md:rounded-[2.5rem] p-5 md:p-10 shadow-sm border border-gray-100 space-y-5">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-1 h-4 bg-amber-500 rounded-full"></div>
                     <h2 className="text-sm md:text-xl font-black text-gray-900 uppercase tracking-tight">
@@ -223,7 +223,7 @@ function TabsWithIcon() {
                   />
                 </section>
 
-                <section className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-sm border border-gray-100 space-y-5">
+                <section className="bg-white rounded-3xl md:rounded-[2.5rem] p-5 md:p-10 shadow-sm border border-gray-100 space-y-5">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-1 h-4 bg-amber-500 rounded-full"></div>
                     <h2 className="text-sm md:text-xl font-black text-gray-900 uppercase tracking-tight">
@@ -278,7 +278,7 @@ function TabsWithIcon() {
                   ].map((card) => (
                     <div
                       key={card.id}
-                      className="bg-white rounded-[1.5rem] p-5 shadow-sm border border-gray-100 space-y-4"
+                      className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 space-y-4"
                     >
                       <h3 className="font-black text-[10px] uppercase tracking-widest text-gray-400">
                         Card 0{card.id}
@@ -300,7 +300,7 @@ function TabsWithIcon() {
 
               {/* Sidebar Assets Area */}
               <div className="lg:col-span-4 space-y-6">
-                <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                   <h3 className="font-black text-sm text-gray-900 mb-4 flex items-center gap-2">
                     <HiOutlineArrowUpTray /> Hero Asset
                   </h3>
@@ -312,7 +312,7 @@ function TabsWithIcon() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                   <h3 className="font-black text-sm text-gray-900 mb-4 flex items-center gap-2">
                     <HiOutlineArrowUpTray /> About Asset
                   </h3>
@@ -437,7 +437,7 @@ function TabsWithIcon() {
         ref={modalRef}
         className="modal modal-bottom sm:modal-middle"
       >
-        <div className="modal-box rounded-t-[2rem] sm:rounded-[2.5rem] p-6 w-full">
+        <div className="modal-box rounded-t-4xl sm:rounded-[2.5rem] p-6 w-full">
           <AddImage onSave={handleSave} />
         </div>
         <form
@@ -453,7 +453,7 @@ function TabsWithIcon() {
         ref={modalCustomerRef}
         className="modal modal-bottom sm:modal-middle"
       >
-        <div className="modal-box rounded-t-[2rem] sm:rounded-[2.5rem] p-6 w-full">
+        <div className="modal-box rounded-t-4xl sm:rounded-[2.5rem] p-6 w-full">
           <AddReview onSave={handleSave2} />
         </div>
         <form

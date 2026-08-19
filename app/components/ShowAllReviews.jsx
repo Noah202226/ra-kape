@@ -1,6 +1,7 @@
 import React from "react";
 import useSettingsStore from "../stores/useSettingsStore";
 import toast from "react-hot-toast";
+import { normalizeImageUrl } from "@/app/lib/imageHelper";
 
 function ShowAllReviews() {
   const { reviews, setReviews } = useSettingsStore((state) => state);
@@ -43,8 +44,11 @@ function ShowAllReviews() {
           className="border rounded-xl p-4 shadow bg-white flex flex-col justify-between"
         >
           <img
-            src={product.reviewImage}
-            alt={product.reviewImage}
+            src={normalizeImageUrl(product.reviewImage) || "/rakape-logo.jpg"}
+            alt="Customer review"
+            onError={(e) => {
+              e.target.src = "/rakape-logo.jpg";
+            }}
             className="w-full h-40 object-cover rounded mb-2"
           />
           <div>

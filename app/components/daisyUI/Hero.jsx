@@ -1,6 +1,7 @@
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import React, { useEffect, useState } from "react";
 import { client } from "@/appwrite";
+import { normalizeImageUrl } from "@/app/lib/imageHelper";
 
 function Hero() {
   const settings = useSettingsStore((state) => state.settings);
@@ -18,7 +19,7 @@ function Hero() {
   // FLEXIBLE IMAGE LOGIC:
   // Priority 1: Image URL from Appwrite/Settings store
   // Priority 2: Local fallback image
-  const menuImage = settings?.heroImage || "/rakape-new-menu.jpg";
+  const menuImage = normalizeImageUrl(settings?.heroImage) || "/rakape-new-menu.jpg";
 
   return (
     <div
@@ -48,7 +49,14 @@ function Hero() {
             className="cursor-pointer overflow-hidden rounded-2xl shadow-2xl border-[var(--title)] border-2 transition-all active:scale-95 lg:hover:scale-[1.01]"
             onClick={() => setIsOpen(true)}
           >
-            <img src={menuImage} alt="Menu Preview" className="w-full h-auto" />
+            <img
+              src={menuImage}
+              alt="Menu Preview"
+              onError={(e) => {
+                e.target.src = "/rakape-new-menu.jpg";
+              }}
+              className="w-full h-auto"
+            />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <span className="bg-white text-black px-4 py-2 rounded-full font-bold shadow-lg">
                 Tap to Expand
@@ -127,6 +135,9 @@ function Hero() {
               <img
                 src={menuImage}
                 alt="Full Menu"
+                onError={(e) => {
+                  e.target.src = "/rakape-new-menu.jpg";
+                }}
                 className="max-w-none sm:max-w-full max-h-[80vh] h-auto rounded-lg shadow-2xl transition-transform duration-300"
                 onClick={(e) => e.stopPropagation()}
               />
