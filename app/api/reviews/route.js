@@ -28,20 +28,41 @@ export async function POST(req) {
   }
 }
 
-// // ---------------- GET: List All Products ----------------
-// export async function GET() {
-//   try {
-//     const res = await database.listDocuments(DB_ID, COLLECTION_ID);
-//     console.log("Getting all reviews", res.documents);
-//     return Response.json({ success: true, products: res.documents });
-//   } catch (err) {
-//     console.error("GET /api/products error:", err);
-//     return Response.json(
-//       { success: false, error: err.message },
-//       { status: 500 }
-//     );
-//   }
-// }
+// ---------------- PUT: Update Review ----------------
+export async function PUT(req) {
+  try {
+    const body = await req.json();
+    const { id, comments, reviewImage } = body;
+
+    if (!id) {
+      return Response.json(
+        { success: false, error: "Review ID is required" },
+        { status: 400 },
+      );
+    }
+
+    const updateData = {};
+    if (comments !== undefined) updateData.comments = comments;
+    if (reviewImage !== undefined) updateData.reviewImage = reviewImage;
+
+    const updatedReview = await database.updateDocument(
+      DB_ID,
+      COLLECTION_ID,
+      id,
+      updateData,
+    );
+
+    return Response.json({ success: true, review: updatedReview });
+  } catch (err) {
+    console.error("PUT /api/reviews error:", err);
+    return Response.json(
+      { success: false, error: err.message },
+      { status: 500 },
+    );
+  }
+}
+
+
 
 // ---------------- DELETE: Remove Product by ID ----------------
 export async function DELETE(req) {
