@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { database } from "@/appwrite";
 import toast from "react-hot-toast";
 import useSettingsStore from "../stores/useSettingsStore"; // We'll store events here too
+import { normalizeImageUrl } from "@/app/lib/imageHelper";
 
 export default function ShowAllEvents() {
   const { events, setEvents } = useSettingsStore((state) => state);
@@ -44,8 +45,11 @@ export default function ShowAllEvents() {
         >
           {/* Image */}
           <img
-            src={event.img}
+            src={normalizeImageUrl(event.img) || "/downloads/starting-outside.jpg"}
             alt={event.title}
+            onError={(e) => {
+              e.target.src = "/downloads/starting-outside.jpg";
+            }}
             className="w-full h-[180px] object-cover rounded mb-2"
           />
 

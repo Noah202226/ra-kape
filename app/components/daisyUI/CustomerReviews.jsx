@@ -2,6 +2,7 @@
 
 import useSettingsStore from "@/app/stores/useSettingsStore";
 import { useEffect, useState } from "react";
+import { normalizeImageUrl } from "@/app/lib/imageHelper";
 
 function CustomerReviews() {
   const { reviews } = useSettingsStore((state) => state);
@@ -73,8 +74,11 @@ function CustomerReviews() {
             />
 
             <img
-              src={review.reviewImage}
+              src={normalizeImageUrl(review.reviewImage) || "/rakape-logo.jpg"}
               alt="Customer"
+              onError={(e) => {
+                e.target.src = "/rakape-logo.jpg";
+              }}
               className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover mb-6
                 border-4 border-[var(--title)]
                 transition-transform duration-500 hover:scale-110"

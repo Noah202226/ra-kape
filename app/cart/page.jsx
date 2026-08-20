@@ -14,6 +14,7 @@ import {
 } from "react-icons/hi2";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { CiCoffeeCup } from "react-icons/ci";
+import { getThumbnailUrl, getProductFallback } from "@/app/lib/imageHelper";
 
 export default function Page() {
   const cart = useCartStore((state) => state.cart);
@@ -112,8 +113,11 @@ export default function Page() {
                     {/* Item Image */}
                     <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 shrink-0 relative">
                       <img
-                        src={item.image}
+                        src={getThumbnailUrl(item.image) || getProductFallback(item)}
                         alt={item.productName}
+                        onError={(e) => {
+                          e.target.src = getProductFallback(item);
+                        }}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     </div>

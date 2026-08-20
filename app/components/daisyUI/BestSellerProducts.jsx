@@ -2,9 +2,10 @@
 import { useAuthStore } from "@/app/stores/useAuthStore";
 import useCartStore from "@/app/stores/useCartStore";
 import useSettingsStore from "@/app/stores/useSettingsStore";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
+import { getThumbnailUrl, getProductFallback } from "@/app/lib/imageHelper";
 
 function BestSellerCarousel() {
   const { current } = useAuthStore((state) => state);
@@ -13,6 +14,25 @@ function BestSellerCarousel() {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("22oz");
+
+  // DEBUG: Log first product image - MUST BE BEFORE CONDITIONAL RETURN
+  useEffect(() => {
+    if (products.length > 0) {
+      const firstProduct = products.find((p) => p.productType === "best-seller");
+      if (firstProduct) {
+        const thumbnailUrl = getThumbnailUrl(firstProduct.image);
+        console.log("=== DEBUG: Best-Seller Product ===");
+        console.log("Product Name:", firstProduct.productName);
+        console.log("Raw Image Field:", firstProduct.image);
+        console.log("Generated Thumbnail URL:", thumbnailUrl);
+        console.log("Correct Endpoint:", process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT);
+        console.log("Image Processing:");
+        console.log("  - Is HTTP URL?", firstProduct.image?.startsWith("http"));
+        console.log("  - Contains 'appwrite'?", firstProduct.image?.includes("appwrite"));
+        console.log("  - Final URL to use:", thumbnailUrl);
+      }
+    }
+  }, [products]);
 
   if (products.length === 0) {
     return (
@@ -85,15 +105,19 @@ function BestSellerCarousel() {
               className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full overflow-hidden"
             >
               {/* Image with consistent aspect ratio */}
-              <figure className="relative w-full aspect-[4/5] overflow-hidden">
+              <figure className="relative w-full aspect-4/5 overflow-hidden">
                 <img
-                  src={product.image}
+                  src={getThumbnailUrl(product.image) || getProductFallback(product)}
                   alt={product.productName}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = getProductFallback(product);
+                  }}
                   className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${
                     !product.isAvailable ? "opacity-40 grayscale" : ""
                   }`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Availability Badge */}
                 {!product.isAvailable && (
@@ -106,7 +130,7 @@ function BestSellerCarousel() {
               </figure>
 
               {/* Content */}
-              <div className="p-6 flex flex-col flex-grow">
+              <div className="p-6 flex flex-col grow">
                 <div className="mb-auto">
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-600 mb-2 block">
                     {product.category.replace(/-/g, " ")}
@@ -129,7 +153,7 @@ function BestSellerCarousel() {
                       ₱{product.priceSmall}
                     </span>
                   </div>
-                  <div className="h-8 w-[1px] bg-gray-100" />
+                  <div className="h-8 w-px bg-gray-100" />
                   <div className="flex flex-col text-right">
                     <span className="text-[10px] text-gray-400 font-bold uppercase">
                       Upsize
@@ -162,7 +186,7 @@ function BestSellerCarousel() {
 
       {/* Modern Modal / Bottom Sheet */}
       <dialog id="order-modal" className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box bg-white rounded-t-[2rem] sm:rounded-[2rem] p-8 shadow-2xl">
+        <div className="modal-box bg-white rounded-t-4xl sm:rounded-4xl p-8 shadow-2xl">
           {selectedProduct && (
             <>
               <div className="flex justify-between items-center mb-8">

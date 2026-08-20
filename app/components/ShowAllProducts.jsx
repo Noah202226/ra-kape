@@ -5,7 +5,8 @@ import React, { useEffect, useState } from "react";
 import useSettingsStore from "../stores/useSettingsStore";
 import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
-import { database } from "@/appwrite";
+import { database, dbId } from "@/appwrite";
+import { getThumbnailUrl, getProductFallback } from "@/app/lib/imageHelper";
 
 export default function ShowAllProducts() {
   const { products, setProducts } = useSettingsStore((state) => state);
@@ -80,7 +81,7 @@ export default function ShowAllProducts() {
 
       // ✅ Update document with the correct values
       const response = await database.updateDocument(
-        "6870ab6f0018df40fa94",
+        dbId,
         "products",
         editingProduct.$id,
         {
@@ -174,15 +175,19 @@ export default function ShowAllProducts() {
           >
             <div className="relative">
               <img
-                src={product.image}
+                src={getThumbnailUrl(product.image) || getProductFallback(product)}
                 alt={product.productName}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src = getProductFallback(product);
+                }}
                 className={`w-full 
       h-72 sm:h-48 md:h-56 lg:h-64 xl:h-72 
       object-cover 
       transition-transform duration-300 group-hover:scale-110
       ${!product.isAvailable ? "opacity-50 grayscale" : ""}`}
               />
-            </div>
+           </div>
 
             <div>
               <h3 className="text-lg font-semibold">{product.productName}</h3>
@@ -265,8 +270,12 @@ export default function ShowAllProducts() {
               />
 
               <img
-                src={imageFile ? imagePreview : editingProduct.image}
+                src={imageFile ? imagePreview : getThumbnailUrl(editingProduct.image) || getProductFallback(editingProduct)}
                 alt={editingProduct.productName}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src = getProductFallback(editingProduct);
+                }}
                 className="w-full h-40 object-cover rounded mb-2"
               />
 

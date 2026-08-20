@@ -7,6 +7,7 @@ import useCartStore from "@/app/stores/useCartStore";
 import toast from "react-hot-toast";
 import { CiCoffeeCup } from "react-icons/ci";
 import { useAuthStore } from "../stores/useAuthStore";
+import { getThumbnailUrl, getProductFallback } from "@/app/lib/imageHelper";
 
 export default function ProductGridFiltered({ type }) {
   const [hasMounted, setHasMounted] = useState(false);
@@ -104,8 +105,12 @@ export default function ProductGridFiltered({ type }) {
               {/* Image Container */}
               <figure className="relative w-full aspect-4/3 overflow-hidden bg-gray-100">
                 <img
-                  src={product.image}
+                  src={getThumbnailUrl(product.image) || getProductFallback(product)}
                   alt={product.productName}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = getProductFallback(product);
+                  }}
                   className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
                     !product.isAvailable ? "opacity-50 grayscale" : ""
                   }`}

@@ -1,5 +1,6 @@
 import React from "react";
 import useSettingsStore from "../stores/useSettingsStore";
+import { normalizeImageUrl } from "@/app/lib/imageHelper";
 
 function AboutUs() {
   const settings = useSettingsStore((state) => state.settings);
@@ -15,8 +16,11 @@ function AboutUs() {
         {/* Image */}
         <div className="flex-1 relative w-full max-w-md lg:max-w-lg xl:max-w-none">
           <img
-            src={settings?.aboutImage || "/rakape-logo.jpg"}
+            src={normalizeImageUrl(settings?.aboutImage) || "/rakape-logo.jpg"}
             alt="About Us"
+            onError={(e) => {
+              e.target.src = "/rakape-logo.jpg";
+            }}
             className="
               rounded-xl shadow-lg w-full object-cover
               h-56 sm:h-72 md:h-96 lg:h-112 xl:h-[32rem]
